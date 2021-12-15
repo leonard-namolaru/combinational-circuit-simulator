@@ -10,7 +10,7 @@ class InputGate : public Gate
 private:
     /* data */
 public:
-    InputGate(const string);
+    InputGate(const char a);
     virtual ~InputGate();
 };
 

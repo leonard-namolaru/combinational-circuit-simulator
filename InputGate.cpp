@@ -1,7 +1,7 @@
 #include "InputGate.hpp"
 
 
-InputGate::InputGate(const char nom)
+InputGate::InputGate(const char n)
 {
    Gate();
 
