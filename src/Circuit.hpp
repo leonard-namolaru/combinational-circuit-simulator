@@ -15,24 +15,10 @@ private:
 	vector<Gate*>* gates;
 public:
     Circuit(/* args */);
+    Circuit(vector<InputGate*>* inputsCircuit);
     ~Circuit();
-    void afficheCircuit();
+    void afficheCircuit() const;
 };
-
-Circuit::Circuit(/* args */)
-{
-}
-
-Circuit::~Circuit()
-{
-}
-
-
-
-
-
-
-
 
 
 

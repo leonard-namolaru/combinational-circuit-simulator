@@ -10,7 +10,7 @@ private:
     bool val;
     char inputName;
 public:
-    InputGate(const char a);
+    InputGate(char a);
     virtual ~InputGate();
     bool getVal() const;
     void setVal(bool val);
