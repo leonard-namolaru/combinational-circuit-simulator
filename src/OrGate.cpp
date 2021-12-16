@@ -10,5 +10,5 @@ OrGate::~OrGate()
 }
 
 Gate* OrGate::operationLogique(){
-    
+    return nullptr;
 }
