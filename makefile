@@ -32,3 +32,5 @@ clean :
 	rm *.o
 test:
 	./mr
+
+	
