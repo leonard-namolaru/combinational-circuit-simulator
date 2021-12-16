@@ -1,6 +1,8 @@
 #ifndef CIRCUIT
 #define CIRCUIT
 #include "Gate.hpp"
+#include "InputGate.hpp"
+#include "OutputGate.hpp"
 #include <vector>
 #include <iostream>
 
