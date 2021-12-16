@@ -16,6 +16,7 @@ public:
     bool *getVal();
     void setVal(bool *val);
     int valeurInput(bool *val); // RENVOIE LA VALEUR EN BINAIRE 0 SI C'EST FALSE ET 1 SI C'EST TRUE
+    char getInputName() const;
 };
 
 
