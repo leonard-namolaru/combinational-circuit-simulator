@@ -3,7 +3,7 @@
 
 InputGate::InputGate(const char n)
 {
-   Gate();
+  
 
 
 }
