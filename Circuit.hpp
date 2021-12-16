@@ -9,6 +9,9 @@ class Circuit
 {
 private:
     /* data */
+	vector<InputGate*>* inputs;
+	vector<OutputGate*>* ouputs;
+	vector<Gate*>* gates;
 public:
     Circuit(/* args */);
     ~Circuit();
