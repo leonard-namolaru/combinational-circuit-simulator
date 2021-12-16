@@ -49,8 +49,4 @@ Circuit::afficheCircuit()
 }
 
 
-
-
-
-
 #endif
