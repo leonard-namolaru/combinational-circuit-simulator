@@ -10,10 +10,11 @@ using namespace std;
 class XorGate : public Gate
 {
 private:
-    /* data */
+    
 public:
     XorGate(Gate *g1, Gate *g2);
     virtual ~XorGate();
+    Gate* operationLogique();
 };
 
 

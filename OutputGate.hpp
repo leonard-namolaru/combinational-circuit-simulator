@@ -7,7 +7,7 @@
 
 using namespace std;
 
-class OutputGate
+class OutputGate : public Gate
 {
 private:
     /* data */

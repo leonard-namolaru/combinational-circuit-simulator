@@ -5,10 +5,6 @@
 #include "AndGate.hpp"
 #include "XorGate.hpp"
 
-
-
-
-
 int main(){
 
 std::cout<<"hello world "<< endl;
