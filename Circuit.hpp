@@ -16,7 +16,7 @@ private:
 public:
     Circuit(/* args */);
     ~Circuit();
-    void afficheCircuit();
+    void afficheCircuit() const;
 };
 
 Circuit::Circuit(/* args */)
