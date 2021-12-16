@@ -5,7 +5,8 @@
 #include "OutputGate.hpp"
 #include <vector>
 #include <iostream>
-
+#include "InputGate.hpp"
+#include "OutputGate.hpp"
 using namespace std;
 class Circuit
 {
