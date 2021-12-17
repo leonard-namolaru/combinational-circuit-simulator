@@ -18,14 +18,44 @@ Circuit::Circuit(vector<InputGate*>* inputsCircuit, vector<Gate*>* gates)
 		}
 
 
+        int nbetoiles=0;
+		for(int k = 6 ; nbetoiles!=counter ; k ++) {
+			affichageCircuit->at(i)->push_back( '-' );
+			affichageCircuit->at(i)->push_back( '-' );
+			affichageCircuit->at(i)->push_back( '-' );
+			affichageCircuit->at(i)->push_back( '-' );
+	
+			if (i==0){
+            affichageCircuit->at(i)->push_back( '*' );
+			nbetoiles++;
+			}else{
+				     if(affichageCircuit->at(i-1)->size()>k+3){
 
-		for(int k = 0 ; k < counter ; k ++) {
-			affichageCircuit->at(i)->push_back( '-' );
-			affichageCircuit->at(i)->push_back( '-' );
-			affichageCircuit->at(i)->push_back( '-' );
-			affichageCircuit->at(i)->push_back( '-' );
-			affichageCircuit->at(i)->push_back( '-' );
-			affichageCircuit->at(i)->push_back( '*' );
+                        if (affichageCircuit->at(i-1)->at(k+3)=='*' || affichageCircuit->at(i-1)->at(k+3)=='+' ){
+						  affichageCircuit->at(i)->push_back( '+' );
+
+					    }else{
+
+							  affichageCircuit->at(i)->push_back( '*' );
+							  nbetoiles++;
+						}
+
+
+					 }else{
+
+                       affichageCircuit->at(i)->push_back( '*' );
+					   nbetoiles++;
+
+					 }
+					   
+				
+                      
+                     
+					
+				
+			}
+			
+			
 
 		}
 	}
