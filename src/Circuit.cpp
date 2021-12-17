@@ -9,7 +9,7 @@ Circuit::Circuit(vector<InputGate*>* inputsCircuit) : inputs{inputsCircuit}, aff
 		affichageCircuit->at(i)->push_back( ':' );
 		affichageCircuit->at(i)->push_back( ' ' );
 		affichageCircuit->at(i)->push_back( ' ' );
-		affichageCircuit->at(i)->push_back( inputs->at(i)->getValEnBinaire() );
+		affichageCircuit->at(i)->push_back(  to_string( inputs->at(i)->getValEnBinaire() ).at(0) );
 
 		int counter = 0;
 		//for(unsigned int j = 0 ; j < gates->size() ; j++){
