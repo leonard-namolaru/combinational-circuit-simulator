@@ -14,6 +14,7 @@ private:
 	vector<OutputGate*>* ouputs;
 	vector<Gate*>* gates;
 	vector< vector<char>* >* affichageCircuit;
+	void affichageInputs();
 public:
     Circuit(/* args */);
     Circuit(vector<InputGate*>* inputsCircuit, vector<Gate*>* gates);

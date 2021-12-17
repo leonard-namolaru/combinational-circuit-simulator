@@ -1,8 +1,7 @@
 #include "Circuit.hpp"
 
-Circuit::Circuit(vector<InputGate*>* inputsCircuit, vector<Gate*>* gates)
-: inputs{inputsCircuit}, affichageCircuit{new vector< vector<char>* >}, gates{gates}  {
 
+void Circuit::affichageInputs(){
 	for(unsigned int i = 0 ; i < inputs->size() ; i++) {
 		affichageCircuit->push_back( new vector<char> ) ;
 		affichageCircuit->at(i)->push_back( inputs->at(i)->getInputName() );
@@ -17,49 +16,38 @@ Circuit::Circuit(vector<InputGate*>* inputsCircuit, vector<Gate*>* gates)
 				counter++;
 		}
 
-
-        int nbetoiles=0;
-		for(int k = 5 ; nbetoiles!=counter ; k+=5) {
+        int nbEtoiles=0;
+		for(unsigned int k = 5 ; nbEtoiles!=counter ; k+=5) {
 			affichageCircuit->at(i)->push_back( '-' );
 			affichageCircuit->at(i)->push_back( '-' );
 			affichageCircuit->at(i)->push_back( '-' );
 			affichageCircuit->at(i)->push_back( '-' );
 	
-			if (i==0){
-            affichageCircuit->at(i)->push_back( '*' );
-			nbetoiles++;
+			if (i == 0){
+				affichageCircuit->at(i)->push_back( '*' );
+				nbEtoiles++;
 			}else{
-				cout << k << ";" << k+4 << endl;
 				if(k+4 < affichageCircuit->at(i-1)->size()){
-
                         if (affichageCircuit->at(i-1)->at(k+4)=='*' || affichageCircuit->at(i-1)->at(k+4)=='+' ){
 						  affichageCircuit->at(i)->push_back( '+' );
-
 					    }else{
-
 							  affichageCircuit->at(i)->push_back( '*' );
-							  nbetoiles++;
-						}
-
-
-					 }else{
-
+							  nbEtoiles++;
+						} // else
+				}else{
                        affichageCircuit->at(i)->push_back( '*' );
-					   nbetoiles++;
+					   nbEtoiles++;
+				} // else
+			} // else
+		} // for(k)
+	} // for(i)
+} // affichageInputs()
 
-					 }
-					   
-				
-                      
-                     
-					
-				
-			}
-			
-			
 
-		}
-	}
+Circuit::Circuit(vector<InputGate*>* inputsCircuit, vector<Gate*>* gates)
+: inputs{inputsCircuit}, affichageCircuit{new vector< vector<char>* >}, gates{gates}  {
+	affichageInputs();
+
 
 }
 
