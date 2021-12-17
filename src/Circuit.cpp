@@ -12,19 +12,14 @@ Circuit::Circuit(vector<InputGate*>* inputsCircuit, vector<Gate*>* gates)
 		affichageCircuit->at(i)->push_back(  to_string( inputs->at(i)->getValEnBinaire() ).at(0) );
 
 		int counter = 0;
-		//for(unsigned int j = 0 ; j < gates->size() ; j++){
-		//	if( gates->at(i)->getEntrees()->at(i) ==  inputs->at(i) )
-		//		counter++;
-		//}
-		counter = 2; // TEST
-		if(counter != 0){
-			affichageCircuit->at(i)->push_back( ' ' );
-			affichageCircuit->at(i)->push_back( '-' );
-			affichageCircuit->at(i)->push_back( '-' );
-			affichageCircuit->at(i)->push_back( '*' );
+		for(unsigned int j = 0 ; j < gates->size() ; j++){
+			if( gates->at(i)->getEntrees()->at(i) ==  inputs->at(i) )
+				counter++;
 		}
 
-		for(int k = 0 ; k < counter -1 ; k ++) {
+
+
+		for(int k = 0 ; k < counter ; k ++) {
 			affichageCircuit->at(i)->push_back( '-' );
 			affichageCircuit->at(i)->push_back( '-' );
 			affichageCircuit->at(i)->push_back( '-' );
