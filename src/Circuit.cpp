@@ -32,7 +32,7 @@ Circuit::Circuit(vector<InputGate*>* inputsCircuit, vector<Gate*>* gates)
 
 }
 
-Circuit::Circuit(/* args */)
+Circuit::Circuit()
 {
 }
 
