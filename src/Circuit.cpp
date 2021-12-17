@@ -19,7 +19,7 @@ Circuit::Circuit(vector<InputGate*>* inputsCircuit, vector<Gate*>* gates)
 
 
         int nbetoiles=0;
-		for(int k = 6 ; nbetoiles!=counter ; k ++) {
+		for(int k = 5 ; nbetoiles!=counter ; k+=5) {
 			affichageCircuit->at(i)->push_back( '-' );
 			affichageCircuit->at(i)->push_back( '-' );
 			affichageCircuit->at(i)->push_back( '-' );
@@ -29,9 +29,10 @@ Circuit::Circuit(vector<InputGate*>* inputsCircuit, vector<Gate*>* gates)
             affichageCircuit->at(i)->push_back( '*' );
 			nbetoiles++;
 			}else{
-				     if(affichageCircuit->at(i-1)->size()>k+3){
+				cout << k << ";" << k+4 << endl;
+				if(k+4 < affichageCircuit->at(i-1)->size()){
 
-                        if (affichageCircuit->at(i-1)->at(k+3)=='*' || affichageCircuit->at(i-1)->at(k+3)=='+' ){
+                        if (affichageCircuit->at(i-1)->at(k+4)=='*' || affichageCircuit->at(i-1)->at(k+4)=='+' ){
 						  affichageCircuit->at(i)->push_back( '+' );
 
 					    }else{
