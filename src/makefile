@@ -4,8 +4,11 @@ CFLAGS= -Wall
 
 all : mr
 
-mr : main.o Gate.o AndGate.o InputGate.o OutputGate.o OrGate.o XorGate.o
+mr : main.o Gate.o AndGate.o InputGate.o OutputGate.o OrGate.o XorGate.o Circuit.o
 	$(CPP) $(CFLAGS) -o $@ $^
+
+Circuit.o : Circuit.cpp Circuit.hpp
+	$(CPP) $(CFLAGS) -c $<
 
 main.o : main.cpp 
 	$(CPP) $(CFLAGS) -c $<
