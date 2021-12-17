@@ -34,6 +34,7 @@ Circuit::Circuit(vector<InputGate*>* inputsCircuit, vector<Gate*>* gates)
 
 Circuit::Circuit()
 {
+
 }
 
 Circuit::~Circuit()
