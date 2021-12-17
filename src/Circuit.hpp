@@ -16,7 +16,7 @@ private:
 	vector< vector<char>* >* affichageCircuit;
 public:
     Circuit(/* args */);
-    Circuit(vector<InputGate*>* inputsCircuit);
+    Circuit(vector<InputGate*>* inputsCircuit, vector<Gate*>* gates);
     ~Circuit();
     void afficheCircuit() const;
 };

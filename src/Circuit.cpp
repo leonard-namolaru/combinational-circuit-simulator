@@ -1,6 +1,7 @@
 #include "Circuit.hpp"
 
-Circuit::Circuit(vector<InputGate*>* inputsCircuit) : inputs{inputsCircuit}, affichageCircuit{new vector< vector<char>* >} {
+Circuit::Circuit(vector<InputGate*>* inputsCircuit, vector<Gate*>* gates)
+: inputs{inputsCircuit}, affichageCircuit{new vector< vector<char>* >}, gates{gates}  {
 
 	for(unsigned int i = 0 ; i < inputs->size() ; i++) {
 		affichageCircuit->push_back( new vector<char> ) ;
@@ -8,12 +9,11 @@ Circuit::Circuit(vector<InputGate*>* inputsCircuit) : inputs{inputsCircuit}, aff
 		affichageCircuit->at(i)->push_back( ' ' );
 		affichageCircuit->at(i)->push_back( ':' );
 		affichageCircuit->at(i)->push_back( ' ' );
-		affichageCircuit->at(i)->push_back( ' ' );
 		affichageCircuit->at(i)->push_back(  to_string( inputs->at(i)->getValEnBinaire() ).at(0) );
 
 		int counter = 0;
 		//for(unsigned int j = 0 ; j < gates->size() ; j++){
-		//	if( gates->at(i)->listeOfInputsOfTheGate->at(i) ==  inputs->at(i) )
+		//	if( gates->at(i)->getEntrees()->at(i) ==  inputs->at(i) )
 		//		counter++;
 		//}
 		counter = 2; // TEST

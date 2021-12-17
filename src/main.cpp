@@ -23,8 +23,14 @@ OutputGate *A = new OutputGate(and2);
 
 vector<InputGate*>* inputsCircuit = new vector<InputGate*>;
 inputsCircuit->push_back(a);
+inputsCircuit->push_back(b);
 
-Circuit* circuit = new Circuit(inputsCircuit);
+vector<Gate*>* gates = new vector<Gate*>;
+gates->push_back(or1);
+gates->push_back(and1);
+
+
+Circuit* circuit = new Circuit(inputsCircuit, gates);
 circuit->afficheCircuit();
 return 0;
 

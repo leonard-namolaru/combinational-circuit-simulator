@@ -10,13 +10,14 @@ using namespace std;
 
 class Gate
 {
-private:
-   vector<InputGate*> *entrees;
+protected:
+   vector<Gate*>* entrees;
    OutputGate *sortie;
 public:
     Gate();
     virtual ~Gate();
     virtual Gate* operationLogique();
+    vector<Gate*>* getEntrees() const;
 };
 
 
