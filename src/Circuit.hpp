@@ -13,6 +13,7 @@ private:
 	vector<InputGate*>* inputs;
 	vector<OutputGate*>* ouputs;
 	vector<Gate*>* gates;
+	vector< vector<char>* >* affichageCircuit;
 public:
     Circuit(/* args */);
     Circuit(vector<InputGate*>* inputsCircuit);
