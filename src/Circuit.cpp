@@ -103,33 +103,50 @@ void Circuit::affichageNomsOperationsLogiques(){
 		unsigned int e = 0;
 		for(unsigned int j = 0 ; j < gates->size() ; j++){
 			if( gates->at(i)->getEntrees()->at(j) ==  inputs->at(i)) {
-					unsigned int nombreEmplacementsAjouterNouvelleLigne; // Nombre d'emplacements à ajouter à la nouvelle ligne
+					int nombreEmplacementsAjouterNouvelleLigne; // Nombre d'emplacements à ajouter à la nouvelle ligne
 					if(e < emplacements.size())
 						nombreEmplacementsAjouterNouvelleLigne = emplacements.at(e) - affichageCircuit->at(affichageCircuitSize - 1)->size();
 					else
 						nombreEmplacementsAjouterNouvelleLigne = 0;
 
-					for(unsigned int k = 0 ; k < 5 ; k++)
+					if(nombreEmplacementsAjouterNouvelleLigne < 0)
+						nombreEmplacementsAjouterNouvelleLigne = 1;
+					for(int k = 0 ; k < nombreEmplacementsAjouterNouvelleLigne ; k++)
 							affichageCircuit->at(affichageCircuitSize - 1)->push_back( ' ' );
 
-						affichageCircuit->at(affichageCircuitSize - 1)->push_back( gates->at(i)->getName().at(0) );
-						affichageCircuit->at(affichageCircuitSize - 1)->push_back( gates->at(i)->getName().at(1) );
-						affichageCircuit->at(affichageCircuitSize - 1)->push_back( gates->at(i)->getName().at(2) );
-						e++;
+					affichageCircuit->at(affichageCircuitSize - 1)->push_back( gates->at(i)->getName().at(0) );
+					affichageCircuit->at(affichageCircuitSize - 1)->push_back( gates->at(i)->getName().at(1) );
+					affichageCircuit->at(affichageCircuitSize - 1)->push_back( gates->at(i)->getName().at(2) );
+					e++;
 			} // if
 		} // fot(j)
 
 	} // for(i)
 } // affichageNomsOperationsLogiques()
 
+void Circuit::affichageCheminsApresOperationsLogiques(){
+	int nombreDeLignes = affichageCircuit->size(); // Le nombre de lignes maintenant stockées dans le vecteur qui représente l'affichage du circuit.
+	affichageCircuit->push_back( new vector<char> ); // Ajouter une nouvelle ligne à l'affichage du circuit pour stocker des chemins (caractères '|')
+	// Nous parcourons la dernière ligne de l'affichage (La dernière ligne avant la nouvelle ligne que nous venons d'ajouter)
+	for(unsigned int j = 0 ; j < affichageCircuit->at(nombreDeLignes-1)->size() ; j++) {
+		if(affichageCircuit->at(nombreDeLignes-1)->at(j) >= 'A' && affichageCircuit->at(nombreDeLignes-1)->at(j) <= 'Z') {
+			// Nombre d'emplacements à ajouter à la nouvelle ligne
+			unsigned int nombreEmplacementsAjouterNouvelleLigne = j - affichageCircuit->at(nombreDeLignes)->size();
+			for(unsigned int k = 0 ; k < nombreEmplacementsAjouterNouvelleLigne + 1 ; k++)
+				affichageCircuit->at(nombreDeLignes)->push_back( ' ' );
+			affichageCircuit->at(nombreDeLignes)->push_back( '|' );
+			j+=2;
+		} // if
+	} // for
+} // affichageChemins()
 
 
 Circuit::Circuit(vector<InputGate*>* inputsCircuit, vector<Gate*>* gates)
 : inputs{inputsCircuit}, affichageCircuit{new vector< vector<char>* >}, gates{gates}  {
 	affichageInputs();
 	affichageChemins();
-	 affichageNomsOperationsLogiques();// Afficher les noms des opérations logiques
-
+	affichageNomsOperationsLogiques();// Afficher les noms des opérations logiques
+	affichageCheminsApresOperationsLogiques();
 
 }
 

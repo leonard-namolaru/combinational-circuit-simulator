@@ -17,6 +17,7 @@ private:
 	void affichageInputs();
 	void affichageChemins();
 	void affichageNomsOperationsLogiques();
+	void affichageCheminsApresOperationsLogiques();
 public:
     Circuit(/* args */);
     Circuit(vector<InputGate*>* inputsCircuit, vector<Gate*>* gates);

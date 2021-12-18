@@ -8,8 +8,6 @@
 
 int main(){
 
-std::cout<<"hello world "<< endl;
-
 InputGate *a = new InputGate('a');
 InputGate *b = new InputGate('b');
 
@@ -28,7 +26,6 @@ inputsCircuit->push_back(b);
 vector<Gate*>* gates = new vector<Gate*>;
 gates->push_back(or1);
 gates->push_back(and1);
-
 
 Circuit* circuit = new Circuit(inputsCircuit, gates);
 circuit->afficheCircuit();
