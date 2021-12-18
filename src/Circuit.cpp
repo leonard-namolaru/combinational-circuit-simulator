@@ -1,7 +1,7 @@
 #include "Circuit.hpp"
 
 
-void Circuit::affichageInputs(){
+void Circuit::affichageInputs() const{
 	for(unsigned int i = 0 ; i < inputs->size() ; i++) {
 		affichageCircuit->push_back( new vector<char> ) ;
 		affichageCircuit->at(i)->push_back( inputs->at(i)->getInputName() );
@@ -71,15 +71,28 @@ void Circuit::affichageInputs(){
 
 	}
 
-
-
-
 } // affichageInputs()
+
+void Circuit::affichageChemins() const{
+	int nombreDeLignes = affichageCircuit->size(); // Le nombre de lignes maintenant stockées dans le vecteur qui représente l'affichage du circuit.
+	affichageCircuit->push_back( new vector<char> ); // Ajouter une nouvelle ligne à l'affichage du circuit pour stocker des chemins (caractères '|')
+	// Nous parcourons la dernière ligne de l'affichage (La dernière ligne avant la nouvelle ligne que nous venons d'ajouter)
+	for(unsigned int j = 0 ; j < affichageCircuit->at(nombreDeLignes-1)->size() ; j++) {
+		if(affichageCircuit->at(nombreDeLignes-1)->at(j) == '+' || affichageCircuit->at(nombreDeLignes-1)->at(j) == '*' || affichageCircuit->at(nombreDeLignes-1)->at(j) == '|') {
+			// Nombre d'emplacements à ajouter à la nouvelle ligne
+			unsigned int nombreEmplacementsAjouterNouvelleLigne = j - affichageCircuit->at(nombreDeLignes)->size();
+			for(unsigned int k = 0 ; k < nombreEmplacementsAjouterNouvelleLigne ; k++)
+				affichageCircuit->at(nombreDeLignes)->push_back( ' ' );
+			affichageCircuit->at(nombreDeLignes)->push_back( '|' );
+		} // if
+	} // for
+} // affichageChemins()
 
 
 Circuit::Circuit(vector<InputGate*>* inputsCircuit, vector<Gate*>* gates)
 : inputs{inputsCircuit}, affichageCircuit{new vector< vector<char>* >}, gates{gates}  {
 	affichageInputs();
+	affichageChemins();
 
 
 }
