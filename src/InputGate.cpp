@@ -1,7 +1,7 @@
 #include "InputGate.hpp"
 
 
-InputGate::InputGate(char n) : inputName{n} , val{false} {
+InputGate::InputGate(char n) : inputName{n} , val{false} , Gate{""} {
 
 }
 

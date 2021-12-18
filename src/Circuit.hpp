@@ -14,8 +14,9 @@ private:
 	vector<OutputGate*>* ouputs;
 	vector<Gate*>* gates;
 	vector< vector<char>* >* affichageCircuit;
-	void affichageInputs() const;
-	void affichageChemins() const;
+	void affichageInputs();
+	void affichageChemins();
+	void affichageNomsOperationsLogiques();
 public:
     Circuit(/* args */);
     Circuit(vector<InputGate*>* inputsCircuit, vector<Gate*>* gates);

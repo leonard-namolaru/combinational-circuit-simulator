@@ -1,6 +1,6 @@
 #include "OrGate.hpp"
 
-OrGate::OrGate(Gate *g1 , Gate *g2) : Gate{} {
+OrGate::OrGate(Gate *g1 , Gate *g2) : Gate{"OR_"} {
 	entrees->push_back(g1);
 	entrees->push_back(g2);
 }

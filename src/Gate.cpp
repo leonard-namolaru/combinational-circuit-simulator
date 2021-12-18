@@ -1,6 +1,6 @@
 #include "Gate.hpp"
 
-Gate::Gate() : entrees{new vector<Gate*>}
+Gate::Gate(const string name) : entrees{new vector<Gate*>}, name{name}
 {
 }
 
@@ -14,4 +14,8 @@ Gate* Gate::operationLogique(){
 
 vector<Gate*>* Gate::getEntrees() const{
 	return entrees;
+}
+
+string Gate::getName() const {
+	return name;
 }
