@@ -103,13 +103,23 @@ void Circuit::affichageNomsOperationsLogiques(){
 		} // for(j)
 
 		unsigned int e = 0;
-		bool found;
+		bool found = false;
 		for(unsigned int g = 0 ; g < gates->size() ; g++){
 			found = false;
 			for(unsigned int j = 0 ; (j < gates->at(g)->getEntrees()->size()) && (found == false) ; j++){
 
 				if( gates->at(g)->getEntrees()->at(j) ==  inputs->at(i) ) {
-					found = true;
+
+					for(unsigned int d = 0 ; d < emplacements.size() ; d++) {
+						if(emplacements.at(d) < affichageCircuit->at(affichageCircuitSize - 1)->size()){
+							if (!(affichageCircuit->at(affichageCircuitSize - 1)->at(emplacements.at(d)) <= 'A' && affichageCircuit->at(affichageCircuitSize - 1)->at(emplacements.at(d)) >= 'Z') && affichageCircuit->at(affichageCircuitSize - 1)->at(emplacements.at(d)) != '_'){
+								found = true;
+							}
+						}
+					}
+
+					if(found == true)
+						continue;
 					int nombreEmplacementsAjouterNouvelleLigne; // Nombre d'emplacements à ajouter à la nouvelle ligne
 					if(e < emplacements.size()) {
 						if(emplacements.at(e) > affichageCircuit->at(affichageCircuitSize - 1)->size()){
