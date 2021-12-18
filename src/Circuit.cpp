@@ -10,9 +10,11 @@ void Circuit::affichageInputs(){
 		affichageCircuit->at(i)->push_back( ' ' );
 
 		unsigned int counter = 0;
-		for(unsigned int j = 0 ; j < gates->size() ; j++){
-			if( gates->at(i)->getEntrees()->at(i) ==  inputs->at(i) )
-				counter++;
+		for(unsigned int g = 0 ; g < gates->size() ; g++){
+			for(unsigned int j = 0 ; j < gates->at(g)->getEntrees()->size() ; j++){
+				if( gates->at(g)->getEntrees()->at(j) ==  inputs->at(i) )
+					counter++;
+			}
 		}
 
 		affichageCircuit->at(i)->push_back( '-' );
@@ -101,26 +103,43 @@ void Circuit::affichageNomsOperationsLogiques(){
 		} // for(j)
 
 		unsigned int e = 0;
-		for(unsigned int j = 0 ; j < gates->size() ; j++){
-			if( gates->at(i)->getEntrees()->at(j) ==  inputs->at(i)) {
+		bool found;
+		for(unsigned int g = 0 ; g < gates->size() ; g++){
+			found = false;
+			for(unsigned int j = 0 ; (j < gates->at(g)->getEntrees()->size()) && (found == false) ; j++){
+
+				if( gates->at(g)->getEntrees()->at(j) ==  inputs->at(i) ) {
+					found = true;
 					int nombreEmplacementsAjouterNouvelleLigne; // Nombre d'emplacements à ajouter à la nouvelle ligne
-					if(e < emplacements.size())
-						nombreEmplacementsAjouterNouvelleLigne = emplacements.at(e) - affichageCircuit->at(affichageCircuitSize - 1)->size();
-					else
-						nombreEmplacementsAjouterNouvelleLigne = 0;
+					if(e < emplacements.size()) {
+						if(emplacements.at(e) > affichageCircuit->at(affichageCircuitSize - 1)->size()){
+							nombreEmplacementsAjouterNouvelleLigne = emplacements.at(e) - affichageCircuit->at(affichageCircuitSize - 1)->size();
 
-					if(nombreEmplacementsAjouterNouvelleLigne < 0)
-						nombreEmplacementsAjouterNouvelleLigne = 1;
-					for(int k = 0 ; k < nombreEmplacementsAjouterNouvelleLigne ; k++)
-							affichageCircuit->at(affichageCircuitSize - 1)->push_back( ' ' );
+							for(int k = 0 ; k < nombreEmplacementsAjouterNouvelleLigne ; k++)
+									affichageCircuit->at(affichageCircuitSize - 1)->push_back( ' ' );
 
-					affichageCircuit->at(affichageCircuitSize - 1)->push_back( gates->at(i)->getName().at(0) );
-					affichageCircuit->at(affichageCircuitSize - 1)->push_back( gates->at(i)->getName().at(1) );
-					affichageCircuit->at(affichageCircuitSize - 1)->push_back( gates->at(i)->getName().at(2) );
+							affichageCircuit->at(affichageCircuitSize - 1)->push_back( gates->at(i)->getName().at(0) );
+							affichageCircuit->at(affichageCircuitSize - 1)->push_back( gates->at(i)->getName().at(1) );
+							affichageCircuit->at(affichageCircuitSize - 1)->push_back( gates->at(i)->getName().at(2) );
+						}
+						else {
+							if ((affichageCircuit->at(affichageCircuitSize - 1)->at(emplacements.at(e)) <= 'A' && affichageCircuit->at(affichageCircuitSize - 1)->at(emplacements.at(e)) >= 'Z') && affichageCircuit->at(affichageCircuitSize - 1)->at(emplacements.at(e)) != '_'){
+								affichageCircuit->at(affichageCircuitSize - 1)->at(emplacements.at(e)) = gates->at(i)->getName().at(0);
+								affichageCircuit->at(affichageCircuitSize - 1)->at(emplacements.at(e) + 1) = gates->at(i)->getName().at(1);
+								affichageCircuit->at(affichageCircuitSize - 1)->at(emplacements.at(e) + 2) = gates->at(i)->getName().at(2);
+							}
+						}
+					}
+					else {
+						affichageCircuit->at(affichageCircuitSize - 1)->push_back( gates->at(i)->getName().at(0) );
+						affichageCircuit->at(affichageCircuitSize - 1)->push_back( gates->at(i)->getName().at(1) );
+						affichageCircuit->at(affichageCircuitSize - 1)->push_back( gates->at(i)->getName().at(2) );
+					}
+
 					e++;
-			} // if
-		} // fot(j)
-
+				} // if
+			} // for(j)
+		} // for(g)
 	} // for(i)
 } // affichageNomsOperationsLogiques()
 
