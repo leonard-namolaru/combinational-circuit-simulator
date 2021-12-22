@@ -200,6 +200,57 @@ void Circuit::affichageAsterisques(){
 
 } // affichageAsterisques()
 
+void Circuit::affichageNomsOperationsLogiques2(){
+	affichageCircuit->push_back( new vector<char> ) ; // Ajouter une  ligne à l'affichage du circuit
+	vector<string> liste;
+	vector<Gate*> liste2;
+	for( int i = 0 ; i < affichageCircuit->at( affichageCircuit->size() - 3 )->size() ; i++){
+		if(  affichageCircuit->at( affichageCircuit->size() - 3 )->at(i) == '*' ){
+
+			string str = "";
+			str += affichageCircuit->at( affichageCircuit->size() - 5 )->at(i - 1);
+			str += affichageCircuit->at( affichageCircuit->size() - 5 )->at(i);
+			str += affichageCircuit->at( affichageCircuit->size() - 5 )->at(i + 1);
+			liste.push_back(  str );
+			i++;
+		}
+	}
+
+	for(int i = 0 ; i < gates->size() ; i++ ) {
+		bool add = true;
+		for(int j = 0 ; j < gates->at(i)->getEntrees()->size() ; j++){
+			bool found = false;
+			for(int k = 0 ; k < liste.size() ; k++) {
+				if( liste.at(k) == gates->at(i)->getEntrees()->at(j)->getName() ){
+					found = true;
+				}
+			}
+			if(!found)
+				add = false;
+		}
+
+		if(add){
+			liste2.push_back(gates->at(i));
+		}
+	}
+	int d = 0;
+	for( int i = 0 ; i < affichageCircuit->at( affichageCircuit->size() - 2 )->size() && d < liste2.size(); i++){
+		if(  affichageCircuit->at( affichageCircuit->size() - 2 )->at(i) == '|' ){
+			int diff = i - affichageCircuit->at( affichageCircuit->size() - 1 )->size();
+			for(int j = 0 ; j < diff ; j++) {
+				affichageCircuit->at( affichageCircuit->size() - 1 )->push_back( ' ' );
+			}
+			affichageCircuit->at( affichageCircuit->size() - 1 )->push_back(liste2.at(d)->getName().at(0));
+			affichageCircuit->at( affichageCircuit->size() - 1 )->push_back(liste2.at(d)->getName().at(1));
+			affichageCircuit->at( affichageCircuit->size() - 1 )->push_back(liste2.at(d)->getName().at(2));
+
+			i+=3;
+		}
+	}
+
+} // affiintchageNomsOperationsLogiques2()
+
+
 
 Circuit::Circuit(vector<InputGate*>* inputsCircuit, vector<Gate*>* gates)
 : inputs{inputsCircuit}, affichageCircuit{new vector< vector<char>* >}, gates{gates}  {
@@ -209,6 +260,9 @@ Circuit::Circuit(vector<InputGate*>* inputsCircuit, vector<Gate*>* gates)
 	affichageCheminsApresOperationsLogiques();
 	affichageAsterisques();
 	affichageChemins();
+	affichageNomsOperationsLogiques2();
+	affichageCheminsApresOperationsLogiques();
+
 
 }
 
