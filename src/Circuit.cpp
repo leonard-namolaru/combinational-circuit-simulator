@@ -186,10 +186,16 @@ void Circuit::affichageCheminsApresOperationsLogiques(){
 
 void Circuit::affichageAsterisques(){
 	affichageCircuit->push_back(new vector<char>);
-
+	bool cond = false;
 	for(unsigned int i = 0 ; i < affichageCircuit->at( affichageCircuit->size() -2 )->size() ; i++) {
 		if( affichageCircuit->at( affichageCircuit->size() -2 )->at(i) == '|' ){
 			int diff = i - affichageCircuit->at( affichageCircuit->size() -1 )->size();
+			if(cond){
+				diff--;
+				cond = false;
+			} else {
+				cond = true;
+			}
 			for(int j = 0 ; j < diff ; j++) {
 				affichageCircuit->at( affichageCircuit->size() -1 )->push_back(' ');
 			}
@@ -206,11 +212,17 @@ void Circuit::affichageNomsOperationsLogiques2(){
 	vector<Gate*> liste2;
 	for( int i = 0 ; i < affichageCircuit->at( affichageCircuit->size() - 3 )->size() ; i++){
 		if(  affichageCircuit->at( affichageCircuit->size() - 3 )->at(i) == '*' ){
-
+			bool cond = false;
 			string str = "";
-			str += affichageCircuit->at( affichageCircuit->size() - 5 )->at(i - 1);
+			if(!cond && affichageCircuit->at( affichageCircuit->size() - 5 )->at(i - 1) != ' ') str += affichageCircuit->at( affichageCircuit->size() - 5 )->at(i - 1);
 			str += affichageCircuit->at( affichageCircuit->size() - 5 )->at(i);
 			str += affichageCircuit->at( affichageCircuit->size() - 5 )->at(i + 1);
+			if(!cond && affichageCircuit->at( affichageCircuit->size() - 5 )->at(i + 2) != ' ') str += affichageCircuit->at( affichageCircuit->size() - 5 )->at(i + 2);
+			if(cond)
+				cond = false;
+			else
+				cond = true;
+
 			liste.push_back(  str );
 			i++;
 		}
@@ -244,7 +256,7 @@ void Circuit::affichageNomsOperationsLogiques2(){
 			affichageCircuit->at( affichageCircuit->size() - 1 )->push_back(liste2.at(d)->getName().at(1));
 			affichageCircuit->at( affichageCircuit->size() - 1 )->push_back(liste2.at(d)->getName().at(2));
 
-			i+=3;
+			i+=2;
 		}
 	}
 
