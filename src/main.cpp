@@ -11,7 +11,7 @@ int main(){
 InputGate *a = new InputGate('a');
 InputGate *b = new InputGate('b');
 InputGate *c = new InputGate('c');
-
+InputGate *d = new InputGate('d');
 
 Gate *or1 = new OrGate(a,b);
 Gate *and1 = new AndGate(a,b); 
@@ -25,7 +25,7 @@ vector<InputGate*>* inputsCircuit = new vector<InputGate*>;
 inputsCircuit->push_back(a);
 inputsCircuit->push_back(b);
 inputsCircuit->push_back(c);
-
+inputsCircuit->push_back(d);
 
 vector<Gate*>* gates = new vector<Gate*>;
 gates->push_back(or1);
