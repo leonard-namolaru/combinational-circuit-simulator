@@ -101,40 +101,48 @@ void Circuit::affichageInputs(){
 								affichageCircuit->at(i)->push_back( '-' );
 							}
 							else {
-								if(affichageCircuit->at(i - 1)->at(NB_CHAR_AU_DEBUT_CHAQUE_LIGNE + j - 1) == '*') // si la ligne ci-dessus contient à cette position '*'
+								if(affichageCircuit->at(i - 1)->at(NB_CHAR_AU_DEBUT_CHAQUE_LIGNE + j - 1) == '*' || affichageCircuit->at(i - 1)->at(NB_CHAR_AU_DEBUT_CHAQUE_LIGNE + j - 1) == '+') // si la ligne ci-dessus contient à cette position '*'
 									affichageCircuit->at(i)->push_back( '+' );
 								else
 									affichageCircuit->at(i)->push_back( '-' );
 							}
-
-							longueurLigneActuelle = affichageCircuit->at(i)->size(); // Nous avons ajouté des éléments dans le vecteur et nous devons donc mettre à jour la valeur stockée dans cette variable
+							longueurLigneActuelle = affichageCircuit->at(i)->size();
 				} // for(j)
 				affichageCircuit->at(i)->push_back( dernierElement ); // Ajout de l'élément que nous avons supprimé de la fin de la ligne
 			} // if( longueurLigneActuelle < maxSize)
 
 			for(unsigned int j = 0; j < affichageCircuit->at(i)->size() ; j++) {
 				if(i != 0) {
-					if(affichageCircuit->at(i)->at(j) == '+') {
-						if(affichageCircuit->at(i - 1)->at(j) != '+' || affichageCircuit->at(i - 1)->at(j) != '*'){
+					if(affichageCircuit->at(i)->at(j) == '+' && j < affichageCircuit->at(i-1)->size()) {
+						if(affichageCircuit->at(i - 1)->at(j) != '+' && affichageCircuit->at(i - 1)->at(j) != '*'){
 							affichageCircuit->at(i)->erase( affichageCircuit->at(i)->begin() + j  );
 							affichageCircuit->at(i)->erase( affichageCircuit->at(i)->begin() + (j - 1)  );
-
 						}
 					}
-				} // if(i >= 2)
+				}
 
 			}
 
-			if(i != affichageCircuit->size() - 1) {
-				for(unsigned int j = 0; j < (affichageCircuit->at(i)->size() - affichageCircuit->at(i+1)->size()) + 1 ; j++)
-					affichageCircuit->at(i +1)->push_back( ' ' );
-				affichageCircuit->at(i +1)->push_back( '|' );
+			for(unsigned int j = 0; j < affichageCircuit->at(i)->size() ; j++) {
+				if(i != 0) {
+					if(j < affichageCircuit->at(i-1)->size()) {
+						if(affichageCircuit->at(i - 1)->at(j) == '+' || affichageCircuit->at(i - 1)->at(j) == '*'){
+							affichageCircuit->at(i)->at(j) = '+';
+						}
+					}
+				}
+
 			}
 
+
+			if(i != 0) {
+				for(unsigned int j = 0; j < (affichageCircuit->at(i - 1)->size() - affichageCircuit->at(i)->size()) ; j++)
+					affichageCircuit->at(i)->push_back( ' ' );
+				affichageCircuit->at(i)->push_back( '|' );
+			}
 
 
 		} // for(i)
-
 } // affichageInputs()
 
 void Circuit::affichageChemins(){
