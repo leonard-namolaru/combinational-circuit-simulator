@@ -106,11 +106,15 @@ void Circuit::affichageInputs(){
 								else
 									affichageCircuit->at(i)->push_back( '-' );
 							}
-							longueurLigneActuelle = affichageCircuit->at(i)->size();
+							longueurLigneActuelle = affichageCircuit->at(i)->size(); // Nous avons ajouté des éléments dans le vecteur et nous devons donc mettre à jour la valeur stockée dans cette variable
 				} // for(j)
 				affichageCircuit->at(i)->push_back( dernierElement ); // Ajout de l'élément que nous avons supprimé de la fin de la ligne
 			} // if( longueurLigneActuelle < maxSize)
 
+
+			// Dans la boucle for précédente, certaines lignes sont devenues plus longues et,
+			// par conséquent, la position de certains des caractères « * » a changé.
+			// Par conséquent, nous testons pour chacun des caractères '+' s'il est toujours essentiel
 			for(unsigned int j = 0; j < affichageCircuit->at(i)->size() ; j++) {
 				if(i != 0) {
 					if(affichageCircuit->at(i)->at(j) == '+' && j < affichageCircuit->at(i-1)->size()) {
