@@ -182,61 +182,93 @@ void Circuit::affichageChemins(){
 
 void Circuit::affichageNomsOperationsLogiques(){
 	affichageCircuit->push_back( new vector<char> ) ; // Ajouter une  ligne à l'affichage du circuit
-	unsigned int affichageCircuitSize = affichageCircuit->size();
-	vector<int> emplacements;
-	for(unsigned int i = 0 ; i < inputs->size() ; i++) {
-		emplacements.clear();
+	unsigned int affichageCircuitSize = affichageCircuit->size(); // Le nombre de lignes de l'affichage du circuit, y compris la ligne nouvellement ajoutée
+
+	vector<unsigned int> emplacementsDesAsterisquesDansLaLigne; // le vecteur qui stocke les positions des caractères '*' dans une input i
+	for(unsigned int i = 0 ; i < inputs->size() ; i++) { // Nous parcourons toutes les entrées du circuit
+
+		/*  Les étapes suivantes seront effectuées pour chacune des entrées du circuit   */
+
+		/* Étape (1) : localiser les emplacements des caractères astérisques dans la ligne de cette entrée et les stocké dans un vecteur */
+
+		emplacementsDesAsterisquesDansLaLigne.clear(); // On vide le vecteur qui stocke les positions des caractères '*' dans la ligne i
 		for(unsigned int j = 0 ; j < affichageCircuit->at(i)->size() ; j++){
 			if( affichageCircuit->at(i)->at(j) ==  '*' )
-				emplacements.push_back(j);
+				emplacementsDesAsterisquesDansLaLigne.push_back(j);
 		} // for(j)
 
-		unsigned int e = 0;
-		bool found = false;
-		for(unsigned int g = 0 ; g < gates->size() ; g++){
-			found = false;
-			for(unsigned int j = 0 ; (j < gates->at(g)->getEntrees()->size()) && (found == false) ; j++){
+		/* Étape (2) : Nous recherchons toutes les portes logiques pour lesquelles l'input "i" est une de leurs entrées
+		 *             Et nous ajoutons les noms de ces portes logiques à l'affichage */
+
+		bool nomPorteLogiqueApparaitDejaDansLaffichage = false; // Le nom de la porte logique apparaît déjà ?
+		unsigned int nombreNomsPortesLogiquesAjoutesDerniereLigne = 0; // Le nombre de noms de portes logiques que nous avons ajoutés à la dernière ligne
+		for(unsigned int g = 0 ; g < gates->size() ; g++){ // Nous parcourons le vecteur qui contient les portes logiques du circuit
+			nomPorteLogiqueApparaitDejaDansLaffichage = false;
+
+			// On vérifie si l'input "i" du circuit est l'une des entrées de cette porte logique
+			for(unsigned int j = 0 ; (j < gates->at(g)->getEntrees()->size()) && (nomPorteLogiqueApparaitDejaDansLaffichage == false) ; j++){ // Pour chaque porte logique, nous parcourons le vecteur qui contient les entrées de cette porte logique
 
 				if( gates->at(g)->getEntrees()->at(j) ==  inputs->at(i) ) {
 
-					for(unsigned int d = 0 ; d < emplacements.size() ; d++) {
-						if(emplacements.at(d) < affichageCircuit->at(affichageCircuitSize - 1)->size()){
-							if (!(affichageCircuit->at(affichageCircuitSize - 1)->at(emplacements.at(d)) <= 'A' && affichageCircuit->at(affichageCircuitSize - 1)->at(emplacements.at(d)) >= 'Z') && affichageCircuit->at(affichageCircuitSize - 1)->at(emplacements.at(d)) != '_'){
-								found = true;
-							}
+					// Nous parcourons le vecteur qui comprend toutes les positions des caractères '*' dans la rangée de l'entrée "i" du circuit
+					for(unsigned int d = 0 ; d < emplacementsDesAsterisquesDansLaLigne.size() ; d++) {
+
+						// Si la position du caractère * dans la ligne de l'entrée "i" est PAS au-delà de la longueur de la dernière ligne de l'affichage
+						if(emplacementsDesAsterisquesDansLaLigne.at(d) < affichageCircuit->at(affichageCircuitSize - 1)->size()){
+
+							/* Dans un affichage de circuit, le nom d'une porte logique peut être composé de lettres majuscules anglaises
+							 * ainsi que du caractère '_' si le nom de  la porte logique est inférieur à 3 (la longueur fixe des noms de portes logiques dans l'affichage)
+							 * Par conséquent, nous nous intéressons à ce qui se passe à la position d de la dernière ligne de l'affichage
+							 */
+
+							bool condition1 = affichageCircuit->at(affichageCircuitSize - 1)->at(emplacementsDesAsterisquesDansLaLigne.at(d)) >= 'A';
+							bool condition2 = affichageCircuit->at(affichageCircuitSize - 1)->at(emplacementsDesAsterisquesDansLaLigne.at(d)) <= 'Z';
+							// bool condition3 = affichageCircuit->at(affichageCircuitSize - 1)->at(emplacementsDesAsterisquesDansLaLigne.at(d)) == '_';
+
+							/* Si la position d dans la dernière ligne de l'affichage contient une partie du nom d'une porte logique,
+							 * cela signifie que le nom de cette porte logique apparaît déjà dans l'affichage
+							 * (si une porte logique a plus d'une entrée alors cela signifie qu'une autre l'entrée de cette porte logique nous a précédé
+							 * et a déjà géré l'affichage du nom La porte logique dans l'affichée du circuit,
+							 * il n'est donc PAS nécessaire d'enregistrer à nouveau le nom de la porte logique.
+							 */
+
+							if ((condition1 && condition2) /*|| condition3 */)
+								nomPorteLogiqueApparaitDejaDansLaffichage  = true; // Le nom de la porte logique apparaît déjà
 						}
 					}
 
-					if(found == true)
-						continue;
-					int nombreEmplacementsAjouterNouvelleLigne; // Nombre d'emplacements à ajouter à la nouvelle ligne
-					if(e < emplacements.size()) {
-						if(emplacements.at(e) > affichageCircuit->at(affichageCircuitSize - 1)->size()){
-							nombreEmplacementsAjouterNouvelleLigne = emplacements.at(e) - affichageCircuit->at(affichageCircuitSize - 1)->size();
+					if(!nomPorteLogiqueApparaitDejaDansLaffichage) //<=> nomPorteLogiqueApparaitDejaDansLaffichage != true
+					{
+						int nombreEmplacementsAjouterNouvelleLigne; // Nombre d'emplacements à ajouter à la nouvelle ligne
 
-							for(int k = 0 ; k < nombreEmplacementsAjouterNouvelleLigne ; k++)
-									affichageCircuit->at(affichageCircuitSize - 1)->push_back( ' ' );
+						if(nombreNomsPortesLogiquesAjoutesDerniereLigne < emplacementsDesAsterisquesDansLaLigne.size()) {
+							if(emplacementsDesAsterisquesDansLaLigne.at(nombreNomsPortesLogiquesAjoutesDerniereLigne) > affichageCircuit->at(affichageCircuitSize - 1)->size()){
+								nombreEmplacementsAjouterNouvelleLigne = emplacementsDesAsterisquesDansLaLigne.at(nombreNomsPortesLogiquesAjoutesDerniereLigne) - affichageCircuit->at(affichageCircuitSize - 1)->size();
 
+								for(int k = 0 ; k < nombreEmplacementsAjouterNouvelleLigne ; k++)
+										affichageCircuit->at(affichageCircuitSize - 1)->push_back( ' ' );
+
+								affichageCircuit->at(affichageCircuitSize - 1)->push_back( gates->at(i)->getName().at(0) );
+								affichageCircuit->at(affichageCircuitSize - 1)->push_back( gates->at(i)->getName().at(1) );
+								affichageCircuit->at(affichageCircuitSize - 1)->push_back( gates->at(i)->getName().at(2) );
+							}
+							else {
+								if ((affichageCircuit->at(affichageCircuitSize - 1)->at(emplacementsDesAsterisquesDansLaLigne.at(nombreNomsPortesLogiquesAjoutesDerniereLigne)) <= 'A' && affichageCircuit->at(affichageCircuitSize - 1)->at(emplacementsDesAsterisquesDansLaLigne.at(nombreNomsPortesLogiquesAjoutesDerniereLigne)) >= 'Z') && affichageCircuit->at(affichageCircuitSize - 1)->at(emplacementsDesAsterisquesDansLaLigne.at(nombreNomsPortesLogiquesAjoutesDerniereLigne)) != '_'){
+									affichageCircuit->at(affichageCircuitSize - 1)->at(emplacementsDesAsterisquesDansLaLigne.at(nombreNomsPortesLogiquesAjoutesDerniereLigne)) = gates->at(i)->getName().at(0);
+									affichageCircuit->at(affichageCircuitSize - 1)->at(emplacementsDesAsterisquesDansLaLigne.at(nombreNomsPortesLogiquesAjoutesDerniereLigne) + 1) = gates->at(i)->getName().at(1);
+									affichageCircuit->at(affichageCircuitSize - 1)->at(emplacementsDesAsterisquesDansLaLigne.at(nombreNomsPortesLogiquesAjoutesDerniereLigne) + 2) = gates->at(i)->getName().at(2);
+								}
+							}
+						}
+						else {
 							affichageCircuit->at(affichageCircuitSize - 1)->push_back( gates->at(i)->getName().at(0) );
 							affichageCircuit->at(affichageCircuitSize - 1)->push_back( gates->at(i)->getName().at(1) );
 							affichageCircuit->at(affichageCircuitSize - 1)->push_back( gates->at(i)->getName().at(2) );
 						}
-						else {
-							if ((affichageCircuit->at(affichageCircuitSize - 1)->at(emplacements.at(e)) <= 'A' && affichageCircuit->at(affichageCircuitSize - 1)->at(emplacements.at(e)) >= 'Z') && affichageCircuit->at(affichageCircuitSize - 1)->at(emplacements.at(e)) != '_'){
-								affichageCircuit->at(affichageCircuitSize - 1)->at(emplacements.at(e)) = gates->at(i)->getName().at(0);
-								affichageCircuit->at(affichageCircuitSize - 1)->at(emplacements.at(e) + 1) = gates->at(i)->getName().at(1);
-								affichageCircuit->at(affichageCircuitSize - 1)->at(emplacements.at(e) + 2) = gates->at(i)->getName().at(2);
-							}
-						}
-					}
-					else {
-						affichageCircuit->at(affichageCircuitSize - 1)->push_back( gates->at(i)->getName().at(0) );
-						affichageCircuit->at(affichageCircuitSize - 1)->push_back( gates->at(i)->getName().at(1) );
-						affichageCircuit->at(affichageCircuitSize - 1)->push_back( gates->at(i)->getName().at(2) );
-					}
 
-					e++;
-				} // if
+						nombreNomsPortesLogiquesAjoutesDerniereLigne++;
+					}
+				} // if( gates->at(g)->getEntrees()->at(j) ==  inputs->at(i) )
 			} // for(j)
 		} // for(g)
 	} // for(i)
