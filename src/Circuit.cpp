@@ -45,14 +45,19 @@ vector<string>* Circuit::affichageInputs(){
 
 	int d = NB_CHAR_AU_DEBUT_CHAQUE_LIGNE;
 	for(int i = 0 ; i < gates->size() ; i++ ){
+		bool addToVector = false;
 		for(int j = 0 ; j < gates->at(i)->getEntrees()->size() ; j++) {
 			if(gates->at(i)->getEntrees()->at(j)->getName().size() == 1) {
-				noms->push_back(gates->at(i)->getName());
+				addToVector = true;
 				char name = gates->at(i)->getEntrees()->at(j)->getName().at(0);
 				affichageCircuit->at(memo.at(name))->at(d) = '*';
 				d += 2;
 			}
 		}
+
+		if(addToVector)
+			noms->push_back(gates->at(i)->getName());
+
 	}
 
 	for(int i = 0 ; i < affichageCircuit->size() ; i++) {
@@ -101,7 +106,7 @@ void Circuit::affichageNomsOperationsLogiques(const vector<string>* noms){
 			affichageCircuit->at(NombreDeLignesDansAffichage - 1)->at(i) = noms->at(d).at(0);
 			affichageCircuit->at(NombreDeLignesDansAffichage - 1)->at(i + 1) = noms->at(d).at(1);
 			affichageCircuit->at(NombreDeLignesDansAffichage - 1)->at(i + 2) = noms->at(d).at(2);
-			d +=2;
+			d++;
 
 		}
 	}
@@ -143,6 +148,29 @@ void Circuit::affichageAsterisques(){
 			affichageCircuit->at( affichageCircuit->size() -1 )->push_back('*');
 		}
 	}
+
+	int longueurLigne = affichageCircuit->at(0)->size();// Longueur d'une ligne
+	affichageCircuit->push_back( new vector<char>(longueurLigne, ' ') ) ; // Ajouter une  ligne à l'affichage du circuit
+	int nombreDeLignes = affichageCircuit->size(); // Le nombre de lignes maintenant stockées dans le vecteur qui représente l'affichage du circuit.
+	cond = true;
+	for(int i = 0 ; i < affichageCircuit->at(nombreDeLignes - 2)->size() ; i++) {
+		if( affichageCircuit->at(nombreDeLignes - 2)->at(i) == '*' ){
+			if(i != 0 && affichageCircuit->at(nombreDeLignes - 1)->at(i - 1) == '|') {
+				if(cond){
+					affichageCircuit->at(nombreDeLignes - 1)->at(i) = '|';
+					affichageCircuit->at(nombreDeLignes - 1)->at(i - 1) = ' ';
+					cond = false;
+				}
+				else {
+					cond = true;
+				}
+			}
+			else {
+				affichageCircuit->at(nombreDeLignes - 1)->at(i) = '|';
+			}
+		}
+	}
+
 
 } // affichageAsterisques()
 
@@ -211,9 +239,10 @@ Circuit::Circuit(vector<InputGate*>* inputsCircuit, vector<Gate*>* gates)
 	affichageNomsOperationsLogiques(noms);// Afficher les noms des opérations logiques
 	affichageCheminsApresOperationsLogiques();
 	affichageAsterisques();
-	//affichageChemins();
-	// affichageNomsOperationsLogiques2();
-	// affichageCheminsApresOperationsLogiques();
+	affichageNomsOperationsLogiques2();
+	affichageCheminsApresOperationsLogiques();
+	affichageAsterisques();
+
 }
 
 Circuit::Circuit()
