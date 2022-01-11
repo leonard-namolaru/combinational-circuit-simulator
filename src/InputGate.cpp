@@ -1,7 +1,7 @@
 #include "InputGate.hpp"
 
 
-InputGate::InputGate(char n) : inputName{n} , val{false} , Gate{""} {
+InputGate::InputGate(char n) : inputName{n} , val{false} , Gate{std::string(1,n) } {
 
 }
 

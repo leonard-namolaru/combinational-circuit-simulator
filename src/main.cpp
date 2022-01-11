@@ -16,6 +16,10 @@ InputGate *d = new InputGate('d');
 Gate *or1 = new OrGate(a,b);
 Gate *and1 = new AndGate(a,b); 
 
+Gate *or_new = new OrGate(c,d);
+Gate *and_new = new AndGate(c,d);
+
+
 Gate *and2 = new XorGate(or1,and1);
 OutputGate *A = new OutputGate(and2);
 
@@ -31,6 +35,9 @@ vector<Gate*>* gates = new vector<Gate*>;
 gates->push_back(or1);
 gates->push_back(and1);
 gates->push_back(and2);
+gates->push_back(or_new);
+gates->push_back(and_new);
+
 
 Circuit* circuit = new Circuit(inputsCircuit, gates);
 circuit->afficheCircuit();
