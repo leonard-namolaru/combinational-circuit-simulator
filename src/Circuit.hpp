@@ -24,7 +24,7 @@ public:
     Circuit(/* args */);
     Circuit(vector<InputGate*>* inputsCircuit, vector<Gate*>* gates);
     ~Circuit();
-    void afficheCircuit() const;
+    void afficheCircuit()  const;
 };
 
 

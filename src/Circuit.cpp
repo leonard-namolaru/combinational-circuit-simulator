@@ -102,6 +102,7 @@ void Circuit::affichageNomsOperationsLogiques(const vector<string>* noms){
 			affichageCircuit->at(NombreDeLignesDansAffichage - 1)->at(i + 1) = noms->at(d).at(1);
 			affichageCircuit->at(NombreDeLignesDansAffichage - 1)->at(i + 2) = noms->at(d).at(2);
 			d +=2;
+
 		}
 	}
 
