@@ -1,10 +1,12 @@
 #include "Circuit.hpp"
 #include <map>
 
-void Circuit::affichageInputs(){
+vector<string>* Circuit::affichageInputs(){
 	// la debut de chqaue ligne pour un input ressemble à ceci (par exemple) : a:0 -- (6 caractères)
 	const int NB_CHAR_AU_DEBUT_CHAQUE_LIGNE = 6; // Le nombre de caractères qui apparaissent toujours au début de chaque ligne d'un input
 	map<char,int> memo;
+	vector<string>* noms = new vector<string>;
+
 	for(int i = 0 ; i < inputs->size() ; i++) // Nous parcourons le vecteur qui inclut les entrées (inputs)
 		memo.insert( make_pair(inputs->at(i)->getInputName(), i));
 
@@ -45,6 +47,7 @@ void Circuit::affichageInputs(){
 	for(int i = 0 ; i < gates->size() ; i++ ){
 		for(int j = 0 ; j < gates->at(i)->getEntrees()->size() ; j++) {
 			if(gates->at(i)->getEntrees()->at(j)->getName().size() == 1) {
+				noms->push_back(gates->at(i)->getName());
 				char name = gates->at(i)->getEntrees()->at(j)->getName().at(0);
 				affichageCircuit->at(memo.at(name))->at(d) = '*';
 				d += 2;
@@ -60,6 +63,8 @@ void Circuit::affichageInputs(){
 			}
 		}
 	}
+
+	return noms;
 } // affichageInputs()
 
 void Circuit::affichageChemins(){
@@ -82,7 +87,7 @@ void Circuit::affichageChemins(){
 } // affichageChemins()
 
 
-void Circuit::affichageNomsOperationsLogiques(){
+void Circuit::affichageNomsOperationsLogiques(const vector<string>* noms){
 	// la debut de chqaue ligne pour un input ressemble à ceci (par exemple) : a:0 -- (6 caractères)
 	const int NB_CHAR_AU_DEBUT_CHAQUE_LIGNE = 6; // Le nombre de caractères qui apparaissent toujours au début de chaque ligne d'un input
 
@@ -90,16 +95,14 @@ void Circuit::affichageNomsOperationsLogiques(){
 
 	affichageCircuit->push_back( new vector<char>(longueurLigne, ' ') ) ; // Ajouter une  ligne à l'affichage du circuit
 	int NombreDeLignesDansAffichage = affichageCircuit->size(); // Le nombre de lignes de l'affichage du circuit, y compris la ligne nouvellement ajoutée
-
-	int d = NB_CHAR_AU_DEBUT_CHAQUE_LIGNE;
-	for(int i = 0 ; i < gates->size() ; i++ ){
-			if(gates->at(i)->getEntrees()->at(0)->getName().size() == 1) {
-				string name = gates->at(i)->getName();
-				affichageCircuit->at(NombreDeLignesDansAffichage - 1)->at(d) = name.at(0);
-				affichageCircuit->at(NombreDeLignesDansAffichage - 1)->at(d + 1) = name.at(1);
-				affichageCircuit->at(NombreDeLignesDansAffichage - 1)->at(d + 2) = name.at(2);
-			}
-			d += 3;
+	int d = 0;
+	for(int i = 0 ; i < affichageCircuit->at(NombreDeLignesDansAffichage - 1)->size() ; i++ ){
+		if (affichageCircuit->at(NombreDeLignesDansAffichage - 2)->at(i) == '|' && affichageCircuit->at(NombreDeLignesDansAffichage - 1)->at(i) == ' ') {
+			affichageCircuit->at(NombreDeLignesDansAffichage - 1)->at(i) = noms->at(d).at(0);
+			affichageCircuit->at(NombreDeLignesDansAffichage - 1)->at(i + 1) = noms->at(d).at(1);
+			affichageCircuit->at(NombreDeLignesDansAffichage - 1)->at(i + 2) = noms->at(d).at(2);
+			d +=2;
+		}
 	}
 
 } // affichageNomsOperationsLogiques()
@@ -202,9 +205,9 @@ void Circuit::affichageNomsOperationsLogiques2(){
 
 Circuit::Circuit(vector<InputGate*>* inputsCircuit, vector<Gate*>* gates)
 : inputs{inputsCircuit}, affichageCircuit{new vector< vector<char>* >}, gates{gates}  {
-	affichageInputs();
+	vector<string>* noms = affichageInputs();
 	affichageChemins();
-	affichageNomsOperationsLogiques();// Afficher les noms des opérations logiques
+	affichageNomsOperationsLogiques(noms);// Afficher les noms des opérations logiques
 	affichageCheminsApresOperationsLogiques();
 	affichageAsterisques();
 	//affichageChemins();

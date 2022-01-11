@@ -14,9 +14,9 @@ private:
 	vector<OutputGate*>* ouputs;
 	vector<Gate*>* gates;
 	vector< vector<char>* >* affichageCircuit;
-	void affichageInputs();
+	vector<string>* affichageInputs();
 	void affichageChemins();
-	void affichageNomsOperationsLogiques();
+	void affichageNomsOperationsLogiques(const vector<string>* noms);
 	void affichageCheminsApresOperationsLogiques();
 	void affichageAsterisques();
 	void affichageNomsOperationsLogiques2();
