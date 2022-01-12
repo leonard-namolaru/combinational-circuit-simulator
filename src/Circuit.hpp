@@ -14,12 +14,12 @@ private:
 	vector<OutputGate*>* ouputs;
 	vector<Gate*>* gates;
 	vector< vector<char>* >* affichageCircuit;
-	vector<string>* affichageInputs();
+	vector<Gate*>* affichageInputs();
 	void affichageChemins();
-	void affichageNomsOperationsLogiques(const vector<string>* noms);
+	void affichageNomsOperationsLogiques(const vector<Gate*>* noms);
 	void affichageCheminsApresOperationsLogiques();
 	void affichageAsterisques();
-	void affichageNomsOperationsLogiques2();
+	void affichageNomsOperationsLogiques2(const vector<Gate*>* gatesVector);
 public:
     Circuit(/* args */);
     Circuit(vector<InputGate*>* inputsCircuit, vector<Gate*>* gates);
