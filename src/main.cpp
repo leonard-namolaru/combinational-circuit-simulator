@@ -21,9 +21,11 @@ Gate *and1 = new AndGate(a,b);
 Gate *or_new = new OrGate(c,d);
 Gate *and_new = new AndGate(c,d);
 
-
 Gate *and2 = new XorGate(or1,and1);
 Gate *and3 = new AndGate(or_new,and_new);
+
+Gate *or3 = new OrGate(and2,and3);
+
 OutputGate *A = new OutputGate('A', and2);
 OutputGate *B = new OutputGate('B', and3);
 
@@ -35,7 +37,6 @@ inputsCircuit->push_back(d);
 inputsCircuit->push_back(e);
 inputsCircuit->push_back(f);
 
-
 vector<Gate*>* gates = new vector<Gate*>;
 gates->push_back(or1);
 gates->push_back(and1);
@@ -43,6 +44,7 @@ gates->push_back(and2);
 gates->push_back(or_new);
 gates->push_back(and_new);
 gates->push_back(and3);
+gates->push_back(or3);
 
 vector<OutputGate*>* ouputs = new vector<OutputGate*>;
 ouputs->push_back(A);
