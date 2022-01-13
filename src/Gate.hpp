@@ -13,7 +13,6 @@ class Gate
 protected:
    string name;
    vector<Gate*>* entrees;
-   OutputGate *sortie;
 public:
     Gate(const string name);
     virtual ~Gate();

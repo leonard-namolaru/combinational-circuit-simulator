@@ -19,7 +19,8 @@ private:
 	void ajoutNomsOperationsLogiques(const vector<Gate*>* portesLogiquesAjouterAffichage);
 	void ajoutCheminsApresOperationsLogiques();
 	void affichageAsterisquesApresChemins(int level);
-	void affichageNomsOperationsLogiques2(const vector<Gate*>* gatesVector);
+	vector<Gate*>* trouverLesPortesLogiquesSuivantes(const vector<Gate*>* portesLogiquesPrecedentes);
+	void ajoutOuputs();
 public:
     Circuit(/* args */);
     Circuit(vector<InputGate*>* inputsCircuit, vector<Gate*>* gates, vector<OutputGate*>* ouputs);

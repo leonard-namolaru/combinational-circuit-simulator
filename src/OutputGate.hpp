@@ -12,7 +12,7 @@ class OutputGate : public Gate
 private:
     /* data */
 public:
-    OutputGate(Gate *g);
+    OutputGate(char name, Gate *g);
     virtual ~OutputGate();
 };
 

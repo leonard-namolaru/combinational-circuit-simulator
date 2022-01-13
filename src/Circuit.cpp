@@ -180,44 +180,69 @@ void Circuit::affichageAsterisquesApresChemins(int level){
 
 } // affichageAsterisquesApresChemins()
 
-void Circuit::affichageNomsOperationsLogiques2(const vector<Gate*>* gatesVector){
+vector<Gate*>* Circuit::trouverLesPortesLogiquesSuivantes(const vector<Gate*>* portesLogiquesPrecedentes){
 
 	int longueurLigne = affichageCircuit->at(0)->size();// Longueur d'une ligne
-	vector<Gate*>* gatesVector2 = new vector<Gate*>;
+	vector<Gate*>* portesLogiquesSuivantes = new vector<Gate*>;
 
-	int NombreDeLignesDansAffichage = affichageCircuit->size(); // Le nombre de lignes de l'affichage du circuit, y compris la ligne nouvellement ajoutée
+	int NombreDeLignesDansAffichage = affichageCircuit->size(); // Le nombre de lignes de l'affichage du circuit
 
 	for(int i = 0 ; i < gates->size() ; i++ ){
 		bool check = true;
 		for(int j = 0 ; j < gates->at(i)->getEntrees()->size() ; j++) {
 			bool found = false;
-			for(int k = 0 ; k < gatesVector->size() ; k++) {
-				if(gatesVector->at(k) == gates->at(i)->getEntrees()->at(j))
+			for(int k = 0 ; k < portesLogiquesPrecedentes->size() ; k++) {
+				if(portesLogiquesPrecedentes->at(k) == gates->at(i)->getEntrees()->at(j))
 					found = true;
 			}
 
 			if(!found) check = false;
 		}
 
-		if(check) gatesVector2->push_back(gates->at(i));
+		if(check) portesLogiquesSuivantes->push_back(gates->at(i));
 	}
 
-	ajoutNomsOperationsLogiques(gatesVector2);
+	return portesLogiquesSuivantes;
 
-} // affiintchageNomsOperationsLogiques2()
+} // trouverLesPortesLogiquesSuivantes()
 
+void Circuit::ajoutOuputs(){
+	int longueurLigne = affichageCircuit->at(0)->size();// Longueur d'une ligne
+	affichageCircuit->push_back( new vector<char>(longueurLigne, ' ') ) ; // Ajouter une  ligne à l'affichage du circuit
+
+	int NombreDeLignesDansAffichage = affichageCircuit->size(); // Le nombre de lignes de l'affichage du circuit, y compris la ligne nouvellement ajoutée
+	int d = 0;
+	for(unsigned int i = 0 ; i < affichageCircuit->at(NombreDeLignesDansAffichage - 2)->size() && d < ouputs->size() ; i++ ){
+		if (affichageCircuit->at(NombreDeLignesDansAffichage - 2)->at(i) == '|'){
+			affichageCircuit->at(NombreDeLignesDansAffichage - 1)->at(i) = ouputs->at(d)->getName().at(0);
+			d++;
+		}
+	}
+
+} // ajoutOuputs()
 
 
 Circuit::Circuit(vector<InputGate*>* inputsCircuit, vector<Gate*>* gates, vector<OutputGate*>* ouputs)
 : inputs{inputsCircuit}, affichageCircuit{new vector< vector<char>* >}, gates{gates}, ouputs{ouputs}  {
+
 	vector<Gate*>* portesLogiquesAvecEntreesQuiSontEntreesDuCircuit = ajoutInputs();
 	ajoutCheminsApresInputs();
 	ajoutNomsOperationsLogiques(portesLogiquesAvecEntreesQuiSontEntreesDuCircuit);// Afficher les noms des opérations logiques
 	ajoutCheminsApresOperationsLogiques();
-	affichageAsterisquesApresChemins(1);
-	affichageNomsOperationsLogiques2(portesLogiquesAvecEntreesQuiSontEntreesDuCircuit);
-	ajoutCheminsApresOperationsLogiques();
-	affichageAsterisquesApresChemins(3);
+
+	vector<Gate*>* portesLogiquesSuivantes = trouverLesPortesLogiquesSuivantes(portesLogiquesAvecEntreesQuiSontEntreesDuCircuit);
+	vector<Gate*>* portesLogiquesPrecedentes;
+	int level = 1;
+	while(portesLogiquesSuivantes->size() != 0) {
+		affichageAsterisquesApresChemins(level);
+		ajoutNomsOperationsLogiques(portesLogiquesSuivantes);// Afficher les noms des opérations logiques
+		ajoutCheminsApresOperationsLogiques();
+		level += 2;
+
+		portesLogiquesPrecedentes = portesLogiquesSuivantes;
+		portesLogiquesSuivantes = trouverLesPortesLogiquesSuivantes(portesLogiquesPrecedentes);
+	}
+	ajoutOuputs();
 }
 
 Circuit::Circuit()
