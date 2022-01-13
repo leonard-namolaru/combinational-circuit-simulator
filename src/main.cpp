@@ -45,7 +45,10 @@ gates->push_back(or_new);
 gates->push_back(and_new);
 gates->push_back(and3);
 
-Circuit* circuit = new Circuit(inputsCircuit, gates);
+vector<OutputGate*>* ouputs = new vector<OutputGate*>;
+ouputs->push_back(A);
+
+Circuit* circuit = new Circuit(inputsCircuit, gates, ouputs);
 circuit->afficheCircuit();
 return 0;
 

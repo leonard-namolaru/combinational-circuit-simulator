@@ -14,7 +14,7 @@ private:
 	vector<OutputGate*>* ouputs;
 	vector<Gate*>* gates;
 	vector< vector<char>* >* affichageCircuit;
-	vector<Gate*>* affichageInputs();
+	vector<Gate*>* ajoutInputs();
 	void ajoutCheminsApresInputs();
 	void ajoutNomsOperationsLogiques(const vector<Gate*>* portesLogiquesAjouterAffichage);
 	void ajoutCheminsApresOperationsLogiques();
@@ -22,7 +22,7 @@ private:
 	void affichageNomsOperationsLogiques2(const vector<Gate*>* gatesVector);
 public:
     Circuit(/* args */);
-    Circuit(vector<InputGate*>* inputsCircuit, vector<Gate*>* gates);
+    Circuit(vector<InputGate*>* inputsCircuit, vector<Gate*>* gates, vector<OutputGate*>* ouputs);
     virtual ~Circuit();
     void afficheCircuit()  const;
 };

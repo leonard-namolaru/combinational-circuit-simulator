@@ -1,41 +1,45 @@
 #include "Circuit.hpp"
 #include <map>
 
-vector<Gate*>* Circuit::affichageInputs(){
+vector<Gate*>* Circuit::ajoutInputs(){
+
+	// Corrélation entre le nom d'un input avec le numéro de la ligne de ce input dans le vecteur de l'affichage.
+	map<char,int> correlationEntreNomInputAvecNumeroLigneDansAffichage;
+	for(unsigned int i = 0 ; i < inputs->size() ; i++) // Nous parcourons le vecteur qui inclut les entrées (inputs)
+		correlationEntreNomInputAvecNumeroLigneDansAffichage.insert( make_pair(inputs->at(i)->getInputName(), i));
+
+	vector<Gate*>* portesLogiquesAvecEntreesQuiSontEntreesDuCircuit = new vector<Gate*>;
+	for(unsigned int i = 0 ; i < gates->size() ; i++){
+		for(unsigned int j = 0 ; j < gates->at(i)->getEntrees()->size() ; j++) {
+
+			// Si le nom dun Gate est de longeur 1, c'est un InputGate
+			if(gates->at(i)->getEntrees()->at(j)->getName().size() == 1)
+				portesLogiquesAvecEntreesQuiSontEntreesDuCircuit->push_back(gates->at(i));
+		} // for(j)
+	} // for(i)
+
+	// Le nombre d'entrées des portes logiques qui sont aussi des entrées du circuit
+	int nombreEntreesPortesLogiquesQuiSontEntreesDuCircuit = portesLogiquesAvecEntreesQuiSontEntreesDuCircuit->size();
 	// la debut de chqaue ligne pour un input ressemble à ceci (par exemple) : a:0 -- (6 caractères)
 	const int NB_CHAR_AU_DEBUT_CHAQUE_LIGNE = 6; // Le nombre de caractères qui apparaissent toujours au début de chaque ligne d'un input
-	map<char,int> memo;
-	vector<Gate*>* gatesVector = new vector<Gate*>;
+	int longueurLigneAffichage = NB_CHAR_AU_DEBUT_CHAQUE_LIGNE + nombreEntreesPortesLogiquesQuiSontEntreesDuCircuit*2;
 
-	for(int i = 0 ; i < inputs->size() ; i++) // Nous parcourons le vecteur qui inclut les entrées (inputs)
-		memo.insert( make_pair(inputs->at(i)->getInputName(), i));
-
-	int sum = 0;
-	for(int i = 0 ; i < gates->size() ; i++){
-		sum += gates->at(i)->getEntrees()->size();
-	}
-
-	for(int i = 0 ; i < inputs->size() ; i++){ // Nous parcourons le vecteur qui inclut les entrées (inputs)
-		affichageCircuit->push_back(new vector<char>); // Pour chaque entrée, nous ajoutons une nouvelle ligne à l'affichage
+	for(unsigned int i = 0 ; i < inputs->size() ; i++){ // Nous parcourons le vecteur qui inclut les entrées (inputs)
+		affichageCircuit->push_back(new vector<char>(longueurLigneAffichage, '-')); // Pour chaque entrée, nous ajoutons une nouvelle ligne à l'affichage
 
 		// La ligne commence par afficher le nom de l'entrée, sa valeur booléenne ainsi que quelques caractères supplémentaires pour l'affichage
 
-		affichageCircuit->at(i)->push_back( inputs->at(i)->getInputName() ); // Chaque ligne d'entrée commence par l'affichage du nom de l'entrée
-		affichageCircuit->at(i)->push_back( ':' ); // Après le nom d'entrée, nous affichons le caractère ':'
+		affichageCircuit->at(i)->at(0) = inputs->at(i)->getInputName(); // Chaque ligne d'entrée commence par l'affichage du nom de l'entrée
+		affichageCircuit->at(i)->at(1) =  ':'; // Après le nom d'entrée, nous affichons le caractère ':'
 
 		// Après le caractère ':', on présente la valeur booléenne initiale
 		// Nous obtenons la valeur booléenne en tant que int, nous transformons l'int en string,
 		// puis en utilisant la méthode at() nous obtenons ce nombre en tant que caractère (char) afin qu'il puisse être ajouté au vecteur d'affichage qui se compose de caractères
-		affichageCircuit->at(i)->push_back(  to_string( inputs->at(i)->getValEnBinaire() ).at(0) ); // to_string(int __val) ; char& string.at(size_type __n)
+		affichageCircuit->at(i)->at(2) =   to_string( inputs->at(i)->getValEnBinaire() ).at(0); // to_string(int __val) ; char& string.at(size_type __n)
 
-		affichageCircuit->at(i)->push_back( ' ' ); // Ajout d'un espace vide à l'affichage
-		affichageCircuit->at(i)->push_back( '-' ); // Ajout du caractère '-' à l'affichage
-		affichageCircuit->at(i)->push_back( '-' ); // Ajout du caractère '-' à l'affichage
-
-		// Jusqu'à présent, la ligne ressemble à ceci (par exemple) : a:0 --
-
-		for(int j = 0 ; j < sum + (sum / 2) ; j++)
-			affichageCircuit->at(i)->push_back('-');
+		affichageCircuit->at(i)->at(3) =  ' '; // Ajout d'un espace vide à l'affichage
+		affichageCircuit->at(i)->at(4) =  '-'; // Ajout du caractère '-' à l'affichage
+		affichageCircuit->at(i)->at(5) =  '-'; // Ajout du caractère '-' à l'affichage
 	}
 
 	/* Nous voulons dessiner une trajectoire de départ pour l'entrée.
@@ -43,34 +47,29 @@ vector<Gate*>* Circuit::affichageInputs(){
 	 * Le caractère '+' est en fait un point qui permet le passage pour d'autres entrées
 	 */
 
-	int d = NB_CHAR_AU_DEBUT_CHAQUE_LIGNE;
-	for(int i = 0 ; i < gates->size() ; i++ ){
-		bool addToVector = false;
-		for(int j = 0 ; j < gates->at(i)->getEntrees()->size() ; j++) {
-			if(gates->at(i)->getEntrees()->at(j)->getName().size() == 1) {
-				addToVector = true;
-				char name = gates->at(i)->getEntrees()->at(j)->getName().at(0);
-				affichageCircuit->at(memo.at(name))->at(d) = '*';
-				d += 2;
-			}
-		}
+	int positionProchainAsterisque = NB_CHAR_AU_DEBUT_CHAQUE_LIGNE; // La position du prochain astérisque
+	for(unsigned int i = 0 ; i < portesLogiquesAvecEntreesQuiSontEntreesDuCircuit->size() && positionProchainAsterisque < longueurLigneAffichage; i++) {
+		for(unsigned int j = 0 ; j < portesLogiquesAvecEntreesQuiSontEntreesDuCircuit->at(i)->getEntrees()->size(); j++) {
 
-		if(addToVector)
-			gatesVector->push_back(gates->at(i));
+			// Si le nom dun Gate est de longeur 1, c'est un InputGate
+			if(portesLogiquesAvecEntreesQuiSontEntreesDuCircuit->at(i)->getEntrees()->at(j)->getName().size() == 1) {
+				char name = portesLogiquesAvecEntreesQuiSontEntreesDuCircuit->at(i)->getEntrees()->at(j)->getName().at(0);
+				affichageCircuit->at(correlationEntreNomInputAvecNumeroLigneDansAffichage.at(name))->at(positionProchainAsterisque) = '*';
+				positionProchainAsterisque += 2;
+			} // if
 
-	}
+		} // for
+	} // for
 
-	for(int i = 0 ; i < affichageCircuit->size() ; i++) {
-		for( int j = 0; j < affichageCircuit->at(i)->size() ; j++) {
-			if(i != 0) {
-					if(affichageCircuit->at(i - 1)->at(j) == '+' || affichageCircuit->at(i - 1)->at(j) == '*')
-						affichageCircuit->at(i)->at(j) = '+';
-			}
+	for(unsigned int i = 1 ; i < affichageCircuit->size() ; i++) {
+		for(unsigned int j = 0; j < affichageCircuit->at(i)->size() ; j++) {
+			if(affichageCircuit->at(i - 1)->at(j) == '+' || affichageCircuit->at(i - 1)->at(j) == '*')
+				affichageCircuit->at(i)->at(j) = '+';
 		}
 	}
 
-	return gatesVector;
-} // affichageInputs()
+	return portesLogiquesAvecEntreesQuiSontEntreesDuCircuit;
+} // ajoutInputs()
 
 /**
  * Une methode qui recherche les positions des caractères '+' et '*' dans la dernière ligne du vecteur qui stocke l'affichage du circuit
@@ -160,9 +159,9 @@ void Circuit::affichageAsterisquesApresChemins(int level){
 				if(alternance){
 					if( i != 0 && affichageCircuit->at(nombreDeLignes - 2)->at(i - 1) == '*') {
 						if( i != longueurLigne - 1 && affichageCircuit->at(nombreDeLignes - 2)->at(i + 1) == ' ') {
-							affichageCircuit->at(nombreDeLignes - 1)->at(i) = '|';
-							alternance = false;
-							i++;
+								affichageCircuit->at(nombreDeLignes - 1)->at(i) = '|';
+								alternance = false;
+								i++;
 						}
 					}
 				}
@@ -209,14 +208,14 @@ void Circuit::affichageNomsOperationsLogiques2(const vector<Gate*>* gatesVector)
 
 
 
-Circuit::Circuit(vector<InputGate*>* inputsCircuit, vector<Gate*>* gates)
-: inputs{inputsCircuit}, affichageCircuit{new vector< vector<char>* >}, gates{gates}  {
-	vector<Gate*>* gatesVector = affichageInputs();
+Circuit::Circuit(vector<InputGate*>* inputsCircuit, vector<Gate*>* gates, vector<OutputGate*>* ouputs)
+: inputs{inputsCircuit}, affichageCircuit{new vector< vector<char>* >}, gates{gates}, ouputs{ouputs}  {
+	vector<Gate*>* portesLogiquesAvecEntreesQuiSontEntreesDuCircuit = ajoutInputs();
 	ajoutCheminsApresInputs();
-	ajoutNomsOperationsLogiques(gatesVector);// Afficher les noms des opérations logiques
+	ajoutNomsOperationsLogiques(portesLogiquesAvecEntreesQuiSontEntreesDuCircuit);// Afficher les noms des opérations logiques
 	ajoutCheminsApresOperationsLogiques();
 	affichageAsterisquesApresChemins(1);
-	affichageNomsOperationsLogiques2(gatesVector);
+	affichageNomsOperationsLogiques2(portesLogiquesAvecEntreesQuiSontEntreesDuCircuit);
 	ajoutCheminsApresOperationsLogiques();
 	affichageAsterisquesApresChemins(3);
 }
@@ -232,7 +231,6 @@ Circuit::~Circuit()
 
 
 void Circuit::afficheCircuit() const {
-	cout << "Affiche circuit" << endl;
 	for(unsigned int i = 0 ; i < affichageCircuit->size() ; i++){
 		for(unsigned int j = 0 ; j < affichageCircuit->at(i)->size() ; j++){
 			cout << affichageCircuit->at(i)->at(j);
