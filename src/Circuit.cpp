@@ -9,17 +9,23 @@ vector<Gate*>* Circuit::ajoutInputs(){
 		correlationEntreNomInputAvecNumeroLigneDansAffichage.insert( make_pair(inputs->at(i)->getInputName(), i));
 
 	vector<Gate*>* portesLogiquesAvecEntreesQuiSontEntreesDuCircuit = new vector<Gate*>;
+	// Le nombre d'entrées des portes logiques qui sont aussi des entrées du circuit
+	int nombreEntreesPortesLogiquesQuiSontEntreesDuCircuit = 0;
 	for(unsigned int i = 0 ; i < gates->size() ; i++){
+		bool check = false;
 		for(unsigned int j = 0 ; j < gates->at(i)->getEntrees()->size() ; j++) {
 
 			// Si le nom dun Gate est de longeur 1, c'est un InputGate
-			if(gates->at(i)->getEntrees()->at(j)->getName().size() == 1)
-				portesLogiquesAvecEntreesQuiSontEntreesDuCircuit->push_back(gates->at(i));
+			if(gates->at(i)->getEntrees()->at(j)->getName().size() == 1){
+				check = true;
+				nombreEntreesPortesLogiquesQuiSontEntreesDuCircuit++;
+			}
 		} // for(j)
+
+		if(check) portesLogiquesAvecEntreesQuiSontEntreesDuCircuit->push_back(gates->at(i));
+
 	} // for(i)
 
-	// Le nombre d'entrées des portes logiques qui sont aussi des entrées du circuit
-	int nombreEntreesPortesLogiquesQuiSontEntreesDuCircuit = portesLogiquesAvecEntreesQuiSontEntreesDuCircuit->size();
 	// la debut de chqaue ligne pour un input ressemble à ceci (par exemple) : a:0 -- (6 caractères)
 	const int NB_CHAR_AU_DEBUT_CHAQUE_LIGNE = 6; // Le nombre de caractères qui apparaissent toujours au début de chaque ligne d'un input
 	int longueurLigneAffichage = NB_CHAR_AU_DEBUT_CHAQUE_LIGNE + nombreEntreesPortesLogiquesQuiSontEntreesDuCircuit*2;
