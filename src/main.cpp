@@ -45,7 +45,6 @@ gates->push_back(or_new);
 gates->push_back(and_new);
 gates->push_back(and3);
 
-
 Circuit* circuit = new Circuit(inputsCircuit, gates);
 circuit->afficheCircuit();
 return 0;

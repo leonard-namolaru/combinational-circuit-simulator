@@ -72,107 +72,114 @@ vector<Gate*>* Circuit::affichageInputs(){
 	return gatesVector;
 } // affichageInputs()
 
-void Circuit::affichageChemins(){
+/**
+ * Une methode qui recherche les positions des caractères '+' et '*' dans la dernière ligne du vecteur qui stocke l'affichage du circuit
+ * et ajoute aux mêmes positions dans la ligne en dessous le caractère '|'
+ */
+void Circuit::ajoutCheminsApresInputs(){
+	int longueurLigne = affichageCircuit->at(0)->size(); // Longueur d'une ligne
+	affichageCircuit->push_back( new vector<char>(longueurLigne, ' ') ); // Ajouter une nouvelle ligne à l'affichage du circuit pour stocker des chemins (caractères '|')
+
 	int nombreDeLignes = affichageCircuit->size(); // Le nombre de lignes maintenant stockées dans le vecteur qui représente l'affichage du circuit.
 
-	affichageCircuit->push_back( new vector<char> ); // Ajouter une nouvelle ligne à l'affichage du circuit pour stocker des chemins (caractères '|')
-
-	// Nous parcourons la dernière ligne de l'affichage (La dernière ligne avant la nouvelle ligne que nous venons d'ajouter)
-	for(int j = 0 ; j < affichageCircuit->at(nombreDeLignes-1)->size() ; j++) {
-
-		if(affichageCircuit->at(nombreDeLignes-1)->at(j) == '+' || affichageCircuit->at(nombreDeLignes-1)->at(j) == '*' || affichageCircuit->at(nombreDeLignes-1)->at(j) == '|') {
-			// Nombre d'emplacements à ajouter à la nouvelle ligne
-			int nombreEmplacementsAjouterNouvelleLigne = j - affichageCircuit->at(nombreDeLignes)->size();
-			for(int k = 0 ; k < nombreEmplacementsAjouterNouvelleLigne ; k++)
-				affichageCircuit->at(nombreDeLignes)->push_back( ' ' );
-			affichageCircuit->at(nombreDeLignes)->push_back( '|' );
-		} // if
+	// Nous parcourons l'avant-dernière ligne de l'affichage (La dernière ligne avant la nouvelle ligne que nous venons d'ajouter)
+	for(unsigned int i = 0 ; i < affichageCircuit->at(nombreDeLignes-2)->size() ; i++) {
+		if(affichageCircuit->at(nombreDeLignes-2)->at(i) == '+' || affichageCircuit->at(nombreDeLignes-2)->at(i) == '*')
+			affichageCircuit->at(nombreDeLignes - 1)->at(i) = '|';
 	} // for
 
-} // affichageChemins()
+} // ajoutCheminsApresInputs()
 
 
-void Circuit::affichageNomsOperationsLogiques(const vector<Gate*>* gatesVector){
-	// la debut de chqaue ligne pour un input ressemble à ceci (par exemple) : a:0 -- (6 caractères)
-	const int NB_CHAR_AU_DEBUT_CHAQUE_LIGNE = 6; // Le nombre de caractères qui apparaissent toujours au début de chaque ligne d'un input
-
+void Circuit::ajoutNomsOperationsLogiques(const vector<Gate*>* portesLogiquesAjouterAffichage){
 	int longueurLigne = affichageCircuit->at(0)->size();// Longueur d'une ligne
 
 	affichageCircuit->push_back( new vector<char>(longueurLigne, ' ') ) ; // Ajouter une  ligne à l'affichage du circuit
 	int NombreDeLignesDansAffichage = affichageCircuit->size(); // Le nombre de lignes de l'affichage du circuit, y compris la ligne nouvellement ajoutée
-	int d = 0;
-	for(int i = 0 ; (i < affichageCircuit->at(NombreDeLignesDansAffichage - 1)->size()) && (d < gatesVector->size()) ; i++ ){
+	unsigned int d = 0;
+	for(unsigned int i = 0 ; (i < affichageCircuit->at(NombreDeLignesDansAffichage - 1)->size()) && (d < portesLogiquesAjouterAffichage->size()) ; i++ ){
 		if (affichageCircuit->at(NombreDeLignesDansAffichage - 2)->at(i) == '|' && affichageCircuit->at(NombreDeLignesDansAffichage - 1)->at(i) == ' ') {
-			affichageCircuit->at(NombreDeLignesDansAffichage - 1)->at(i) = gatesVector->at(d)->getName().at(0);
-			affichageCircuit->at(NombreDeLignesDansAffichage - 1)->at(i + 1) = gatesVector->at(d)->getName().at(1);
-			affichageCircuit->at(NombreDeLignesDansAffichage - 1)->at(i + 2) = gatesVector->at(d)->getName().at(2);
+			affichageCircuit->at(NombreDeLignesDansAffichage - 1)->at(i) = portesLogiquesAjouterAffichage->at(d)->getName().at(0);
+			affichageCircuit->at(NombreDeLignesDansAffichage - 1)->at(i + 1) = portesLogiquesAjouterAffichage->at(d)->getName().at(1);
+			affichageCircuit->at(NombreDeLignesDansAffichage - 1)->at(i + 2) = portesLogiquesAjouterAffichage->at(d)->getName().at(2);
 			d++;
 
 		}
 	}
 
-} // affichageNomsOperationsLogiques()
+} // ajoutNomsOperationsLogiques()
 
-void Circuit::affichageCheminsApresOperationsLogiques(){
+void Circuit::ajoutCheminsApresOperationsLogiques(){
+	unsigned int longueurLigne = affichageCircuit->at(0)->size();// Longueur d'une ligne
+	affichageCircuit->push_back( new vector<char>(longueurLigne, ' ') ) ; // Ajouter une nouvelle ligne à l'affichage du circuit pour stocker des chemins (caractères '|')
+
 	int nombreDeLignes = affichageCircuit->size(); // Le nombre de lignes maintenant stockées dans le vecteur qui représente l'affichage du circuit.
-	affichageCircuit->push_back( new vector<char> ); // Ajouter une nouvelle ligne à l'affichage du circuit pour stocker des chemins (caractères '|')
-	// Nous parcourons la dernière ligne de l'affichage (La dernière ligne avant la nouvelle ligne que nous venons d'ajouter)
-	for(unsigned int j = 0 ; j < affichageCircuit->at(nombreDeLignes-1)->size() ; j++) {
-		if(affichageCircuit->at(nombreDeLignes-1)->at(j) >= 'A' && affichageCircuit->at(nombreDeLignes-1)->at(j) <= 'Z') {
-			// Nombre d'emplacements à ajouter à la nouvelle ligne
-			unsigned int nombreEmplacementsAjouterNouvelleLigne = j - affichageCircuit->at(nombreDeLignes)->size();
-			for(unsigned int k = 0 ; k < nombreEmplacementsAjouterNouvelleLigne + 1 ; k++)
-				affichageCircuit->at(nombreDeLignes)->push_back( ' ' );
-			affichageCircuit->at(nombreDeLignes)->push_back( '|' );
-			j+=2;
-		} // if
-	} // for
-} // affichageChemins()
 
-void Circuit::affichageAsterisques(){
-	affichageCircuit->push_back(new vector<char>);
-	bool cond = false;
+	// Nous parcourons la dernière ligne de l'affichage (La dernière ligne avant la nouvelle ligne que nous venons d'ajouter)
+	for(unsigned int i = 0 ; i < affichageCircuit->at(nombreDeLignes-2)->size() ; i++) {
+
+		if(affichageCircuit->at(nombreDeLignes-2)->at(i) >= 'A' && affichageCircuit->at(nombreDeLignes-2)->at(i) <= 'Z') {
+			if ((i != 0) && (affichageCircuit->at(nombreDeLignes-2)->at(i - 1) >= 'A' && affichageCircuit->at(nombreDeLignes-2)->at(i - 1) <= 'Z')) {
+				if ((i != longueurLigne - 1) && ( (affichageCircuit->at(nombreDeLignes-2)->at(i + 1) >= 'A' && affichageCircuit->at(nombreDeLignes-2)->at(i + 1) <= 'Z') || (affichageCircuit->at(nombreDeLignes-2)->at(i + 1) == '_') ))
+					affichageCircuit->at(nombreDeLignes-1)->at(i) = '|';
+			} // if
+		} // if
+
+	} // for
+} // ajoutCheminsApresOperationsLogiques()
+
+void Circuit::affichageAsterisquesApresChemins(int level){
+	unsigned int longueurLigne = affichageCircuit->at(0)->size();// Longueur d'une ligne
+	affichageCircuit->push_back( new vector<char>(longueurLigne, ' ') ) ; // Ajouter une nouvelle ligne à l'affichage du circuit pour stocker des chemins (caractères '|')
+
+	int nombreDeLignes = affichageCircuit->size(); // Le nombre de lignes maintenant stockées dans le vecteur qui représente l'affichage du circuit.
+	bool alternance = false;
+
+
 	for(unsigned int i = 0 ; i < affichageCircuit->at( affichageCircuit->size() -2 )->size() ; i++) {
 		if( affichageCircuit->at( affichageCircuit->size() -2 )->at(i) == '|' ){
-			int diff = i - affichageCircuit->at( affichageCircuit->size() -1 )->size();
-			if(cond){
-				diff--;
-				cond = false;
+			if(alternance){
+				alternance = false;
+				affichageCircuit->at( affichageCircuit->size() -1 )->at(i) = '*';
+				for(unsigned int j = i - 1, count = 0 ; count < level && j > 0 ; j--, count++)
+					affichageCircuit->at( affichageCircuit->size() -1 )->at(j) = '*';
 			} else {
-				cond = true;
+				alternance = true;
+				affichageCircuit->at( affichageCircuit->size() -1 )->at(i) = '*';
+				for(unsigned int j = i + 1, count = 0 ; count < level && j < longueurLigne ; j++, count++)
+					affichageCircuit->at( affichageCircuit->size() -1 )->at(j) = '*';
 			}
-			for(int j = 0 ; j < diff ; j++) {
-				affichageCircuit->at( affichageCircuit->size() -1 )->push_back(' ');
-			}
-			affichageCircuit->at( affichageCircuit->size() -1 )->push_back('*');
-			affichageCircuit->at( affichageCircuit->size() -1 )->push_back('*');
 		}
 	}
 
-	int longueurLigne = affichageCircuit->at(0)->size();// Longueur d'une ligne
 	affichageCircuit->push_back( new vector<char>(longueurLigne, ' ') ) ; // Ajouter une  ligne à l'affichage du circuit
-	int nombreDeLignes = affichageCircuit->size(); // Le nombre de lignes maintenant stockées dans le vecteur qui représente l'affichage du circuit.
-	cond = true;
+	nombreDeLignes = affichageCircuit->size(); // Le nombre de lignes maintenant stockées dans le vecteur qui représente l'affichage du circuit.
+	alternance = true;
 	for(int i = 0 ; i < affichageCircuit->at(nombreDeLignes - 2)->size() ; i++) {
 		if( affichageCircuit->at(nombreDeLignes - 2)->at(i) == '*' ){
-			if(i != 0 && affichageCircuit->at(nombreDeLignes - 1)->at(i - 1) == '|') {
-				if(cond){
-					affichageCircuit->at(nombreDeLignes - 1)->at(i) = '|';
-					affichageCircuit->at(nombreDeLignes - 1)->at(i - 1) = ' ';
-					cond = false;
+				if(alternance){
+					if( i != 0 && affichageCircuit->at(nombreDeLignes - 2)->at(i - 1) == '*') {
+						if( i != longueurLigne - 1 && affichageCircuit->at(nombreDeLignes - 2)->at(i + 1) == ' ') {
+							affichageCircuit->at(nombreDeLignes - 1)->at(i) = '|';
+							alternance = false;
+							i++;
+						}
+					}
 				}
 				else {
-					cond = true;
+					if( i != 0 && affichageCircuit->at(nombreDeLignes - 2)->at(i - 1) == ' ') {
+						if( i != longueurLigne - 1 && affichageCircuit->at(nombreDeLignes - 2)->at(i + 1) == '*') {
+							affichageCircuit->at(nombreDeLignes - 1)->at(i) = '|';
+							alternance = true;
+							i++;
+						}
+					}
 				}
-			}
-			else {
-				affichageCircuit->at(nombreDeLignes - 1)->at(i) = '|';
-			}
 		}
 	}
 
 
-} // affichageAsterisques()
+} // affichageAsterisquesApresChemins()
 
 void Circuit::affichageNomsOperationsLogiques2(const vector<Gate*>* gatesVector){
 
@@ -196,7 +203,7 @@ void Circuit::affichageNomsOperationsLogiques2(const vector<Gate*>* gatesVector)
 		if(check) gatesVector2->push_back(gates->at(i));
 	}
 
-	affichageNomsOperationsLogiques(gatesVector2);
+	ajoutNomsOperationsLogiques(gatesVector2);
 
 } // affiintchageNomsOperationsLogiques2()
 
@@ -205,12 +212,13 @@ void Circuit::affichageNomsOperationsLogiques2(const vector<Gate*>* gatesVector)
 Circuit::Circuit(vector<InputGate*>* inputsCircuit, vector<Gate*>* gates)
 : inputs{inputsCircuit}, affichageCircuit{new vector< vector<char>* >}, gates{gates}  {
 	vector<Gate*>* gatesVector = affichageInputs();
-	affichageChemins();
-	affichageNomsOperationsLogiques(gatesVector);// Afficher les noms des opérations logiques
-	affichageCheminsApresOperationsLogiques();
-	affichageAsterisques();
+	ajoutCheminsApresInputs();
+	ajoutNomsOperationsLogiques(gatesVector);// Afficher les noms des opérations logiques
+	ajoutCheminsApresOperationsLogiques();
+	affichageAsterisquesApresChemins(1);
 	affichageNomsOperationsLogiques2(gatesVector);
-	affichageCheminsApresOperationsLogiques();
+	ajoutCheminsApresOperationsLogiques();
+	affichageAsterisquesApresChemins(3);
 }
 
 Circuit::Circuit()

@@ -15,15 +15,15 @@ private:
 	vector<Gate*>* gates;
 	vector< vector<char>* >* affichageCircuit;
 	vector<Gate*>* affichageInputs();
-	void affichageChemins();
-	void affichageNomsOperationsLogiques(const vector<Gate*>* noms);
-	void affichageCheminsApresOperationsLogiques();
-	void affichageAsterisques();
+	void ajoutCheminsApresInputs();
+	void ajoutNomsOperationsLogiques(const vector<Gate*>* portesLogiquesAjouterAffichage);
+	void ajoutCheminsApresOperationsLogiques();
+	void affichageAsterisquesApresChemins(int level);
 	void affichageNomsOperationsLogiques2(const vector<Gate*>* gatesVector);
 public:
     Circuit(/* args */);
     Circuit(vector<InputGate*>* inputsCircuit, vector<Gate*>* gates);
-    ~Circuit();
+    virtual ~Circuit();
     void afficheCircuit()  const;
 };
 
