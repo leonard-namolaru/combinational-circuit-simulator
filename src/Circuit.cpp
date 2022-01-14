@@ -179,7 +179,6 @@ vector<Gate*>* Circuit::trouverLesPortesLogiquesSuivantes(const vector<Gate*>* p
 
 			if(!found) check = false;
 		}
-
 		if(check) portesLogiquesSuivantes->push_back(gates->at(i));
 	}
 	return portesLogiquesSuivantes;
