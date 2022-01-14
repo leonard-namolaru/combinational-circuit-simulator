@@ -245,7 +245,17 @@ void Circuit::afficheCircuit() const {
  * Simulation en mode pas à pas
  */
 void Circuit::simulation() {
-	for(unsigned int i = 0 ; i < affichageCircuit->size() ; i++){
+	cout << endl;
+
+	cout << "**********************************************************************************************************************" << endl;
+	cout << "Bonjour et bienvenue au simulateur de circuit combinatoire !" << endl;
+	cout <<	"La simulation sera effectuée en mode pas à pas, c’est-à-dire qu’à chaque pas l’information franchit au plus une porte," << endl;
+	cout <<	"et durant toutes les étapes vous pourrez voir dans l’affichage la progression de l’information" << endl;
+	cout << "**********************************************************************************************************************" << endl;
+
+	cout << endl;
+
+	for(unsigned int i = 0 ; i < inputs->size() ; i++){
 		for(unsigned int j = 0 ; j < affichageCircuit->at(i)->size() ; j++){
 			cout << affichageCircuit->at(i)->at(j);
 		}
