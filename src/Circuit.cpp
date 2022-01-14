@@ -240,3 +240,17 @@ void Circuit::afficheCircuit() const {
 	cout << endl;
 
 }
+
+/**
+ * Simulation en mode pas à pas
+ */
+void Circuit::simulation() {
+	for(unsigned int i = 0 ; i < affichageCircuit->size() ; i++){
+		for(unsigned int j = 0 ; j < affichageCircuit->at(i)->size() ; j++){
+			cout << affichageCircuit->at(i)->at(j);
+		}
+		cout << endl;
+	}
+	cout << endl;
+
+}

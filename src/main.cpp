@@ -81,23 +81,26 @@ int main(){
 		cout << "**** MENU : simulateur de circuit combinatoire ***" << endl;
 		cout << "1- Afficher le circuit" << endl;
 		cout << "2- Simulation en mode pas à pas" << endl;
-		cout << "3- Afficher sous forme textuelle les fonctions de sortie à l’aide des variables d’entrée" << endl;
-		cout << "4- Synthétiser un circuit à partir de son expression textuelle" << endl;
-		cout << "5- Sauver un circuit dans un fichier" << endl;
-		cout << "6- Relire un circuit qui est dans un fichier" << endl;
-		cout << "7- Quitter" << endl;
+		cout << "3- Changer les valeurs des portes d’entrée" << endl;
+		cout << "4- Afficher sous forme textuelle les fonctions de sortie à l’aide des variables d’entrée" << endl;
+		cout << "5- Synthétiser un circuit à partir de son expression textuelle" << endl;
+		cout << "6- Sauver un circuit dans un fichier" << endl;
+		cout << "7- Relire un circuit qui est dans un fichier" << endl;
+		cout << "8- Quitter" << endl;
 
 		cin >> choix;
 
 		switch(choix) {
 			case 1 : circuit->afficheCircuit();
 					 break;
-			case 7 :
+			case 2 : circuit->simulation();
+					 break;
+			case 8 : // Quitter
 				     break;
 			default : cout << "Option pas dispo" << endl;
 		}
 
-	} while(choix != 7);
+	} while(choix != 8);
 
 	return 0;
 }

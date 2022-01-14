@@ -25,6 +25,7 @@ public:
     Circuit(vector<InputGate*>* inputsCircuit, vector<Gate*>* gates, vector<OutputGate*>* ouputs);
     virtual ~Circuit();
     void afficheCircuit()  const;
+    void simulation(); // Simulation en mode pas à pas
 };
 
 
