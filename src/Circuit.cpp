@@ -1,4 +1,5 @@
 #include "Circuit.hpp"
+#include <iostream>
 #include <map>
 
 vector<Gate*>* Circuit::ajoutInputs(){
@@ -262,5 +263,19 @@ void Circuit::simulation() {
 		cout << endl;
 	}
 	cout << endl;
+}
 
+void Circuit::changerValeursDesPortesEntree() {
+	for(unsigned int i = 0 ; i < inputs->size() ; i++){
+		cout << "Nom de l'entrée : " << inputs->at(i)->getInputName() << " ; Valeur : " << inputs->at(i)->getValEnBinaire() << endl;
+		cout << "Nouvelle valeur [1 / 0] : ";
+		int tmp = inputs->at(i)->getValEnBinaire();
+		cin >> tmp;
+		inputs->at(i)->setVal((bool) tmp);
+		cout << endl;
+	}
+	cout << endl;
+
+	for(unsigned int i = 0 ; i < inputs->size() ; i++)
+		affichageCircuit->at(i)->at(2) = to_string( inputs->at(i)->getValEnBinaire() ).at(0); // to_string(int __val) ; char& string.at(size_type __n)
 }

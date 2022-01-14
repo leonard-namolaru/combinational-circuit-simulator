@@ -19,3 +19,8 @@ char InputGate::getInputName() const {
 int InputGate::getValEnBinaire() const{
 	return (int) val;
 }
+
+void InputGate::setVal(bool val){
+	this->val = val;
+}
+

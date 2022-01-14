@@ -95,6 +95,8 @@ int main(){
 					 break;
 			case 2 : circuit->simulation();
 					 break;
+			case 3 : circuit->changerValeursDesPortesEntree();
+					 break;
 			case 8 : // Quitter
 				     break;
 			default : cout << "Option pas dispo" << endl;
