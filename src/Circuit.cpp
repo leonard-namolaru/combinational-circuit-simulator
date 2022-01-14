@@ -1,4 +1,9 @@
 #include "Circuit.hpp"
+#include "OrGate.hpp"
+#include "XorGate.hpp"
+#include "AndGate.hpp"
+#include "OutputGate.hpp"
+
 #include <iostream>
 #include <map>
 
@@ -305,6 +310,100 @@ void Circuit::changerValeursDesPortesEntree() {
 
 	for(unsigned int i = 0 ; i < inputs->size() ; i++)
 		affichageCircuit->at(i)->at(2) = to_string( inputs->at(i)->getValeurBooleenne() ).at(0); // to_string(int __val) ; char& string.at(size_type __n)
+}
 
 
+Circuit* Circuit::expressionTextuelleToCircuit(const string& expressionTextuelle) {
+	const size_t NOT_FOUND = -1;
+	int indiceDeSigneEgal = expressionTextuelle.find("=");
+	string expressionPortesLogiques = expressionTextuelle.substr(indiceDeSigneEgal + 1);
+	string nomOutput = expressionTextuelle.substr(0, indiceDeSigneEgal - 1);
+
+	vector< string > portes;
+
+	int index = expressionPortesLogiques.find(",");
+	string str = expressionPortesLogiques;
+	while (index != NOT_FOUND) {
+		string toInsert = str.substr(0, index);
+		str = str.substr(index + 1);
+		// cout << toInsert << " " << str << endl;
+
+		portes.push_back(toInsert);
+		index = str.find(",");
+	}
+	portes.push_back(str);
+
+	vector< string > portes2;
+
+	for(int i = 0 ; i < portes.size() ; i++) {
+		index = portes[i].find("(");
+		while (index != NOT_FOUND) {
+			string toInsert = portes[i].substr(0, index);
+			portes[i] = portes[i].substr(index + 1);
+			//cout << toInsert << " " << portes[i] << endl;
+
+			portes2.push_back(toInsert);
+			index = portes[i].find("(");
+		}
+		portes2.push_back(portes[i]);
+
+	}
+
+	vector< string > portes3;
+
+	for(int i = 0 ; i < portes2.size() ; i++) {
+		index = portes2[i].find(")");
+		while (index != NOT_FOUND) {
+			string toInsert = portes2[i].substr(0, index);
+			portes2[i] = portes2[i].substr(index + 1);
+
+			if (toInsert.size() != 0)
+				portes3.push_back(toInsert);
+			index = portes2[i].find(")");
+		}
+		if (portes2[i].size() != 0)
+		    portes3.push_back(portes2[i]);
+
+	}
+
+	for(int i = portes3.size() - 1 ; i >= 0  ; i--) {
+		cout << portes3.at(i) << endl;
+	}
+	vector<InputGate*>* inputsVector = new vector<InputGate*>;
+	vector<Gate*>* gatesVector = new vector<Gate*>;
+	vector<OutputGate*>* outputsVector = new vector<OutputGate*>;
+
+	for(int i = portes3.size() - 1 ; i >= 1  ; i--) {
+		if(portes3.at(i).size() == 1){
+			inputsVector->push_back(new InputGate(portes3.at(i).at(0)));
+		} else {
+			if(i + 2 < portes3.size()) {
+				if(portes3.at(i + 1).size() == 1 && portes3.at(i + 2).size() == 1){
+					InputGate* a = inputsVector->at(1);
+					InputGate* b = inputsVector->at(0);
+					if(portes3.at(i).at(0) == 'o'){
+						Gate* gate = new OrGate( a, b );
+						gatesVector->push_back( gate );
+					}
+					else {
+						Gate* gate = new AndGate(a, b );
+						gatesVector->push_back( gate );
+
+					}
+				}
+			}
+		}
+	}
+
+	inputsVector->pop_back();
+	inputsVector->pop_back();
+
+	Gate* gate = new XorGate(gatesVector->at(0), gatesVector->at(1));
+	gatesVector->push_back( gate );
+
+	OutputGate* output = new OutputGate('A', gate);
+	gatesVector->push_back( gate );
+	outputsVector->push_back(output);
+
+	return new Circuit(inputsVector, gatesVector, outputsVector);
 }

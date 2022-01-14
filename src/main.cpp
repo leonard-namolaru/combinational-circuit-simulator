@@ -80,20 +80,15 @@ int main(){
 
 	Circuit* circuit = new Circuit(inputsCircuit, gates, ouputs);
 
-	/* L'entrée  */
-	string expression("");
-    vector<char> entree;
-	int i=0;
-		char ch;
-
 	int choix = 1;
+	string expressionTextuelle;
 	do{
 		cout << "**** MENU : simulateur de circuit combinatoire ***" << endl;
 		cout << "1- Afficher le circuit" << endl;
 		cout << "2- Simulation en mode pas à pas" << endl;
 		cout << "3- Changer les valeurs des portes d’entrée" << endl;
 		cout << "4- Afficher sous forme textuelle les fonctions de sortie à l’aide des variables d’entrée" << endl;
-		cout << "5- Synthétiser un circuit à partir de son expression textuelle" << endl;
+		cout << "5- Synthétiser un circuit à partir d'une expression textuelle" << endl;
 		cout << "6- Sauver un circuit dans un fichier" << endl;
 		cout << "7- Relire un circuit qui est dans un fichier" << endl;
 		cout << "8- Quitter" << endl;
@@ -108,27 +103,10 @@ int main(){
 					 break;
 			case 3 : circuit->changerValeursDesPortesEntree();
 					 break;
-
-			case 5 :
-					      std::cin >> expression;
-		                  std::cout<< expression << "\n"<< endl;
-		                  int taille;
-						  taille = expression.length();
-
-						  cout<<"taille"<<taille<<endl;
-						   std::cout<<"contenu de expression" << "\n\n"<< endl;
-
-
-
-				           for (int j=0; j<taille; j++){
-					            entree.push_back(expression.at(j));
-				            }
-
-
-				           for (int k=0; k<entree.size(); k++){
-					          cout<<  entree.at(k);
-				            }
-
+			case 5 :  cout << "Synthétiser un circuit à partir d'une expression textuelle" << endl;
+					  cout << "Expression textuelle : ";
+					  cin >> expressionTextuelle;
+					  circuit = circuit->expressionTextuelleToCircuit(expressionTextuelle);
 					   break;
 			case 8 : // Quitter
 				     break;

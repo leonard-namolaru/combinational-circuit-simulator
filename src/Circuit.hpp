@@ -28,6 +28,8 @@ public:
     void afficheCircuit()  const;
     void simulation(); // Simulation en mode pas à pas
     void changerValeursDesPortesEntree();// Changer les valeurs des portes d’entrée
+    Circuit* expressionTextuelleToCircuit(const string& expressionTextuelle);
+
 };
 
 
