@@ -275,22 +275,32 @@ void Circuit::simulation() {
 	cout << endl;
 	cout << "**********************************************************************************************************************" << endl;
 
+	int position = nbInputs;
+	for(unsigned int numeroDePas = 0 ; numeroDePas < simulationPasParPas->size() ; numeroDePas++) {
 
-	for(unsigned int i = nbInputs ; i < nbInputs + 2 ; i++){
-		for(unsigned int j = 0 ; j < affichageCircuit->at(i)->size() ; j++){
-			cout << affichageCircuit->at(i)->at(j);
+		for(unsigned int i = position ; i < position + 2 && i < affichageCircuit->size() ; i++){
+			for(unsigned int j = 0 ; j < affichageCircuit->at(i)->size() ; j++){
+				cout << affichageCircuit->at(i)->at(j);
+			}
+			cout << endl;
+		}
+
+
+		int stop = 1;
+		for(unsigned int i = 0 ; i < simulationPasParPas->at(numeroDePas)->size() ; i++) {
+			cout << "**********************************************************************************************************************" << endl;
+			for(unsigned int j = 0  ; (j < stop) && (stop <=  simulationPasParPas->at(0)->size()) ; j++) {
+					cout << simulationPasParPas->at(numeroDePas)->at(j)->getName() << "(" << simulationPasParPas->at(numeroDePas)->at(j)->getEntrees()->at(0)->getName() << "," <<  simulationPasParPas->at(numeroDePas)->at(j)->getEntrees()->at(1)->getName() << ") : " << simulationPasParPas->at(numeroDePas)->at(j)->getValeurBooleenne() << "     ";
+			}
+			cout << endl;
+			cout << "**********************************************************************************************************************" << endl;
+			stop++;
 		}
 		cout << endl;
+
+		position = position + 4;
 	}
 
-	cout << "**********************************************************************************************************************" << endl;
-	for(unsigned i = 0 ; i < simulationPasParPas->at(0)->size() ; i++) {
-		cout << simulationPasParPas->at(0)->at(i)->getName() << "(" << simulationPasParPas->at(0)->at(i)->getEntrees()->at(0)->getName() << "," <<  simulationPasParPas->at(0)->at(i)->getEntrees()->at(1)->getName() << ") : " << simulationPasParPas->at(0)->at(i)->getValeurBooleenne() << "     ";
-	}
-	cout << endl;
-	cout << "**********************************************************************************************************************" << endl;
-
-	cout << endl;
 
 }
 
