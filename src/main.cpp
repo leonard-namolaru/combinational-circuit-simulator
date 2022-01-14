@@ -1,3 +1,4 @@
+#include <iostream>
 #include "Gate.hpp"
 #include "InputGate.hpp"
 #include "OutputGate.hpp"
@@ -74,7 +75,29 @@ int main(){
 	ouputs->push_back(A);
 
 	Circuit* circuit = new Circuit(inputsCircuit, gates, ouputs);
-	circuit->afficheCircuit();
+
+	int choix = 1;
+	do{
+		cout << "**** MENU : simulateur de circuit combinatoire ***" << endl;
+		cout << "1- Afficher le circuit" << endl;
+		cout << "2- Simulation en mode pas à pas" << endl;
+		cout << "3- Afficher sous forme textuelle les fonctions de sortie à l’aide des variables d’entrée" << endl;
+		cout << "4- Synthétiser un circuit à partir de son expression textuelle" << endl;
+		cout << "5- Sauver un circuit dans un fichier" << endl;
+		cout << "6- Relire un circuit qui est dans un fichier" << endl;
+		cout << "7- Quitter" << endl;
+
+		cin >> choix;
+
+		switch(choix) {
+			case 1 : circuit->afficheCircuit();
+					 break;
+			case 7 :
+				     break;
+			default : cout << "Option pas dispo" << endl;
+		}
+
+	} while(choix != 7);
 
 	return 0;
 }
