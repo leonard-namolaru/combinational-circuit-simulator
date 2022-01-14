@@ -198,7 +198,6 @@ void Circuit::ajoutOuputs(){
 			d++;
 		}
 	}
-
 } // ajoutOuputs()
 
 Circuit::Circuit(vector<InputGate*>* inputsCircuit, vector<Gate*>* gates, vector<OutputGate*>* ouputs)
