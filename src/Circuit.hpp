@@ -14,6 +14,8 @@ private:
 	vector<OutputGate*>* ouputs;
 	vector<Gate*>* gates;
 	vector< vector<char>* >* affichageCircuit;
+	vector< vector<Gate*>* >* simulationPasParPas;
+
 	vector<Gate*>* ajoutInputs();
 	void ajoutCheminsApresInputs();
 	void ajoutNomsOperationsLogiques(const vector<Gate*>* portesLogiquesAjouterAffichage);

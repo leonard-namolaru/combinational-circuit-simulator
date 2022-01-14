@@ -10,6 +10,8 @@ AndGate::AndGate(Gate *g1, Gate *g2) : Gate{"AND"}
 AndGate::~AndGate()
 {
 }
-Gate* AndGate::operationLogique(){
-    return nullptr;
+
+bool AndGate::getValeurBooleenne() {
+	valeurBooleenne = (this->getEntrees()->at(0)->getValeurBooleenne() && this->getEntrees()->at(1)->getValeurBooleenne());
+	return valeurBooleenne;
 }

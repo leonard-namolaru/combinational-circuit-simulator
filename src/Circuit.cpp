@@ -7,7 +7,7 @@ vector<Gate*>* Circuit::ajoutInputs(){
 	// Corrélation entre le nom d'un input avec le numéro de la ligne de ce input dans le vecteur de l'affichage.
 	map<char,int> correlationEntreNomInputAvecNumeroLigneDansAffichage;
 	for(unsigned int i = 0 ; i < inputs->size() ; i++) // Nous parcourons le vecteur qui inclut les entrées (inputs)
-		correlationEntreNomInputAvecNumeroLigneDansAffichage.insert( make_pair(inputs->at(i)->getInputName(), i));
+		correlationEntreNomInputAvecNumeroLigneDansAffichage.insert( make_pair(inputs->at(i)->getName().at(0), i));
 
 	vector<Gate*>* portesLogiquesAvecEntreesQuiSontEntreesDuCircuit = new vector<Gate*>;
 	// Le nombre d'entrées des portes logiques qui sont aussi des entrées du circuit
@@ -35,13 +35,13 @@ vector<Gate*>* Circuit::ajoutInputs(){
 
 		// La ligne commence par afficher le nom de l'entrée, sa valeur booléenne ainsi que quelques caractères supplémentaires pour l'affichage
 
-		affichageCircuit->at(i)->at(0) = inputs->at(i)->getInputName(); // Chaque ligne d'entrée commence par l'affichage du nom de l'entrée
+		affichageCircuit->at(i)->at(0) = inputs->at(i)->getName().at(0); // Chaque ligne d'entrée commence par l'affichage du nom de l'entrée
 		affichageCircuit->at(i)->at(1) =  ':'; // Après le nom d'entrée, nous affichons le caractère ':'
 
 		// Après le caractère ':', on présente la valeur booléenne initiale
 		// Nous obtenons la valeur booléenne en tant que int, nous transformons l'int en string,
 		// puis en utilisant la méthode at() nous obtenons ce nombre en tant que caractère (char) afin qu'il puisse être ajouté au vecteur d'affichage qui se compose de caractères
-		affichageCircuit->at(i)->at(2) =   to_string( inputs->at(i)->getValEnBinaire() ).at(0); // to_string(int __val) ; char& string.at(size_type __n)
+		affichageCircuit->at(i)->at(2) =   to_string( inputs->at(i)->getValeurBooleenne() ).at(0); // to_string(int __val) ; char& string.at(size_type __n)
 
 		affichageCircuit->at(i)->at(3) =  ' '; // Ajout d'un espace vide à l'affichage
 		affichageCircuit->at(i)->at(4) =  '-'; // Ajout du caractère '-' à l'affichage
@@ -200,9 +200,11 @@ void Circuit::ajoutOuputs(){
 } // ajoutOuputs()
 
 Circuit::Circuit(vector<InputGate*>* inputsCircuit, vector<Gate*>* gates, vector<OutputGate*>* ouputs)
-: inputs{inputsCircuit}, ouputs{ouputs}, gates{gates}, affichageCircuit{new vector< vector<char>* >} {
+: inputs{inputsCircuit}, ouputs{ouputs}, gates{gates}, affichageCircuit{new vector< vector<char>* >}, simulationPasParPas{new vector< vector<Gate*>* >} {
 
 	vector<Gate*>* portesLogiquesAvecEntreesQuiSontEntreesDuCircuit = ajoutInputs();
+	simulationPasParPas->push_back(portesLogiquesAvecEntreesQuiSontEntreesDuCircuit);
+
 	ajoutCheminsApresInputs();
 	ajoutNomsOperationsLogiques(portesLogiquesAvecEntreesQuiSontEntreesDuCircuit);// Afficher les noms des opérations logiques
 	ajoutCheminsApresOperationsLogiques();
@@ -212,6 +214,8 @@ Circuit::Circuit(vector<InputGate*>* inputsCircuit, vector<Gate*>* gates, vector
 	int level = 1;
 	int index = 1;
 	while(portesLogiquesSuivantes->size() != 0) {
+		simulationPasParPas->push_back(portesLogiquesSuivantes);
+
 		ajoutAsterisquesApresChemins(level);
 		ajoutNomsOperationsLogiques(portesLogiquesSuivantes);// Afficher les noms des opérations logiques
 		ajoutCheminsApresOperationsLogiques();
@@ -267,7 +271,7 @@ void Circuit::simulation() {
 
 	cout << "**********************************************************************************************************************" << endl;
 	for(unsigned i = 0 ; i < inputs->size() ; i++)
-		cout << inputs->at(i)->getInputName() << " : " << inputs->at(i)->getValEnBinaire() << "     ";
+		cout << inputs->at(i)->getName() << " : " << inputs->at(i)->getValeurBooleenne() << "     ";
 	cout << endl;
 	cout << "**********************************************************************************************************************" << endl;
 
@@ -278,21 +282,29 @@ void Circuit::simulation() {
 		}
 		cout << endl;
 	}
+
+	cout << "**********************************************************************************************************************" << endl;
+	for(unsigned i = 0 ; i < simulationPasParPas->at(0)->size() ; i++) {
+		cout << simulationPasParPas->at(0)->at(i)->getName() << "(" << simulationPasParPas->at(0)->at(i)->getEntrees()->at(0)->getName() << "," <<  simulationPasParPas->at(0)->at(i)->getEntrees()->at(1)->getName() << ") : " << simulationPasParPas->at(0)->at(i)->getValeurBooleenne() << "     ";
+	}
+	cout << endl;
+	cout << "**********************************************************************************************************************" << endl;
+
 	cout << endl;
 
 }
 
 void Circuit::changerValeursDesPortesEntree() {
 	for(unsigned int i = 0 ; i < inputs->size() ; i++){
-		cout << "Nom de l'entrée : " << inputs->at(i)->getInputName() << " ; Valeur : " << inputs->at(i)->getValEnBinaire() << endl;
+		cout << "Nom de l'entrée : " << inputs->at(i)->getName() << " ; Valeur : " << inputs->at(i)->getValeurBooleenne() << endl;
 		cout << "Nouvelle valeur [1 / 0] : ";
-		int tmp = inputs->at(i)->getValEnBinaire();
+		int tmp = inputs->at(i)->getValeurBooleenne();
 		cin >> tmp;
-		inputs->at(i)->setVal((bool) tmp);
+		inputs->at(i)->setValeurBooleenne(tmp);
 		cout << endl;
 	}
 	cout << endl;
 
 	for(unsigned int i = 0 ; i < inputs->size() ; i++)
-		affichageCircuit->at(i)->at(2) = to_string( inputs->at(i)->getValEnBinaire() ).at(0); // to_string(int __val) ; char& string.at(size_type __n)
+		affichageCircuit->at(i)->at(2) = to_string( inputs->at(i)->getValeurBooleenne() ).at(0); // to_string(int __val) ; char& string.at(size_type __n)
 }

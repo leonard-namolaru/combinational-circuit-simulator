@@ -13,8 +13,8 @@ private:
 
 public:
     OrGate(Gate *g1, Gate *g2);
+    bool getValeurBooleenne() override;
     virtual ~OrGate();
-    Gate* operationLogique();
 };
 
 

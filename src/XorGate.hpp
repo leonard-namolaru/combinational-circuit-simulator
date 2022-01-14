@@ -13,8 +13,8 @@ private:
     
 public:
     XorGate(Gate *g1, Gate *g2);
+    bool getValeurBooleenne() override;
     virtual ~XorGate();
-    Gate* operationLogique();
 };
 
 

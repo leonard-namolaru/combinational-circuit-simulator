@@ -11,12 +11,9 @@ class AndGate : public Gate{
 private:
     
 public:
-
     AndGate(Gate *p1, Gate *p2);
-
+    bool getValeurBooleenne() override;
     virtual ~AndGate();
-
-    Gate* operationLogique();
 };
 
 

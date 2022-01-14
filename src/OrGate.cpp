@@ -9,6 +9,8 @@ OrGate::~OrGate()
 {
 }
 
-Gate* OrGate::operationLogique(){
-    return nullptr;
+
+bool OrGate::getValeurBooleenne() {
+	valeurBooleenne = (this->getEntrees()->at(0)->getValeurBooleenne() || this->getEntrees()->at(1)->getValeurBooleenne());
+	return valeurBooleenne;
 }

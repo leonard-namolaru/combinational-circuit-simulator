@@ -13,12 +13,14 @@ class Gate
 protected:
    string name;
    vector<Gate*>* entrees;
+   bool valeurBooleenne; // valeur booléenne
 public:
     Gate(const string name);
+    Gate(const string name, bool valeurBooleenne);
     virtual ~Gate();
-    virtual Gate* operationLogique();
     vector<Gate*>* getEntrees() const;
     string getName() const;
+    virtual bool getValeurBooleenne();
 };
 
 
