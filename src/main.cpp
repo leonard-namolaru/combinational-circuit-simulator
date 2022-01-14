@@ -47,6 +47,9 @@ int main(){
 
 	Gate *and6 = new AndGate(or6,xor3);
 
+	OutputGate *A = new OutputGate('A', and6);
+
+
 	vector<Gate*>* gates = new vector<Gate*>;
 	gates->push_back(or1);
 	gates->push_back(and1);
@@ -66,10 +69,11 @@ int main(){
 	gates->push_back(xor3);
 
 	gates->push_back(and6);
+	gates->push_back(A);
+
 
 	/* Les sorties du Circuit  */
 
-	OutputGate *A = new OutputGate('A');
 
 	vector<OutputGate*>* ouputs = new vector<OutputGate*>;
 	ouputs->push_back(A);

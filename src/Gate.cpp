@@ -6,6 +6,7 @@ Gate::Gate(const string name) : entrees{new vector<Gate*>}, name{name}, valeurBo
 
 Gate::Gate(const string name, bool valeurBooleenne) : entrees{new vector<Gate*>}, name{name}, valeurBooleenne{valeurBooleenne}
 {
+
 }
 
 

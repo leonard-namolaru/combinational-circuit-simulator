@@ -22,7 +22,6 @@ private:
 	void ajoutCheminsApresOperationsLogiques();
 	void ajoutAsterisquesApresChemins(unsigned int level);
 	vector<Gate*>* trouverLesPortesLogiquesSuivantes(const vector<Gate*>* portesLogiquesPrecedentes);
-	void ajoutOuputs();
 public:
     Circuit(vector<InputGate*>* inputsCircuit, vector<Gate*>* gates, vector<OutputGate*>* ouputs);
     virtual ~Circuit();

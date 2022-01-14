@@ -105,8 +105,8 @@ void Circuit::ajoutNomsOperationsLogiques(const vector<Gate*>* portesLogiquesAjo
 	for(unsigned int i = 0 ; (i < affichageCircuit->at(NombreDeLignesDansAffichage - 1)->size()) && (d < portesLogiquesAjouterAffichage->size()) ; i++ ){
 		if (affichageCircuit->at(NombreDeLignesDansAffichage - 2)->at(i) == '|' && affichageCircuit->at(NombreDeLignesDansAffichage - 1)->at(i) == ' ') {
 			affichageCircuit->at(NombreDeLignesDansAffichage - 1)->at(i) = portesLogiquesAjouterAffichage->at(d)->getName().at(0);
-			affichageCircuit->at(NombreDeLignesDansAffichage - 1)->at(i + 1) = portesLogiquesAjouterAffichage->at(d)->getName().at(1);
-			affichageCircuit->at(NombreDeLignesDansAffichage - 1)->at(i + 2) = portesLogiquesAjouterAffichage->at(d)->getName().at(2);
+			if(portesLogiquesAjouterAffichage->at(d)->getName().size() > 1)  affichageCircuit->at(NombreDeLignesDansAffichage - 1)->at(i + 1) = portesLogiquesAjouterAffichage->at(d)->getName().at(1);
+			if(portesLogiquesAjouterAffichage->at(d)->getName().size() > 2) affichageCircuit->at(NombreDeLignesDansAffichage - 1)->at(i + 2) = portesLogiquesAjouterAffichage->at(d)->getName().at(2);
 			d++;
 
 		}
@@ -185,20 +185,6 @@ vector<Gate*>* Circuit::trouverLesPortesLogiquesSuivantes(const vector<Gate*>* p
 	return portesLogiquesSuivantes;
 } // trouverLesPortesLogiquesSuivantes()
 
-void Circuit::ajoutOuputs(){
-	int longueurLigne = affichageCircuit->at(0)->size();// Longueur d'une ligne
-	affichageCircuit->push_back( new vector<char>(longueurLigne, ' ') ) ; // Ajouter une  ligne à l'affichage du circuit
-
-	int NombreDeLignesDansAffichage = affichageCircuit->size(); // Le nombre de lignes de l'affichage du circuit, y compris la ligne nouvellement ajoutée
-	unsigned int d = 0;
-	for(unsigned int i = 0 ; i < affichageCircuit->at(NombreDeLignesDansAffichage - 2)->size() && d < ouputs->size() ; i++ ){
-		if (affichageCircuit->at(NombreDeLignesDansAffichage - 2)->at(i) == '|'){
-			affichageCircuit->at(NombreDeLignesDansAffichage - 1)->at(i) = ouputs->at(d)->getName().at(0);
-			d++;
-		}
-	}
-} // ajoutOuputs()
-
 Circuit::Circuit(vector<InputGate*>* inputsCircuit, vector<Gate*>* gates, vector<OutputGate*>* ouputs)
 : inputs{inputsCircuit}, ouputs{ouputs}, gates{gates}, affichageCircuit{new vector< vector<char>* >}, simulationPasParPas{new vector< vector<Gate*>* >} {
 
@@ -216,7 +202,9 @@ Circuit::Circuit(vector<InputGate*>* inputsCircuit, vector<Gate*>* gates, vector
 	while(portesLogiquesSuivantes->size() != 0) {
 		simulationPasParPas->push_back(portesLogiquesSuivantes);
 
-		ajoutAsterisquesApresChemins(level);
+		if(portesLogiquesSuivantes->at(0)->getName().size() > 1)
+			ajoutAsterisquesApresChemins(level);
+
 		ajoutNomsOperationsLogiques(portesLogiquesSuivantes);// Afficher les noms des opérations logiques
 		ajoutCheminsApresOperationsLogiques();
 
@@ -226,7 +214,6 @@ Circuit::Circuit(vector<InputGate*>* inputsCircuit, vector<Gate*>* gates, vector
 		portesLogiquesPrecedentes = portesLogiquesSuivantes;
 		portesLogiquesSuivantes = trouverLesPortesLogiquesSuivantes(portesLogiquesPrecedentes);
 	}
-	ajoutOuputs();
 }
 
 
@@ -290,17 +277,18 @@ void Circuit::simulation() {
 		for(unsigned int i = 0 ; i < simulationPasParPas->at(numeroDePas)->size() ; i++) {
 			cout << "**********************************************************************************************************************" << endl;
 			for(unsigned int j = 0  ; (j < stop) && (stop <=  simulationPasParPas->at(0)->size()) ; j++) {
-					cout << simulationPasParPas->at(numeroDePas)->at(j)->getName() << "(" << simulationPasParPas->at(numeroDePas)->at(j)->getEntrees()->at(0)->getName() << "," <<  simulationPasParPas->at(numeroDePas)->at(j)->getEntrees()->at(1)->getName() << ") : " << simulationPasParPas->at(numeroDePas)->at(j)->getValeurBooleenne() << "     ";
+					if(simulationPasParPas->at(numeroDePas)->at(j)->getEntrees()->size() > 1)
+						cout << simulationPasParPas->at(numeroDePas)->at(j)->getName() << "(" << simulationPasParPas->at(numeroDePas)->at(j)->getEntrees()->at(0)->getName() << "," <<  simulationPasParPas->at(numeroDePas)->at(j)->getEntrees()->at(1)->getName() << ") : " << simulationPasParPas->at(numeroDePas)->at(j)->getValeurBooleenne() << "     ";
+					else
+						cout << simulationPasParPas->at(numeroDePas)->at(j)->getName() << " = " << simulationPasParPas->at(numeroDePas)->at(j)->getValeurBooleenne() << "     ";
 			}
 			cout << endl;
 			cout << "**********************************************************************************************************************" << endl;
 			stop++;
 		}
 		cout << endl;
-
 		position = position + 4;
 	}
-
 
 }
 
@@ -317,4 +305,6 @@ void Circuit::changerValeursDesPortesEntree() {
 
 	for(unsigned int i = 0 ; i < inputs->size() ; i++)
 		affichageCircuit->at(i)->at(2) = to_string( inputs->at(i)->getValeurBooleenne() ).at(0); // to_string(int __val) ; char& string.at(size_type __n)
+
+
 }
