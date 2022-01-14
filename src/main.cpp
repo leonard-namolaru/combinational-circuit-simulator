@@ -108,6 +108,7 @@ int main(){
 					 break;
 			case 3 : circuit->changerValeursDesPortesEntree();
 					 break;
+
 			case 5 :
 					      std::cin >> expression;
 		                  std::cout<< expression << "\n"<< endl;
