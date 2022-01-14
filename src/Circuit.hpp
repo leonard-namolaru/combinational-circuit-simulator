@@ -18,11 +18,10 @@ private:
 	void ajoutCheminsApresInputs();
 	void ajoutNomsOperationsLogiques(const vector<Gate*>* portesLogiquesAjouterAffichage);
 	void ajoutCheminsApresOperationsLogiques();
-	void affichageAsterisquesApresChemins(unsigned int level);
+	void affichageAsterisquesApresChemins(unsigned int level, int nbPortesLogiquesPrecedentes);
 	vector<Gate*>* trouverLesPortesLogiquesSuivantes(const vector<Gate*>* portesLogiquesPrecedentes);
 	void ajoutOuputs();
 public:
-    Circuit(/* args */);
     Circuit(vector<InputGate*>* inputsCircuit, vector<Gate*>* gates, vector<OutputGate*>* ouputs);
     virtual ~Circuit();
     void afficheCircuit()  const;

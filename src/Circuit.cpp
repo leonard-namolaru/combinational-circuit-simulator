@@ -132,7 +132,7 @@ void Circuit::ajoutCheminsApresOperationsLogiques(){
 	} // for
 } // ajoutCheminsApresOperationsLogiques()
 
-void Circuit::affichageAsterisquesApresChemins(unsigned int level){
+void Circuit::affichageAsterisquesApresChemins(unsigned int level, int nbPortesLogiquesPrecedentes){
 	unsigned int longueurLigne = affichageCircuit->at(0)->size();// Longueur d'une ligne
 	affichageCircuit->push_back( new vector<char>(longueurLigne, ' ') ) ; // Ajouter une nouvelle ligne à l'affichage du circuit pour stocker des chemins (caractères '|')
 
@@ -159,12 +159,14 @@ void Circuit::affichageAsterisquesApresChemins(unsigned int level){
 	affichageCircuit->push_back( new vector<char>(longueurLigne, ' ') ) ; // Ajouter une  ligne à l'affichage du circuit
 	nombreDeLignes = affichageCircuit->size(); // Le nombre de lignes maintenant stockées dans le vecteur qui représente l'affichage du circuit.
 	alternance = true;
-	for(unsigned int i = 0 ; i < affichageCircuit->at(nombreDeLignes - 2)->size() ; i++) {
+	int counter = 0;
+	for(unsigned int i = 0 ; i < affichageCircuit->at(nombreDeLignes - 2)->size() && counter < nbPortesLogiquesPrecedentes ; i++) {
 		if( affichageCircuit->at(nombreDeLignes - 2)->at(i) == '*' ){
 				if(alternance){
 					if( i != 0 && affichageCircuit->at(nombreDeLignes - 2)->at(i - 1) == '*') {
 						if( i != longueurLigne - 1 && affichageCircuit->at(nombreDeLignes - 2)->at(i + 1) == ' ') {
 								affichageCircuit->at(nombreDeLignes - 1)->at(i) = '|';
+								counter++;
 								alternance = false;
 								i++;
 						}
@@ -175,6 +177,7 @@ void Circuit::affichageAsterisquesApresChemins(unsigned int level){
 						if( i != longueurLigne - 1 && affichageCircuit->at(nombreDeLignes - 2)->at(i + 1) == '*') {
 							affichageCircuit->at(nombreDeLignes - 1)->at(i) = '|';
 							alternance = true;
+							counter++;
 							i++;
 						}
 					}
@@ -221,9 +224,8 @@ void Circuit::ajoutOuputs(){
 
 } // ajoutOuputs()
 
-
 Circuit::Circuit(vector<InputGate*>* inputsCircuit, vector<Gate*>* gates, vector<OutputGate*>* ouputs)
-: inputs{inputsCircuit}, affichageCircuit{new vector< vector<char>* >}, gates{gates}, ouputs{ouputs}  {
+: inputs{inputsCircuit}, ouputs{ouputs}, gates{gates}, affichageCircuit{new vector< vector<char>* >} {
 
 	vector<Gate*>* portesLogiquesAvecEntreesQuiSontEntreesDuCircuit = ajoutInputs();
 	ajoutCheminsApresInputs();
@@ -231,10 +233,10 @@ Circuit::Circuit(vector<InputGate*>* inputsCircuit, vector<Gate*>* gates, vector
 	ajoutCheminsApresOperationsLogiques();
 
 	vector<Gate*>* portesLogiquesSuivantes = trouverLesPortesLogiquesSuivantes(portesLogiquesAvecEntreesQuiSontEntreesDuCircuit);
-	vector<Gate*>* portesLogiquesPrecedentes;
+	vector<Gate*>* portesLogiquesPrecedentes = portesLogiquesAvecEntreesQuiSontEntreesDuCircuit;
 	int level = 1;
 	while(portesLogiquesSuivantes->size() != 0) {
-		affichageAsterisquesApresChemins(level);
+		affichageAsterisquesApresChemins(level, portesLogiquesPrecedentes->size());
 		ajoutNomsOperationsLogiques(portesLogiquesSuivantes);// Afficher les noms des opérations logiques
 		ajoutCheminsApresOperationsLogiques();
 		level += 2;
@@ -245,10 +247,6 @@ Circuit::Circuit(vector<InputGate*>* inputsCircuit, vector<Gate*>* gates, vector
 	ajoutOuputs();
 }
 
-Circuit::Circuit()
-{
-
-}
 
 Circuit::~Circuit()
 {
