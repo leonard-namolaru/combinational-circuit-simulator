@@ -132,61 +132,38 @@ void Circuit::ajoutCheminsApresOperationsLogiques(){
 	} // for
 } // ajoutCheminsApresOperationsLogiques()
 
-void Circuit::affichageAsterisquesApresChemins(unsigned int level, int nbPortesLogiquesPrecedentes){
+void Circuit::ajoutAsterisquesApresChemins(unsigned int level){
 	unsigned int longueurLigne = affichageCircuit->at(0)->size();// Longueur d'une ligne
 	affichageCircuit->push_back( new vector<char>(longueurLigne, ' ') ) ; // Ajouter une nouvelle ligne à l'affichage du circuit pour stocker des chemins (caractères '|')
 
 	int nombreDeLignes = affichageCircuit->size(); // Le nombre de lignes maintenant stockées dans le vecteur qui représente l'affichage du circuit.
 	bool alternance = false;
-
+	vector<int> memo;
 
 	for(unsigned int i = 0 ; i < affichageCircuit->at( affichageCircuit->size() -2 )->size() ; i++) {
+		unsigned int j, count;
 		if( affichageCircuit->at( affichageCircuit->size() -2 )->at(i) == '|' ){
 			if(alternance){
 				alternance = false;
 				affichageCircuit->at( affichageCircuit->size() -1 )->at(i) = '*';
-				for(unsigned int j = i - 1, count = 0 ; count < level && j > 0 ; j--, count++)
+				for(j = i - 1, count = 0 ; count < level && j > 0 ; j--, count++)
 					affichageCircuit->at( affichageCircuit->size() -1 )->at(j) = '*';
+				memo.push_back(j + 1);
 			} else {
 				alternance = true;
 				affichageCircuit->at( affichageCircuit->size() -1 )->at(i) = '*';
-				for(unsigned int j = i + 1, count = 0 ; count < level && j < longueurLigne ; j++, count++)
+				for(j = i + 1, count = 0 ; count < level && j < longueurLigne ; j++, count++)
 					affichageCircuit->at( affichageCircuit->size() -1 )->at(j) = '*';
+				memo.push_back(j - 1);
 			}
 		}
 	}
 
 	affichageCircuit->push_back( new vector<char>(longueurLigne, ' ') ) ; // Ajouter une  ligne à l'affichage du circuit
 	nombreDeLignes = affichageCircuit->size(); // Le nombre de lignes maintenant stockées dans le vecteur qui représente l'affichage du circuit.
-	alternance = true;
-	int counter = 0;
-	for(unsigned int i = 0 ; i < affichageCircuit->at(nombreDeLignes - 2)->size() && counter < nbPortesLogiquesPrecedentes ; i++) {
-		if( affichageCircuit->at(nombreDeLignes - 2)->at(i) == '*' ){
-				if(alternance){
-					if( i != 0 && affichageCircuit->at(nombreDeLignes - 2)->at(i - 1) == '*') {
-						if( i != longueurLigne - 1 && affichageCircuit->at(nombreDeLignes - 2)->at(i + 1) == ' ') {
-								affichageCircuit->at(nombreDeLignes - 1)->at(i) = '|';
-								counter++;
-								alternance = false;
-								i++;
-						}
-					}
-				}
-				else {
-					if( i != 0 && affichageCircuit->at(nombreDeLignes - 2)->at(i - 1) == ' ') {
-						if( i != longueurLigne - 1 && affichageCircuit->at(nombreDeLignes - 2)->at(i + 1) == '*') {
-							affichageCircuit->at(nombreDeLignes - 1)->at(i) = '|';
-							alternance = true;
-							counter++;
-							i++;
-						}
-					}
-				}
-		}
-	}
-
-
-} // affichageAsterisquesApresChemins()
+	for(unsigned int i = 0 ; i < memo.size() ; i++)
+		affichageCircuit->at(nombreDeLignes - 1)->at(memo.at(i)) = '|';
+} // ajoutAsterisquesApresChemins()
 
 vector<Gate*>* Circuit::trouverLesPortesLogiquesSuivantes(const vector<Gate*>* portesLogiquesPrecedentes){
 	vector<Gate*>* portesLogiquesSuivantes = new vector<Gate*>;
@@ -235,11 +212,14 @@ Circuit::Circuit(vector<InputGate*>* inputsCircuit, vector<Gate*>* gates, vector
 	vector<Gate*>* portesLogiquesSuivantes = trouverLesPortesLogiquesSuivantes(portesLogiquesAvecEntreesQuiSontEntreesDuCircuit);
 	vector<Gate*>* portesLogiquesPrecedentes = portesLogiquesAvecEntreesQuiSontEntreesDuCircuit;
 	int level = 1;
+	int index = 1;
 	while(portesLogiquesSuivantes->size() != 0) {
-		affichageAsterisquesApresChemins(level, portesLogiquesPrecedentes->size());
+		ajoutAsterisquesApresChemins(level);
 		ajoutNomsOperationsLogiques(portesLogiquesSuivantes);// Afficher les noms des opérations logiques
 		ajoutCheminsApresOperationsLogiques();
-		level += 2;
+
+		level = level + (2 * index);
+		index++;
 
 		portesLogiquesPrecedentes = portesLogiquesSuivantes;
 		portesLogiquesSuivantes = trouverLesPortesLogiquesSuivantes(portesLogiquesPrecedentes);

@@ -18,7 +18,7 @@ private:
 	void ajoutCheminsApresInputs();
 	void ajoutNomsOperationsLogiques(const vector<Gate*>* portesLogiquesAjouterAffichage);
 	void ajoutCheminsApresOperationsLogiques();
-	void affichageAsterisquesApresChemins(unsigned int level, int nbPortesLogiquesPrecedentes);
+	void ajoutAsterisquesApresChemins(unsigned int level);
 	vector<Gate*>* trouverLesPortesLogiquesSuivantes(const vector<Gate*>* portesLogiquesPrecedentes);
 	void ajoutOuputs();
 public:
