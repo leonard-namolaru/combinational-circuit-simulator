@@ -402,7 +402,7 @@ Circuit* Circuit::expressionTextuelleToCircuit(const string& expressionTextuelle
 	gatesVector->push_back( gate );
 
 	OutputGate* output = new OutputGate('A', gate);
-	gatesVector->push_back( gate );
+	gatesVector->push_back( output );
 	outputsVector->push_back(output);
 
 	return new Circuit(inputsVector, gatesVector, outputsVector);
