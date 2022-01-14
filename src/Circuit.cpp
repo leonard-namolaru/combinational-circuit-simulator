@@ -256,13 +256,30 @@ void Circuit::simulation() {
 
 	cout << endl;
 
-	for(unsigned int i = 0 ; i < inputs->size() ; i++){
+	unsigned int nbInputs =  inputs->size();
+	for(unsigned int i = 0 ; i < nbInputs ; i++){
 		for(unsigned int j = 0 ; j < affichageCircuit->at(i)->size() ; j++){
 			cout << affichageCircuit->at(i)->at(j);
 		}
 		cout << endl;
 	}
 	cout << endl;
+
+	cout << "**********************************************************************************************************************" << endl;
+	for(unsigned i = 0 ; i < inputs->size() ; i++)
+		cout << inputs->at(i)->getInputName() << " : " << inputs->at(i)->getValEnBinaire() << "     ";
+	cout << endl;
+	cout << "**********************************************************************************************************************" << endl;
+
+
+	for(unsigned int i = nbInputs ; i < nbInputs + 2 ; i++){
+		for(unsigned int j = 0 ; j < affichageCircuit->at(i)->size() ; j++){
+			cout << affichageCircuit->at(i)->at(j);
+		}
+		cout << endl;
+	}
+	cout << endl;
+
 }
 
 void Circuit::changerValeursDesPortesEntree() {
