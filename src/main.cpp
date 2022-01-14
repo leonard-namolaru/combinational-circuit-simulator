@@ -91,6 +91,7 @@ int main(){
 		cin >> choix;
 
 		switch(choix) {
+
 			case 1 : circuit->afficheCircuit();
 					 break;
 			case 2 : circuit->simulation();
