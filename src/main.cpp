@@ -80,6 +80,12 @@ int main(){
 
 	Circuit* circuit = new Circuit(inputsCircuit, gates, ouputs);
 
+	/* L'entrée  */
+	string expression("");
+    vector<char> entree;
+	int i=0;
+		char ch;
+
 	int choix = 1;
 	do{
 		cout << "**** MENU : simulateur de circuit combinatoire ***" << endl;
@@ -102,6 +108,27 @@ int main(){
 					 break;
 			case 3 : circuit->changerValeursDesPortesEntree();
 					 break;
+			case 5 :
+					      std::cin >> expression;
+		                  std::cout<< expression << "\n"<< endl;
+		                  int taille;
+						  taille = expression.length();
+
+						  cout<<"taille"<<taille<<endl;
+						   std::cout<<"contenu de expression" << "\n\n"<< endl;
+
+
+
+				           for (int j=0; j<taille; j++){
+					            entree.push_back(expression.at(j));
+				            }
+
+
+				           for (int k=0; k<entree.size(); k++){
+					          cout<<  entree.at(k);
+				            }
+
+					   break;
 			case 8 : // Quitter
 				     break;
 			default : cout << "Option pas dispo" << endl;
