@@ -13,6 +13,7 @@ private:
     /* data */
 public:
     OutputGate(char name, Gate* g);
+    bool getValeurBooleenne() override;
     virtual ~OutputGate();
 };
 

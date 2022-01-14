@@ -8,3 +8,9 @@ OutputGate::OutputGate(char name, Gate* g) : Gate{std::string(1,name)}
 OutputGate::~OutputGate()
 {
 }
+
+bool OutputGate::getValeurBooleenne() {
+	valeurBooleenne = this->getEntrees()->at(0)->getValeurBooleenne();
+	return valeurBooleenne;
+}
+
