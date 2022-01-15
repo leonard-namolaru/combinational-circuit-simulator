@@ -8,7 +8,6 @@
 #include "Circuit.hpp"
 
 int main(){
-
 	/* Les entrées */
 
 	InputGate *a = new InputGate('a');
@@ -93,6 +92,7 @@ int main(){
 		cout << "7- Relire un circuit qui est dans un fichier" << endl;
 		cout << "8- Quitter" << endl;
 
+		cout << "Votre choix : ";
 		cin >> choix;
 
 		switch(choix) {
