@@ -103,6 +103,8 @@ int main(){
 					 break;
 			case 3 : circuit->changerValeursDesPortesEntree();
 					 break;
+			case 4 : cout << circuit->afficherSousFormeTextuelle() << endl;
+					 break;
 			case 5 :  cout << "Synthétiser un circuit à partir d'une expression textuelle" << endl;
 					  cout << "Expression textuelle : ";
 					  cin >> expressionTextuelle;

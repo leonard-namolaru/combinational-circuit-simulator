@@ -51,7 +51,9 @@ Gate* Outils::getPorteLogiqueByName(const string& name, Gate* input1, Gate* inpu
 	        {"xor",1},
 			{"XOR",1},
 			{"OR",2},
+			{"OR_",2},
 	        {"or",2},
+	        {"or_",2},
 			{"AND",3},
 	        {"and",3}
 	};
@@ -73,4 +75,25 @@ Gate* Outils::getPorteLogiqueByName(const string& name, Gate* input1, Gate* inpu
 	} // switch
 
 	return gate;
+}
+
+string Outils::gateToStringWithGatesNames(Gate* gate) {
+	string str = gate->getName();
+
+	if(gate->getEntrees()->size() > 0)  {
+		str.append("(");
+		str.append( gateToStringWithGatesNames(gate->getEntrees()->at(0)) );
+	}
+
+	if(gate->getEntrees()->size() > 1)  {
+		str.append( "," );
+		str.append( gateToStringWithGatesNames(gate->getEntrees()->at(1)) );
+	}
+
+	if(gate->getEntrees()->size() > 0)  {
+		str.append(")");
+
+	}
+
+   return str;
 }

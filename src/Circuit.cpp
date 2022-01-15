@@ -191,6 +191,15 @@ vector<Gate*>* Circuit::trouverLesPortesLogiquesSuivantes(const vector<Gate*>* p
 	return portesLogiquesSuivantes;
 } // trouverLesPortesLogiquesSuivantes()
 
+
+string Circuit::afficherSousFormeTextuelle() {
+	string str = ouputs->at(0)->getName();
+	str.append("=");
+	str.append( Outils::gateToStringWithGatesNames( ouputs->at(0)->getEntrees()->at(0)) );
+
+	return str;
+}
+
 Circuit::Circuit(vector<InputGate*>* inputsCircuit, vector<Gate*>* gates, vector<OutputGate*>* ouputs)
 : inputs{inputsCircuit}, ouputs{ouputs}, gates{gates}, affichageCircuit{new vector< vector<char>* >}, simulationPasParPas{new vector< vector<Gate*>* >} {
 
@@ -220,13 +229,13 @@ Circuit::Circuit(vector<InputGate*>* inputsCircuit, vector<Gate*>* gates, vector
 		portesLogiquesPrecedentes = portesLogiquesSuivantes;
 		portesLogiquesSuivantes = trouverLesPortesLogiquesSuivantes(portesLogiquesPrecedentes);
 	}
+
 }
 
 
 Circuit::~Circuit()
 {
 }
-
 
 void Circuit::afficheCircuit() const {
 	for(unsigned int i = 0 ; i < affichageCircuit->size() ; i++){
@@ -355,7 +364,6 @@ Circuit* Circuit::expressionTextuelleToCircuit(const string& expressionTextuelle
 					gatesVector->push_back( gate );
 			} else {
 				int level = 1;
-				int m = 1;
 				bool stop = false;
 				for(int j = i + 1 ; j < listePortesLogiquesEtEntrees->size() && stop == false ; j++) {
 					if( listePortesLogiquesEtEntrees->at(j).size() == 1 )
@@ -367,7 +375,7 @@ Circuit* Circuit::expressionTextuelleToCircuit(const string& expressionTextuelle
 				cout << level << endl;
 				int numGates = gatesVector->size();
 				Gate* input1 = gatesVector->at(numGates - 1);
-				Gate* input2 = input2 = gatesVector->at(((numGates - 1))-level);
+				Gate* input2 = gatesVector->at(((numGates - 1))-level);
 				Gate* gate = Outils::getPorteLogiqueByName(gateName, input1, input2);
 				gatesVector->push_back( gate );
 			} // else
