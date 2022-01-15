@@ -1,3 +1,10 @@
+/*
+ * Outils.hpp
+ * Projet : Simulateur de circuit combinatoire - UE Langages à objets avancés 2021 - 2022
+ * M1 : Master Informatique fondamentale et appliquée - Université de Paris.
+ * @author AIT BENALI faycal, NAMOLARU leonard
+ */
+
 #ifndef OUTILS
 #define OUTILS
 
@@ -7,9 +14,16 @@
 
 using namespace std;
 
+/**
+ * Afin de ne pas trop charger la classe Circuit,
+ * certaines fonctions auxiliaires ont été définies dans cette classe comme méthodes "static".
+ */
 class Outils {
 public:
+	// Diviser une chaîne en jetons.
 	static vector<string>* StringTokenizer(string str, string delim);
+
+	// Diviser toutes les chaînes stockées dans un vecteur de chaînes en jetons.
 	static vector<string>* StringVectorTokenizer(vector<string>* strVecteur, string delim);
 	static Gate* getPorteLogiqueByName(const string& name, Gate* input1, Gate* input2);
 	static string gateToStringWithGatesNames(Gate* gate);

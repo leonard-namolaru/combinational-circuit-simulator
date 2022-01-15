@@ -5,6 +5,11 @@
 #include "AndGate.hpp"
 #include <map>
 
+/**
+ * vector<string>* Outils::StringTokenizer(string str, string delim) : Diviser une chaîne en jetons.
+ * Le string de l'argument delim est le délimiteur pour séparer les jetons. Le string délimiteur lui-même n'est pas traités comme un jeton.
+ * La fonction renvoie un pointeur vers un vecteur avec tous les jetons.
+ */
 vector<string>* Outils::StringTokenizer(string str, string delim) {
 	const size_t NOT_FOUND = -1;
 	vector<string>* tokens = new vector<string>;
@@ -23,6 +28,11 @@ vector<string>* Outils::StringTokenizer(string str, string delim) {
 	return tokens;
 }
 
+/**
+ * vector<string>* Outils::StringVectorTokenizer(vector<string>* strVecteur, string delim)
+ * Diviser toutes les chaînes stockées dans un vecteur de chaînes en jetons.
+ * La fonction renvoie un pointeur vers un vecteur avec tous les jetons.
+ */
 vector<string>* Outils::StringVectorTokenizer(vector<string>* strVecteur, string delim) {
 	const size_t NOT_FOUND = -1;
 	vector<string>* tokens = new vector<string>;
@@ -45,6 +55,9 @@ vector<string>* Outils::StringVectorTokenizer(vector<string>* strVecteur, string
 	return tokens;
 }
 
+/**
+ * Gate* Outils::getPorteLogiqueByName(const string& name, Gate* input1, Gate* input2)
+ */
 Gate* Outils::getPorteLogiqueByName(const string& name, Gate* input1, Gate* input2) {
 	Gate* gate = nullptr;
 	map<string, int> mapOfGates = {
