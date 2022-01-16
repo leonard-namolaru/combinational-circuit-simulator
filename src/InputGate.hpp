@@ -9,6 +9,7 @@
 #define INPUTGATE
 
 #include "Gate.hpp"
+#include "CircuitException.hpp"
 #include <vector>
 #include <iostream>
 

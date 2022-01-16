@@ -55,7 +55,7 @@ void Circuit::afficheCircuit() const {
 string Circuit::afficherSousFormeTextuelle() const {
 	string str = ouputs->at(0)->getName(); // On commence par afficher le nom de la sortie
 	str.append("=");
-	str.append( Outils::gateToStringWithGatesNames( ouputs->at(0)->getEntrees()->at(0)) );
+	str.append( ouputs->at(0)->getEntrees()->at(0)->getItineraireRecursif() );
 
 	return str;
 } // afficherSousFormeTextuelle()
@@ -439,7 +439,7 @@ Circuit* Circuit::expressionTextuelleToCircuit(const string& expressionTextuelle
 					int numInputs = inputsVector->size();
 					InputGate* input1 = inputsVector->at(numInputs - 1);
 					InputGate* input2 = inputsVector->at(numInputs - 2);
-					Gate* gate = Outils::getPorteLogiqueByName(gateName, input1, input2);
+					Gate* gate = Gate::getGateByName(gateName, input1, input2);
 					gatesVector->push_back( gate );
 			} else {
 				int level = 1;
@@ -455,7 +455,7 @@ Circuit* Circuit::expressionTextuelleToCircuit(const string& expressionTextuelle
 				int numGates = gatesVector->size();
 				Gate* input1 = gatesVector->at(numGates - 1);
 				Gate* input2 = gatesVector->at(((numGates - 1))-level);
-				Gate* gate = Outils::getPorteLogiqueByName(gateName, input1, input2);
+				Gate* gate = Gate::getGateByName(gateName, input1, input2);
 				gatesVector->push_back( gate );
 			} // else
 		} // else

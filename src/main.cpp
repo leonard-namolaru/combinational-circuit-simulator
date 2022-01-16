@@ -12,7 +12,7 @@
 #include "AndGate.hpp"
 #include "XorGate.hpp"
 #include "Circuit.hpp"
-
+#include "CircuitException.hpp"
 int main(){
 
 	/* **** EXEMPLE DE CONSTRUCTION D'UN CIRCUIT À L'AIDE DES OBJETS APPROPRIÉS **** */

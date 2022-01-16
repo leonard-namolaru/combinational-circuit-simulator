@@ -5,7 +5,7 @@
  * @author AIT BENALI faycal, NAMOLARU leonard
  */
 #include "InputGate.hpp"
-#include "Outils.hpp"
+#include "CircuitException.hpp"
 
 /**
  * Constructeur.
@@ -14,10 +14,10 @@ InputGate::InputGate(const char nomInputGate) : Gate{std::string(1,nomInputGate)
 	// Le nom dune entree (InputGate) ne peut etre que une lettre minuscule.
 	try {
 		if(nomInputGate < 'a' || nomInputGate > 'z')
-			throw 1;
-	} catch(int codeErreur) {
-		cerr << Outils::getMessageErreurByCodeErreur(codeErreur) << endl;
-		exit(EXIT_FAILURE);
+			throw CircuitException("Le nom dune entree (InputGate) ne peut etre que une lettre minuscule. Une tentative a apparemment ete faite pour utiliser un autre caractere a cette fin");
+	} catch(const CircuitException& circuitException) {
+	cerr << circuitException.getMessage() << endl;
+	exit(EXIT_FAILURE);
 	}
 }
 

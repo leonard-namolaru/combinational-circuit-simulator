@@ -20,11 +20,14 @@ protected:
    string nomGate;
    vector<Gate*>* entrees;
    bool valeurBooleenne; // Valeur booléenne.
+
+   Gate(const string& nomGate, bool valeurBooleenne); // Constructeur 1.
+   Gate(const string& nomGate); // Constructeur 2.
 public:
-    Gate(const string& nomGate, bool valeurBooleenne); // Constructeur 1.
-    Gate(const string& nomGate); // Constructeur 2.
+    static Gate* getGateByName(const string& name, Gate* input1, Gate* input2);
     virtual ~Gate();
 
+    string getItineraireRecursif() const;
     vector<Gate*>* getEntrees() const;
     string getName() const;
     virtual bool getValeurBooleenne();

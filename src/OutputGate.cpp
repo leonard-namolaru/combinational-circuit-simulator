@@ -5,7 +5,7 @@
  * @author AIT BENALI faycal, NAMOLARU leonard
  */
 #include "OutputGate.hpp"
-#include "Outils.hpp"
+#include "CircuitException.hpp"
 
 /**
  * Constructeur.
@@ -15,9 +15,9 @@ OutputGate::OutputGate(const char nomOutputGate, Gate* g) : Gate{std::string(1,n
 	// Le nom dune sortie (OutputGate) ne peut etre que une lettre majuscule.
 	try {
 		if(nomOutputGate < 'A' || nomOutputGate > 'Z')
-			throw 2;
-	} catch(int codeErreur) {
-		cerr << Outils::getMessageErreurByCodeErreur(codeErreur) << endl;
+			throw CircuitException("Le nom dune sortie (OutputGate) ne peut etre que une lettre majuscule. Une tentative a apparemment ete faite pour utiliser un autre caractere a cette fin.");
+	} catch(const CircuitException& circuitException) {
+		cerr << circuitException.getMessage() << endl;
 		exit(EXIT_FAILURE);
 	}
 	entrees->push_back(g);
