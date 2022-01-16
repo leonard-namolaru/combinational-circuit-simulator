@@ -1,7 +1,7 @@
 /*
  * AndGate.cpp
- * Projet : Simulateur de circuit combinatoire - UE Langages à objets avancés 2021 - 2022
- * M1 : Master Informatique fondamentale et appliquée - Université de Paris.
+ * Projet : Simulateur de circuit combinatoire - UE Langages ï¿½ objets avancï¿½s 2021 - 2022
+ * M1 : Master Informatique fondamentale et appliquï¿½e - Universitï¿½ de Paris.
  * @author AIT BENALI faycal, NAMOLARU leonard
  */
 #include "AndGate.hpp"
@@ -12,11 +12,11 @@
  */
 AndGate::AndGate(Gate *g1, Gate *g2) : Gate{"AND", false}
 {
-	// La longueur du nom d'une entrée qui est aussi une entrée du circuit est d'un caractère,
-	// la longueur du nom d'une entrée qui est une porte logique est de 3 caractères.
+	// La longueur du nom d'une entrï¿½e qui est aussi une entrï¿½e du circuit est d'un caractï¿½re,
+	// la longueur du nom d'une entrï¿½e qui est une porte logique est de 3 caractï¿½res.
 	try {
 		if(g1->getName().size() != g2->getName().size())
-			throw CircuitException("Une porte logique peut avoir comme entrées deux entrées du circuit ou deux entrées qui sont des portes logiques. Mais il n'est pas possible de transférer une entrée du premier type et une seconde entrée du second type.");
+			throw CircuitException("Une porte logique peut avoir comme entrï¿½es deux entrï¿½es du circuit ou deux entrï¿½es qui sont des portes logiques. Mais il n'est pas possible de transfï¿½rer une entrï¿½e du premier type et une seconde entrï¿½e du second type.");
 	} catch(const CircuitException& circuitException) {
 	cerr << circuitException.getMessage() << endl;
 	exit(EXIT_FAILURE);
