@@ -5,9 +5,12 @@
  * @author AIT BENALI faycal, NAMOLARU leonard
  */
 #include "Gate.hpp"
+#include "XnorGate.hpp"
 #include "XorGate.hpp"
 #include "OrGate.hpp"
 #include "AndGate.hpp"
+#include "NorGate.hpp"
+#include "NandGate.hpp"
 #include <map>
 
 /**
@@ -70,7 +73,17 @@ Gate* Gate::getGateByName(const string& name, Gate* input1, Gate* input2) {
 	        {"or",2},
 	        {"or_",2},
 			{"AND",3},
-	        {"and",3}
+	        {"and",3},
+			{"NOR",4},
+	        {"nor",4},
+			{"XNO",5},
+	        {"xno",5},
+			{"XNOR",5},
+	        {"xnor",5},
+			{"NAN",6},
+	        {"nan",6},
+			{"NAND",6},
+	        {"nand",6}
 	};
 
 	if(mapOfGates.count(name) == 0)
@@ -86,7 +99,15 @@ Gate* Gate::getGateByName(const string& name, Gate* input1, Gate* input2) {
 		case 3:
 				gate = new AndGate(input1, input2);
 				break;
-
+		case 4:
+				gate = new NorGate(input1, input2);
+				break;
+		case 5:
+				gate = new XnorGate(input1, input2);
+				break;
+		case 6:
+				gate = new NandGate(input1, input2);
+				break;
 	} // switch
 
 	return gate;

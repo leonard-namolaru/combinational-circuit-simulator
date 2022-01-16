@@ -134,8 +134,19 @@ Circuit::Circuit(vector<InputGate*>* inputsCircuit, vector<Gate*>* gates, vector
 
 Circuit::~Circuit()
 {
+	for(unsigned int i = 0 ; i < inputs->size() ; i++)
+		delete inputs->at(i);
 
+	for(unsigned int i = 0 ; i < gates->size() ; i++)
+		delete gates->at(i);
 
+	for(unsigned int i = 0 ; i < affichageCircuit->size() ; i++)
+		delete affichageCircuit->at(i);
+
+	delete inputs;
+	delete gates;
+	delete ouputs; // Une sortie du circuit doit être ajoutée à la fois au vecteur des portes logiques (gates) et au vecteur des sorties (ouputs).
+	delete affichageCircuit;
 }
 
 
@@ -372,7 +383,7 @@ void Circuit::simulation() {
 	cout << endl;
 	cout << "**********************************************************************************************************************" << endl;
 
-	int position = nbInputs;
+	unsigned int position = nbInputs;
 	for(unsigned int numeroDePas = 0 ; numeroDePas < simulationPasParPas->size() ; numeroDePas++) {
 
 		for(unsigned int i = position ; i < position + 2 && i < affichageCircuit->size() ; i++){
@@ -383,7 +394,7 @@ void Circuit::simulation() {
 		}
 
 
-		int stop = 1;
+		unsigned int stop = 1;
 		for(unsigned int i = 0 ; i < simulationPasParPas->at(numeroDePas)->size() ; i++) {
 			cout << "**********************************************************************************************************************" << endl;
 			for(unsigned int j = 0  ; (j < stop) && (stop <=  simulationPasParPas->at(0)->size()) ; j++) {
@@ -405,24 +416,21 @@ void Circuit::simulation() {
 Circuit* Circuit::expressionTextuelleToCircuit(const string& expressionTextuelle) {
 	const size_t NOT_FOUND = -1;
 
-	int indiceDeSigneEgal = expressionTextuelle.find("=");
+	size_t indiceDeSigneEgal = expressionTextuelle.find("=");
 	if(indiceDeSigneEgal == NOT_FOUND)
 		return nullptr;
 
 	string expressionPortesLogiques = expressionTextuelle.substr(indiceDeSigneEgal + 1);
-	string nomOutput = expressionTextuelle.substr(0, indiceDeSigneEgal - 1);
+	string nomOutput = expressionTextuelle.substr(0, indiceDeSigneEgal);
 
 	vector<string>* tokens = Outils::StringTokenizer(std::string(expressionPortesLogiques), ",");
 	vector<string>* tokens2 = Outils::StringVectorTokenizer(tokens, "(");
 	vector<string>* listePortesLogiquesEtEntrees = Outils::StringVectorTokenizer(tokens2, ")");
 
-	// TEST
-	for(int i = listePortesLogiquesEtEntrees->size() - 1 ; i >= 0  ; i--)
-		cout << listePortesLogiquesEtEntrees->at(i) << endl;
-
 	vector<InputGate*>* inputsVector = new vector<InputGate*>;
 	vector<Gate*>* gatesVector = new vector<Gate*>;
 	vector<OutputGate*>* outputsVector = new vector<OutputGate*>;
+
 	map<string, string> tableauNomsInputs;
 	for(int i = listePortesLogiquesEtEntrees->size() - 1 ; i >= 0  ; i--) {
 		string gateName = listePortesLogiquesEtEntrees->at(i);
@@ -434,8 +442,8 @@ Circuit* Circuit::expressionTextuelleToCircuit(const string& expressionTextuelle
 			}
 
 		} else {
-
-			if((i + 2 < listePortesLogiquesEtEntrees->size()) && (listePortesLogiquesEtEntrees->at(i + 1).size() == 1 && listePortesLogiquesEtEntrees->at(i + 2).size() == 1)){
+			int vectorSize = listePortesLogiquesEtEntrees->size();
+			if((i + 2 < vectorSize) && (listePortesLogiquesEtEntrees->at(i + 1).size() == 1 && listePortesLogiquesEtEntrees->at(i + 2).size() == 1)){
 					int numInputs = inputsVector->size();
 					InputGate* input1 = inputsVector->at(numInputs - 1);
 					InputGate* input2 = inputsVector->at(numInputs - 2);
@@ -444,14 +452,22 @@ Circuit* Circuit::expressionTextuelleToCircuit(const string& expressionTextuelle
 			} else {
 				int level = 1;
 				bool stop = false;
-				for(int j = i + 1 ; j < listePortesLogiquesEtEntrees->size() && stop == false ; j++) {
+				for(unsigned int j = i + 1 ; j < listePortesLogiquesEtEntrees->size() && stop == false ; j++) {
 					if( listePortesLogiquesEtEntrees->at(j).size() == 1 )
 						stop = true;
 					else
 						level*=2;
 				}
 				level--;
-				cout << level << endl;
+
+				try {
+					if(level > 15)
+						throw CircuitException("Le circuit est trop grand (trop de niveaux).");
+				} catch(const CircuitException& circuitException) {
+				cerr << circuitException.getMessage() << endl;
+				exit(EXIT_FAILURE);
+				}
+
 				int numGates = gatesVector->size();
 				Gate* input1 = gatesVector->at(numGates - 1);
 				Gate* input2 = gatesVector->at(((numGates - 1))-level);
@@ -461,7 +477,7 @@ Circuit* Circuit::expressionTextuelleToCircuit(const string& expressionTextuelle
 		} // else
 	} // for
 
-	OutputGate* output = new OutputGate( 'A', gatesVector->at(gatesVector->size() - 1) );
+	OutputGate* output = new OutputGate( nomOutput.at(0), gatesVector->at(gatesVector->size() - 1) );
 	gatesVector->push_back( output );
 	outputsVector->push_back(output);
 

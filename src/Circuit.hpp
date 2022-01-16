@@ -40,6 +40,4 @@ public:
     void sauverCircuitDansFichier(const string& nomFichier) const;
 };
 
-
-
 #endif

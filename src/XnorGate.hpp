@@ -4,8 +4,8 @@
  * M1 : Master Informatique fondamentale et appliquée - Université de Paris.
  * @author AIT BENALI faycal, NAMOLARU leonard
  */
-#ifndef XORGATE
-#define XORGATE
+#ifndef XNORGATE
+#define XNORGATE
 
 #include <vector>
 #include <iostream>

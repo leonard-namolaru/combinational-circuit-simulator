@@ -124,13 +124,20 @@ int main(){
 			         cout << endl;
 					 break;
 			case 5 :  cout << "Synthétiser un circuit à partir d'une expression textuelle" << endl;
+			          cout << "Veuillez ne pas utiliser d'espaces svp. Un exemple du plus petit circuit qui peut être créé : A=and(a,b)" << endl;
+			          cout << "Une porte logique peut avoir comme entrées deux entrées du circuit ou deux entrées qui sont des portes logiques. Mais il n'est pas possible de transférer une entrée du premier type et une seconde entrée du second type.."<< endl;
+			          cout << "Noms des portes logiques utilisables : xor (ainsi que XOR), or (ainsi que OR,OR_ et or_), and (ainsi que AND), nor (ainsi que NOR),"<< endl;
+			          cout << "xnor (ainsi que XNOR,xno et XNO), nand (ainsi que NAND,nan et NAN) "<< endl;
+			          cout << "La longueur du nom d'une entrée qui est aussi une entrée du circuit est d'un caractère."<< endl;
 					  cout << "Expression textuelle : ";
 					  cin >> expressionTextuelle;
+					  delete circuit;
 					  circuit = Circuit::expressionTextuelleToCircuit(expressionTextuelle);
-					   break;
+					  break;
 			case 6 : circuit->sauverCircuitDansFichier("circuit.txt"); // Sauver un circuit dans un fichier
 				     break;
-			case 7 : circuit = Circuit::relireCircuitQuiEstDansUnFichier("circuit.txt"); // Relire un circuit qui est dans un fichier
+			case 7 : delete circuit;
+				     circuit = Circuit::relireCircuitQuiEstDansUnFichier("circuit.txt"); // Relire un circuit qui est dans un fichier
 				     break;
 			case 8 : // Quitter
 				     break;
