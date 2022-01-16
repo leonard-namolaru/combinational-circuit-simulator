@@ -128,7 +128,7 @@ int main(){
 			          cout << "Une porte logique peut avoir comme entrées deux entrées du circuit ou deux entrées qui sont des portes logiques. Mais il n'est pas possible de transférer une entrée du premier type et une seconde entrée du second type.."<< endl;
 			          cout << "Noms des portes logiques utilisables : xor (ainsi que XOR), or (ainsi que OR,OR_ et or_), and (ainsi que AND), nor (ainsi que NOR),"<< endl;
 			          cout << "xnor (ainsi que XNOR,xno et XNO), nand (ainsi que NAND,nan et NAN) "<< endl;
-			          cout << "La longueur du nom d'une entrée qui est aussi une entrée du circuit est d'un caractère."<< endl;
+			          cout << "Bien qu'un circuit puisse être créé avec de nombreuses entrées, la limitation est que le circuit ne peut contenir qu'une seule sortie."<< endl;
 					  cout << "Expression textuelle : ";
 					  cin >> expressionTextuelle;
 					  delete circuit;

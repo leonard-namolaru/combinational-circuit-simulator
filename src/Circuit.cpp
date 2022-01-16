@@ -103,6 +103,14 @@ Circuit* Circuit::relireCircuitQuiEstDansUnFichier(const string& nomFichier) {
 Circuit::Circuit(vector<InputGate*>* inputsCircuit, vector<Gate*>* gates, vector<OutputGate*>* ouputs)
 : inputs{inputsCircuit}, ouputs{ouputs}, gates{gates}, affichageCircuit{new vector< vector<char>* >}, simulationPasParPas{new vector< vector<Gate*>* >} {
 
+	try {
+		if(ouputs->size() > 1)
+			throw CircuitException("Bien qu'un circuit puisse être créé avec de nombreuses entrées, la limitation est que le circuit ne peut contenir qu'une seule sortie.");
+	} catch(const CircuitException& circuitException) {
+	cerr << circuitException.getMessage() << endl;
+	exit(EXIT_FAILURE);
+	}
+
 	/**
 	 * À l'intérieur du constructeur, nous remplissons deux vecteurs :
 	 * 	vector< vector<char>* >* affichageCircuit : La représentation graphique du circuit.
