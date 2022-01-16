@@ -35,6 +35,9 @@ public:
     void changerValeursDesPortesEntree();// Permet de changer les valeurs booléennes des entrées du circuit (false par défaut)
     void afficheCircuit()  const;
     string afficherSousFormeTextuelle() const; // Renvoie une chaîne de caractères qui représente le circuit.
+
+    void sauverCircuitDansFichier() const;
+    Circuit* relireCircuitQuiEstDansUnFichier();
 };
 
 

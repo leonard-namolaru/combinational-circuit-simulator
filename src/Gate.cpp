@@ -1,17 +1,25 @@
+/*
+ * Gate.cpp
+ * Projet : Simulateur de circuit combinatoire - UE Langages à objets avancés 2021 - 2022
+ * M1 : Master Informatique fondamentale et appliquée - Université de Paris.
+ * @author AIT BENALI faycal, NAMOLARU leonard
+ */
 #include "Gate.hpp"
 
-Gate::Gate(const string name) : entrees{new vector<Gate*>}, name{name}, valeurBooleenne{false}
+/**
+ * Constructeur 1.
+ */
+Gate::Gate(const string& nomGate, bool valeurBooleenne) : nomGate{nomGate}, entrees{new vector<Gate*>}, valeurBooleenne{valeurBooleenne}
 {
+
 }
 
-Gate::Gate(const string name, bool valeurBooleenne) : entrees{new vector<Gate*>}, name{name}, valeurBooleenne{valeurBooleenne}
+/**
+ * Constructeur 2.
+ */
+Gate::Gate(const string& nomGate) : nomGate{nomGate}, entrees{new vector<Gate*>}, valeurBooleenne{false}
 {
 
-}
-
-
-Gate::~Gate()
-{
 }
 
 
@@ -20,9 +28,14 @@ vector<Gate*>* Gate::getEntrees() const{
 }
 
 string Gate::getName() const {
-	return name;
+	return nomGate;
 }
 
 bool Gate::getValeurBooleenne() {
 	return valeurBooleenne;
+}
+
+Gate::~Gate()
+{
+
 }

@@ -1,17 +1,26 @@
+/*
+ * NandGate.cpp
+ * Projet : Simulateur de circuit combinatoire - UE Langages à objets avancés 2021 - 2022
+ * M1 : Master Informatique fondamentale et appliquée - Université de Paris.
+ * @author AIT BENALI faycal, NAMOLARU leonard
+ */
 #include "NandGate.hpp"
 
-
-NandGate::NandGate(Gate *g1, Gate *g2) : Gate{"NAN"}
+/**
+ * Constructeur.
+ */
+NandGate::NandGate(Gate *g1, Gate *g2) : Gate{"NAN", false} // Le nom d'une porte logique comportera toujours 3 caractères.
 {
     entrees->push_back(g1);
 	entrees->push_back(g2);
 }
 
-NandGate::~NandGate()
-{
-}
-
 bool NandGate::getValeurBooleenne() {
 	valeurBooleenne = (!(this->getEntrees()->at(0)->getValeurBooleenne() && this->getEntrees()->at(1)->getValeurBooleenne()));
 	return valeurBooleenne;
+}
+
+NandGate::~NandGate()
+{
+
 }

@@ -1,26 +1,23 @@
+/*
+ * OutputGate.hpp
+ * Projet : Simulateur de circuit combinatoire - UE Langages à objets avancés 2021 - 2022
+ * M1 : Master Informatique fondamentale et appliquée - Université de Paris.
+ * @author AIT BENALI faycal, NAMOLARU leonard
+ */
 #ifndef OUTPUTGATE
 #define OUTPUTGATE
 
 #include <vector>
 #include <iostream>
 #include "Gate.hpp"
-
 using namespace std;
 
 class OutputGate : public Gate
 {
-private:
-    /* data */
 public:
-    OutputGate(char name, Gate* g);
+    OutputGate(const char nomOutputGate, Gate* g); // Constructeur.
     bool getValeurBooleenne() override;
     virtual ~OutputGate();
 };
-
-
-
-
-
-
 
 #endif

@@ -1,3 +1,9 @@
+/*
+ * XorGate.hpp
+ * Projet : Simulateur de circuit combinatoire - UE Langages à objets avancés 2021 - 2022
+ * M1 : Master Informatique fondamentale et appliquée - Université de Paris.
+ * @author AIT BENALI faycal, NAMOLARU leonard
+ */
 #ifndef XORGATE
 #define XORGATE
 
@@ -9,18 +15,10 @@ using namespace std;
 
 class XorGate : public Gate
 {
-private:
-    
 public:
-    XorGate(Gate *g1, Gate *g2);
+    XorGate(Gate *g1, Gate *g2); // Constructeur.
     bool getValeurBooleenne() override;
     virtual ~XorGate();
 };
-
-
-
-
-
-
 
 #endif

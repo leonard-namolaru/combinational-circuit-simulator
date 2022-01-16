@@ -110,3 +110,21 @@ string Outils::gateToStringWithGatesNames(Gate* gate) {
 
    return str;
 }
+
+
+/**
+ * string Outils::getMessageErreurByCodeErreur(int codeErreur)
+ */
+string Outils::getMessageErreurByCodeErreur(int codeErreur) {
+
+	switch(codeErreur) {
+		case 1 : return "Le nom dune entree (InputGate) ne peut etre que une lettre minuscule. Une tentative a apparemment ete faite pour utiliser un autre caractere a cette fin.";
+			     break;
+		case 2 : return "Le nom dune sortie (OutputGate) ne peut etre que une lettre majuscule. Une tentative a apparemment ete faite pour utiliser un autre caractere a cette fin.";
+			     break;
+		default : return "Une erreur s'est produite mais malheureusement le système n'est pas en mesure de fournir une description plus détaillée";
+	}
+
+	return "";
+
+}

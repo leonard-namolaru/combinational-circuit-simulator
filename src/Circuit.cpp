@@ -6,6 +6,7 @@
 #include "Outils.hpp"
 
 #include <iostream>
+#include <fstream>
 #include <map>
 
 /**
@@ -58,6 +59,36 @@ string Circuit::afficherSousFormeTextuelle() const {
 
 	return str;
 } // afficherSousFormeTextuelle()
+
+
+
+void Circuit::sauverCircuitDansFichier() const {
+	  string circuit = afficherSousFormeTextuelle();
+	  ofstream fichier ("circuit.txt");
+	  if (fichier.is_open()) {
+		  fichier << circuit;
+		  fichier.close();
+	  }
+	  else {
+		  cerr << "Le fichier n'a pas pu être ouvert.";
+	  }
+}
+
+Circuit* Circuit::relireCircuitQuiEstDansUnFichier() {
+	string expressionTextuelle = "";
+
+	  ifstream fichier ("circuit.txt");
+	  if (fichier.is_open()) {
+		  fichier >> expressionTextuelle;
+		  fichier.close();
+	  }
+	  else {
+		  cerr << "Le fichier n'a pas pu être ouvert.";
+		  return nullptr;
+	  }
+
+	return expressionTextuelleToCircuit(expressionTextuelle);
+}
 
 /**
  * Circuit(vector<InputGate*>* inputsCircuit, vector<Gate*>* gates, vector<OutputGate*>* ouputs) : Constructeur.

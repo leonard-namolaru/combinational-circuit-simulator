@@ -1,3 +1,9 @@
+/*
+ * OrGate.hpp
+ * Projet : Simulateur de circuit combinatoire - UE Langages à objets avancés 2021 - 2022
+ * M1 : Master Informatique fondamentale et appliquée - Université de Paris.
+ * @author AIT BENALI faycal, NAMOLARU leonard
+ */
 #ifndef ORGATE
 #define ORGATE
 
@@ -9,18 +15,10 @@ using namespace std;
 
 class OrGate : public Gate
 {
-private:
-
 public:
-    OrGate(Gate *g1, Gate *g2);
+    OrGate(Gate *g1, Gate *g2); // Constructeur.
     bool getValeurBooleenne() override;
     virtual ~OrGate();
 };
-
-
-
-
-
-
 
 #endif

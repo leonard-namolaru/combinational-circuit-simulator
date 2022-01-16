@@ -1,3 +1,9 @@
+/*
+ * NorGate.hpp
+ * Projet : Simulateur de circuit combinatoire - UE Langages à objets avancés 2021 - 2022
+ * M1 : Master Informatique fondamentale et appliquée - Université de Paris.
+ * @author AIT BENALI faycal, NAMOLARU leonard
+ */
 #ifndef NORGATE
 #define NORGATE
 
@@ -9,18 +15,10 @@ using namespace std;
 
 class NorGate : public Gate
 {
-private:
-
 public:
-    NorGate(Gate *g1, Gate *g2);
+    NorGate(Gate *g1, Gate *g2); // Constructeur.
     bool getValeurBooleenne() override;
     virtual ~NorGate();
 };
-
-
-
-
-
-
 
 #endif

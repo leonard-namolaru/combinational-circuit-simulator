@@ -1,3 +1,9 @@
+/*
+ * main.cpp
+ * Projet : Simulateur de circuit combinatoire - UE Langages à objets avancés 2021 - 2022
+ * M1 : Master Informatique fondamentale et appliquée - Université de Paris.
+ * @author AIT BENALI faycal, NAMOLARU leonard
+ */
 #include <iostream>
 #include "Gate.hpp"
 #include "InputGate.hpp"
@@ -9,8 +15,9 @@
 
 int main(){
 
-	/* Les entrées */
+	/* **** EXEMPLE DE CONSTRUCTION D'UN CIRCUIT À L'AIDE DES OBJETS APPROPRIÉS **** */
 
+	/* Les entrées */
 	InputGate *a = new InputGate('a');
 	InputGate *b = new InputGate('b');
 	InputGate *c = new InputGate('c');
@@ -27,7 +34,6 @@ int main(){
 	inputsCircuit->push_back(f);
 
 	/* Les portes logiques */
-
 	Gate *or1 = new OrGate(a,b);
 	Gate *and1 = new AndGate(a,b);
 	Gate *or2 = new OrGate(c,d);
@@ -47,8 +53,14 @@ int main(){
 
 	Gate *and6 = new AndGate(or6,xor3);
 
+	/* La sortie du circuit  */
 	OutputGate *A = new OutputGate('A', and6);
 
+	/*
+	 * IMPORTANT !
+	 * Une sortie du circuit doit être ajoutée à la fois
+	 * au vecteur des portes logiques (gates) et au vecteur des sorties (ouputs).
+	 */
 
 	vector<Gate*>* gates = new vector<Gate*>;
 	gates->push_back(or1);
@@ -71,19 +83,23 @@ int main(){
 	gates->push_back(and6);
 	gates->push_back(A);
 
-
-	/* Les sorties du Circuit  */
-
-
 	vector<OutputGate*>* ouputs = new vector<OutputGate*>;
 	ouputs->push_back(A);
 
+	// Création du circuit.
 	Circuit* circuit = new Circuit(inputsCircuit, gates, ouputs);
+
+	/*
+	 * Vous pouvez afficher le résultat en exécutant le programme
+	 * et en sélectionnant l'option numéro 1 dans le menu.
+	 */
+
+	/* **** MENU **** */
 
 	int choix = 1;
 	string expressionTextuelle;
 	do{
-		cout << "**** MENU : simulateur de circuit combinatoire ***" << endl;
+		cout << "**** MENU : SIMULATEUR DE CIRCUIT COMBINATOIRE ***" << endl;
 		cout << "1- Afficher le circuit" << endl;
 		cout << "2- Simulation en mode pas à pas" << endl;
 		cout << "3- Changer les valeurs des portes d’entrée" << endl;
@@ -97,14 +113,14 @@ int main(){
 		cin >> choix;
 
 		switch(choix) {
-
 			case 1 : circuit->afficheCircuit();
 					 break;
 			case 2 : circuit->simulation();
 					 break;
 			case 3 : circuit->changerValeursDesPortesEntree();
 					 break;
-			case 4 : cout << circuit->afficherSousFormeTextuelle() << endl;
+			case 4 : cout << endl;
+					 cout << circuit->afficherSousFormeTextuelle() << endl;
 			         cout << endl;
 					 break;
 			case 5 :  cout << "Synthétiser un circuit à partir d'une expression textuelle" << endl;
@@ -112,12 +128,16 @@ int main(){
 					  cin >> expressionTextuelle;
 					  circuit = circuit->expressionTextuelleToCircuit(expressionTextuelle);
 					   break;
+			case 6 : circuit->sauverCircuitDansFichier(); // Sauver un circuit dans un fichier
+				     break;
+			case 7 : circuit = circuit->relireCircuitQuiEstDansUnFichier(); // Relire un circuit qui est dans un fichier
+				     break;
 			case 8 : // Quitter
 				     break;
-			default : cout << "Option pas dispo" << endl;
-		}
-
+			default :cout << endl;
+				     cout << "L'option que vous avez sélectionnée n'est pas disponible. Veuillez réessayer." << endl;
+				     cout << endl;
+		} // switch
 	} while(choix != 8);
-
 	return 0;
-}
+} // main

@@ -25,8 +25,10 @@ public:
 
 	// Diviser toutes les chaînes stockées dans un vecteur de chaînes en jetons.
 	static vector<string>* StringVectorTokenizer(vector<string>* strVecteur, string delim);
+
 	static Gate* getPorteLogiqueByName(const string& name, Gate* input1, Gate* input2);
 	static string gateToStringWithGatesNames(Gate* gate);
+	static string getMessageErreurByCodeErreur(int codeErreur);
 };
 
 #endif /* OUTILS */
