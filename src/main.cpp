@@ -128,9 +128,9 @@ int main(){
 					  cin >> expressionTextuelle;
 					  circuit = circuit->expressionTextuelleToCircuit(expressionTextuelle);
 					   break;
-			case 6 : circuit->sauverCircuitDansFichier(); // Sauver un circuit dans un fichier
+			case 6 : circuit->sauverCircuitDansFichier("circuit.txt"); // Sauver un circuit dans un fichier
 				     break;
-			case 7 : circuit = circuit->relireCircuitQuiEstDansUnFichier(); // Relire un circuit qui est dans un fichier
+			case 7 : circuit = circuit->relireCircuitQuiEstDansUnFichier("circuit.txt"); // Relire un circuit qui est dans un fichier
 				     break;
 			case 8 : // Quitter
 				     break;

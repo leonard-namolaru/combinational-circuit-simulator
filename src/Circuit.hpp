@@ -31,13 +31,13 @@ public:
     virtual ~Circuit();
     void simulation(); // Simulation en mode pas à pas
     Circuit* expressionTextuelleToCircuit(const string& expressionTextuelle);
+    Circuit* relireCircuitQuiEstDansUnFichier(const string& nomFichier);
 
     void changerValeursDesPortesEntree();// Permet de changer les valeurs booléennes des entrées du circuit (false par défaut)
     void afficheCircuit()  const;
     string afficherSousFormeTextuelle() const; // Renvoie une chaîne de caractères qui représente le circuit.
 
-    void sauverCircuitDansFichier() const;
-    Circuit* relireCircuitQuiEstDansUnFichier();
+    void sauverCircuitDansFichier(const string& nomFichier) const;
 };
 
 

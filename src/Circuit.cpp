@@ -62,9 +62,9 @@ string Circuit::afficherSousFormeTextuelle() const {
 
 
 
-void Circuit::sauverCircuitDansFichier() const {
+void Circuit::sauverCircuitDansFichier(const string& nomFichier) const {
 	  string circuit = afficherSousFormeTextuelle();
-	  ofstream fichier ("circuit.txt");
+	  ofstream fichier ( nomFichier.c_str() );
 	  if (fichier.is_open()) {
 		  fichier << circuit;
 		  fichier.close();
@@ -74,10 +74,10 @@ void Circuit::sauverCircuitDansFichier() const {
 	  }
 }
 
-Circuit* Circuit::relireCircuitQuiEstDansUnFichier() {
+Circuit* Circuit::relireCircuitQuiEstDansUnFichier(const string& nomFichier) {
 	string expressionTextuelle = "";
 
-	  ifstream fichier ("circuit.txt");
+	  ifstream fichier ( nomFichier.c_str() );
 	  if (fichier.is_open()) {
 		  fichier >> expressionTextuelle;
 		  fichier.close();
