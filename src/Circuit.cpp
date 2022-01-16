@@ -8,6 +8,201 @@
 #include <iostream>
 #include <map>
 
+/**
+ * void Circuit::changerValeursDesPortesEntree()
+ * Une fonction qui permet de changer les valeurs booléennes des entrées du circuit (false par défaut).
+ * La fonction parcours le vecteur des entrées du circuit et pour chacune elle présente à l'utilisateur
+ * le nom de l'entrée à côté de la valeur booléenne courante. L'utilisateur est invité à entrer une valeur
+ * booléenne (0 ou 1) pour chaque entrée. La fonction met alors à jour le vecteur qui stocke l'affichage du
+ * circuit.
+ */
+void Circuit::changerValeursDesPortesEntree() {
+	for(unsigned int i = 0 ; i < inputs->size() ; i++){
+		cout << "Nom de l'entrée : " << inputs->at(i)->getName() << " ; Valeur : " << inputs->at(i)->getValeurBooleenne() << endl;
+		cout << "Nouvelle valeur [1 / 0] : ";
+		int tmp = inputs->at(i)->getValeurBooleenne();
+		cin >> tmp;
+		inputs->at(i)->setValeurBooleenne(tmp);
+		cout << endl;
+	}
+	cout << endl;
+
+	// La fonction met alors à jour le vecteur qui stocke l'affichage du circuit
+	// la debut de chqaue ligne pour un input ressemble à ceci (par exemple) : a:0 -- (6 caractères)
+	for(unsigned int i = 0 ; i < inputs->size() ; i++)
+		affichageCircuit->at(i)->at(2) = to_string( inputs->at(i)->getValeurBooleenne() ).at(0); // to_string(int __val) ; char& string.at(size_type __n)
+} // changerValeursDesPortesEntree()
+
+/**
+ * void Circuit::afficheCircuit() const
+ * Une fonction qui parcours le vecteur qui mémorise l'affichage du circuit et l'affiche à l'écran.
+ */
+void Circuit::afficheCircuit() const {
+	for(unsigned int i = 0 ; i < affichageCircuit->size() ; i++){ // Les lignes
+		for(unsigned int j = 0 ; j < affichageCircuit->at(i)->size() ; j++){ // Les colonnes
+			cout << affichageCircuit->at(i)->at(j);
+		}
+		cout << endl;
+	}
+	cout << endl;
+} // afficheCircuit()
+
+/**
+ * string Circuit::afficherSousFormeTextuelle() const
+ * Une fonction qui renvoie une chaîne de caractères qui représente le circuit.
+ */
+string Circuit::afficherSousFormeTextuelle() const {
+	string str = ouputs->at(0)->getName(); // On commence par afficher le nom de la sortie
+	str.append("=");
+	str.append( Outils::gateToStringWithGatesNames( ouputs->at(0)->getEntrees()->at(0)) );
+
+	return str;
+} // afficherSousFormeTextuelle()
+
+/**
+ * Circuit(vector<InputGate*>* inputsCircuit, vector<Gate*>* gates, vector<OutputGate*>* ouputs) : Constructeur.
+ * Le constructeur reçoit comme paramètre le vecteur des entrées, le vecteur des portes logiques et le vecteur des sorties.
+ */
+Circuit::Circuit(vector<InputGate*>* inputsCircuit, vector<Gate*>* gates, vector<OutputGate*>* ouputs)
+: inputs{inputsCircuit}, ouputs{ouputs}, gates{gates}, affichageCircuit{new vector< vector<char>* >}, simulationPasParPas{new vector< vector<Gate*>* >} {
+
+	/**
+	 * À l'intérieur du constructeur, nous remplissons deux vecteurs :
+	 * 	vector< vector<char>* >* affichageCircuit : La représentation graphique du circuit.
+	 * 	vector< vector<Gate*>* >* simulationPasParPas : Pour une utilisation future, lorsque l'utilisateur veut
+	 * 	visualiser la vue pas à pas de l'évolution du flux d'informations dans le circuit,
+	 * 	on stocke dans ce vecteur des pointeurs vers les portes logiques situées à chaque niveau de l'affichage du circuit.
+	 */
+
+	vector<Gate*>* portesLogiquesAvecEntreesQuiSontEntreesDuCircuit = ajoutInputs();
+	simulationPasParPas->push_back(portesLogiquesAvecEntreesQuiSontEntreesDuCircuit);
+
+	ajoutCheminsApresInputs(); // Ajouter une nouvelle ligne à l'affichage du circuit pour stocker des chemins (caractères '|')
+	ajoutNomsOperationsLogiques(portesLogiquesAvecEntreesQuiSontEntreesDuCircuit);// Afficher les noms des opérations logiques
+	ajoutCheminsApresOperationsLogiques(); // Ajouter une nouvelle ligne à l'affichage du circuit pour stocker des chemins (caractères '|')
+
+	vector<Gate*>* portesLogiquesSuivantes = trouverLesPortesLogiquesSuivantes(portesLogiquesAvecEntreesQuiSontEntreesDuCircuit);
+	vector<Gate*>* portesLogiquesPrecedentes = portesLogiquesAvecEntreesQuiSontEntreesDuCircuit;
+	int level = 1, index = 1;
+	while(portesLogiquesSuivantes->size() != 0) {
+		simulationPasParPas->push_back(portesLogiquesSuivantes);
+
+		if(portesLogiquesSuivantes->at(0)->getName().size() > 1)
+			ajoutAsterisquesApresChemins(level);
+
+		ajoutNomsOperationsLogiques(portesLogiquesSuivantes);// Afficher les noms des opérations logiques
+		ajoutCheminsApresOperationsLogiques(); // Ajouter une nouvelle ligne à l'affichage du circuit pour stocker des chemins (caractères '|')
+
+		level = level + (2 * index);
+		index++;
+
+		portesLogiquesPrecedentes = portesLogiquesSuivantes;
+		portesLogiquesSuivantes = trouverLesPortesLogiquesSuivantes(portesLogiquesPrecedentes);
+	} // while
+} // Circuit()
+
+Circuit::~Circuit()
+{
+
+
+}
+
+
+/* **************** LA CONSTRUCTION DE L'AFFICHAGE DU CIRCUIT **************** */
+
+
+/**
+ * void Circuit::ajoutCheminsApresInputs()
+ * Une methode qui recherche les positions des caractères '+' et '*' dans la dernière ligne du vecteur qui stocke l'affichage du circuit
+ * et ajoute aux mêmes positions dans la ligne en dessous le caractère '|'
+ */
+void Circuit::ajoutCheminsApresInputs(){
+	int longueurLigne = affichageCircuit->at(0)->size(); // Longueur d'une ligne
+	affichageCircuit->push_back( new vector<char>(longueurLigne, ' ') ); // Ajouter une nouvelle ligne à l'affichage du circuit pour stocker des chemins (caractères '|')
+
+	int nombreDeLignes = affichageCircuit->size(); // Le nombre de lignes maintenant stockées dans le vecteur qui représente l'affichage du circuit.
+
+	// Nous parcourons l'avant-dernière ligne de l'affichage (La dernière ligne avant la nouvelle ligne que nous venons d'ajouter)
+	for(unsigned int i = 0 ; i < affichageCircuit->at(nombreDeLignes-2)->size() ; i++) {
+		if(affichageCircuit->at(nombreDeLignes-2)->at(i) == '+' || affichageCircuit->at(nombreDeLignes-2)->at(i) == '*')
+			affichageCircuit->at(nombreDeLignes - 1)->at(i) = '|';
+	} // for
+
+} // ajoutCheminsApresInputs()
+
+/**
+ * void Circuit::ajoutCheminsApresOperationsLogiques()
+ * Ajout de chemins (caractères '|') après avoir affiché les noms de portes logiques.
+ * Le nom d'une porte logique est toujours composé de 3 caractères. Nous plaçons toujours le chemin sous la lettre du milieu.
+ */
+void Circuit::ajoutCheminsApresOperationsLogiques(){
+	unsigned int longueurLigne = affichageCircuit->at(0)->size();// Longueur d'une ligne
+	affichageCircuit->push_back( new vector<char>(longueurLigne, ' ') ) ; // Ajouter une nouvelle ligne à l'affichage du circuit pour stocker des chemins (caractères '|')
+
+	int nombreDeLignes = affichageCircuit->size(); // Le nombre de lignes maintenant stockées dans le vecteur qui représente l'affichage du circuit.
+
+	// Nous parcourons la dernière ligne de l'affichage (La dernière ligne avant la nouvelle ligne que nous venons d'ajouter)
+	for(unsigned int i = 0 ; i < affichageCircuit->at(nombreDeLignes-2)->size() ; i++) {
+
+		if(affichageCircuit->at(nombreDeLignes-2)->at(i) >= 'A' && affichageCircuit->at(nombreDeLignes-2)->at(i) <= 'Z') {
+			if ((i != 0) && (affichageCircuit->at(nombreDeLignes-2)->at(i - 1) >= 'A' && affichageCircuit->at(nombreDeLignes-2)->at(i - 1) <= 'Z')) {
+				if ((i != longueurLigne - 1) && ( (affichageCircuit->at(nombreDeLignes-2)->at(i + 1) >= 'A' && affichageCircuit->at(nombreDeLignes-2)->at(i + 1) <= 'Z') || (affichageCircuit->at(nombreDeLignes-2)->at(i + 1) == '_') ))
+					affichageCircuit->at(nombreDeLignes-1)->at(i) = '|';
+			} // if
+		} // if
+
+	} // for
+} // ajoutCheminsApresOperationsLogiques()
+
+/**
+ * void Circuit::ajoutNomsOperationsLogiques(const vector<Gate*>* portesLogiquesAjouterAffichage)
+ * La fonction affiche les noms des portes logiques. Le nom d'une porte logique comportera toujours 3 caractères.
+ */
+void Circuit::ajoutNomsOperationsLogiques(const vector<Gate*>* portesLogiquesAjouterAffichage){
+	int longueurLigne = affichageCircuit->at(0)->size();// Longueur d'une ligne
+
+	affichageCircuit->push_back( new vector<char>(longueurLigne, ' ') ) ; // Ajouter une  ligne à l'affichage du circuit
+	int NombreDeLignesDansAffichage = affichageCircuit->size(); // Le nombre de lignes de l'affichage du circuit, y compris la ligne nouvellement ajoutée
+	unsigned int d = 0;
+	for(unsigned int i = 0 ; (i < affichageCircuit->at(NombreDeLignesDansAffichage - 1)->size()) && (d < portesLogiquesAjouterAffichage->size()) ; i++ ){
+		if (affichageCircuit->at(NombreDeLignesDansAffichage - 2)->at(i) == '|' && affichageCircuit->at(NombreDeLignesDansAffichage - 1)->at(i) == ' ') {
+			affichageCircuit->at(NombreDeLignesDansAffichage - 1)->at(i) = portesLogiquesAjouterAffichage->at(d)->getName().at(0);
+			if(portesLogiquesAjouterAffichage->at(d)->getName().size() > 1)  affichageCircuit->at(NombreDeLignesDansAffichage - 1)->at(i + 1) = portesLogiquesAjouterAffichage->at(d)->getName().at(1);
+			if(portesLogiquesAjouterAffichage->at(d)->getName().size() > 2) affichageCircuit->at(NombreDeLignesDansAffichage - 1)->at(i + 2) = portesLogiquesAjouterAffichage->at(d)->getName().at(2);
+			d++;
+
+		} // if
+	} // for
+} // ajoutNomsOperationsLogiques()
+
+/**
+ * vector<Gate*>* Circuit::trouverLesPortesLogiquesSuivantes(const vector<Gate*>* portesLogiquesPrecedentes)
+ * Lors de la construction de l'affichage du circuit, à chaque étape on utilise les portes logiques de l'étape précédente de l'affichage
+ * afin de repérer les portes logiques suivantes (on cherche quelles portes logiques reçoivent en entrées les portes logiques de
+ * l'étape précédente). Si la fonction renvoie un vecteur vide, cela signifie que nous avons atteint la fin du circuit.
+ */
+vector<Gate*>* Circuit::trouverLesPortesLogiquesSuivantes(const vector<Gate*>* portesLogiquesPrecedentes){
+	vector<Gate*>* portesLogiquesSuivantes = new vector<Gate*>;
+
+	for(unsigned int i = 0 ; i < gates->size() ; i++ ){ // On parcours par le vecteur avec toutes les portes logiques
+		bool check = true;
+		// Pour chaque porte logique, nous parcourons le vecteur qui comprend les entrées de cette porte logique
+		for(unsigned int j = 0 ; j < gates->at(i)->getEntrees()->size() ; j++) {
+			bool found = false;
+			// On vérifie si cette porte logique a une entrée qui est en fait une porte logique du niveau précédent du circuit
+			for(unsigned int k = 0 ; k < portesLogiquesPrecedentes->size() ; k++) {
+				if(portesLogiquesPrecedentes->at(k) == gates->at(i)->getEntrees()->at(j))
+					found = true;
+			} // for(k)
+
+			if(!found) check = false;
+		} // for(j)
+		if(check) portesLogiquesSuivantes->push_back(gates->at(i));
+	} // for(i)
+	return portesLogiquesSuivantes;
+} // trouverLesPortesLogiquesSuivantes()
+
+
 vector<Gate*>* Circuit::ajoutInputs(){
 
 	// Corrélation entre le nom d'un input avec le numéro de la ligne de ce input dans le vecteur de l'affichage.
@@ -83,62 +278,6 @@ vector<Gate*>* Circuit::ajoutInputs(){
 	return portesLogiquesAvecEntreesQuiSontEntreesDuCircuit;
 } // ajoutInputs()
 
-/**
- * Une methode qui recherche les positions des caractères '+' et '*' dans la dernière ligne du vecteur qui stocke l'affichage du circuit
- * et ajoute aux mêmes positions dans la ligne en dessous le caractère '|'
- */
-void Circuit::ajoutCheminsApresInputs(){
-	int longueurLigne = affichageCircuit->at(0)->size(); // Longueur d'une ligne
-	affichageCircuit->push_back( new vector<char>(longueurLigne, ' ') ); // Ajouter une nouvelle ligne à l'affichage du circuit pour stocker des chemins (caractères '|')
-
-	int nombreDeLignes = affichageCircuit->size(); // Le nombre de lignes maintenant stockées dans le vecteur qui représente l'affichage du circuit.
-
-	// Nous parcourons l'avant-dernière ligne de l'affichage (La dernière ligne avant la nouvelle ligne que nous venons d'ajouter)
-	for(unsigned int i = 0 ; i < affichageCircuit->at(nombreDeLignes-2)->size() ; i++) {
-		if(affichageCircuit->at(nombreDeLignes-2)->at(i) == '+' || affichageCircuit->at(nombreDeLignes-2)->at(i) == '*')
-			affichageCircuit->at(nombreDeLignes - 1)->at(i) = '|';
-	} // for
-
-} // ajoutCheminsApresInputs()
-
-
-void Circuit::ajoutNomsOperationsLogiques(const vector<Gate*>* portesLogiquesAjouterAffichage){
-	int longueurLigne = affichageCircuit->at(0)->size();// Longueur d'une ligne
-
-	affichageCircuit->push_back( new vector<char>(longueurLigne, ' ') ) ; // Ajouter une  ligne à l'affichage du circuit
-	int NombreDeLignesDansAffichage = affichageCircuit->size(); // Le nombre de lignes de l'affichage du circuit, y compris la ligne nouvellement ajoutée
-	unsigned int d = 0;
-	for(unsigned int i = 0 ; (i < affichageCircuit->at(NombreDeLignesDansAffichage - 1)->size()) && (d < portesLogiquesAjouterAffichage->size()) ; i++ ){
-		if (affichageCircuit->at(NombreDeLignesDansAffichage - 2)->at(i) == '|' && affichageCircuit->at(NombreDeLignesDansAffichage - 1)->at(i) == ' ') {
-			affichageCircuit->at(NombreDeLignesDansAffichage - 1)->at(i) = portesLogiquesAjouterAffichage->at(d)->getName().at(0);
-			if(portesLogiquesAjouterAffichage->at(d)->getName().size() > 1)  affichageCircuit->at(NombreDeLignesDansAffichage - 1)->at(i + 1) = portesLogiquesAjouterAffichage->at(d)->getName().at(1);
-			if(portesLogiquesAjouterAffichage->at(d)->getName().size() > 2) affichageCircuit->at(NombreDeLignesDansAffichage - 1)->at(i + 2) = portesLogiquesAjouterAffichage->at(d)->getName().at(2);
-			d++;
-
-		}
-	}
-
-} // ajoutNomsOperationsLogiques()
-
-void Circuit::ajoutCheminsApresOperationsLogiques(){
-	unsigned int longueurLigne = affichageCircuit->at(0)->size();// Longueur d'une ligne
-	affichageCircuit->push_back( new vector<char>(longueurLigne, ' ') ) ; // Ajouter une nouvelle ligne à l'affichage du circuit pour stocker des chemins (caractères '|')
-
-	int nombreDeLignes = affichageCircuit->size(); // Le nombre de lignes maintenant stockées dans le vecteur qui représente l'affichage du circuit.
-
-	// Nous parcourons la dernière ligne de l'affichage (La dernière ligne avant la nouvelle ligne que nous venons d'ajouter)
-	for(unsigned int i = 0 ; i < affichageCircuit->at(nombreDeLignes-2)->size() ; i++) {
-
-		if(affichageCircuit->at(nombreDeLignes-2)->at(i) >= 'A' && affichageCircuit->at(nombreDeLignes-2)->at(i) <= 'Z') {
-			if ((i != 0) && (affichageCircuit->at(nombreDeLignes-2)->at(i - 1) >= 'A' && affichageCircuit->at(nombreDeLignes-2)->at(i - 1) <= 'Z')) {
-				if ((i != longueurLigne - 1) && ( (affichageCircuit->at(nombreDeLignes-2)->at(i + 1) >= 'A' && affichageCircuit->at(nombreDeLignes-2)->at(i + 1) <= 'Z') || (affichageCircuit->at(nombreDeLignes-2)->at(i + 1) == '_') ))
-					affichageCircuit->at(nombreDeLignes-1)->at(i) = '|';
-			} // if
-		} // if
-
-	} // for
-} // ajoutCheminsApresOperationsLogiques()
-
 void Circuit::ajoutAsterisquesApresChemins(unsigned int level){
 	unsigned int longueurLigne = affichageCircuit->at(0)->size();// Longueur d'une ligne
 	affichageCircuit->push_back( new vector<char>(longueurLigne, ' ') ) ; // Ajouter une nouvelle ligne à l'affichage du circuit pour stocker des chemins (caractères '|')
@@ -172,81 +311,6 @@ void Circuit::ajoutAsterisquesApresChemins(unsigned int level){
 		affichageCircuit->at(nombreDeLignes - 1)->at(memo.at(i)) = '|';
 } // ajoutAsterisquesApresChemins()
 
-vector<Gate*>* Circuit::trouverLesPortesLogiquesSuivantes(const vector<Gate*>* portesLogiquesPrecedentes){
-	vector<Gate*>* portesLogiquesSuivantes = new vector<Gate*>;
-
-	for(unsigned int i = 0 ; i < gates->size() ; i++ ){
-		bool check = true;
-		for(unsigned int j = 0 ; j < gates->at(i)->getEntrees()->size() ; j++) {
-			bool found = false;
-			for(unsigned int k = 0 ; k < portesLogiquesPrecedentes->size() ; k++) {
-				if(portesLogiquesPrecedentes->at(k) == gates->at(i)->getEntrees()->at(j))
-					found = true;
-			}
-
-			if(!found) check = false;
-		}
-		if(check) portesLogiquesSuivantes->push_back(gates->at(i));
-	}
-	return portesLogiquesSuivantes;
-} // trouverLesPortesLogiquesSuivantes()
-
-
-string Circuit::afficherSousFormeTextuelle() {
-	string str = ouputs->at(0)->getName();
-	str.append("=");
-	str.append( Outils::gateToStringWithGatesNames( ouputs->at(0)->getEntrees()->at(0)) );
-
-	return str;
-}
-
-Circuit::Circuit(vector<InputGate*>* inputsCircuit, vector<Gate*>* gates, vector<OutputGate*>* ouputs)
-: inputs{inputsCircuit}, ouputs{ouputs}, gates{gates}, affichageCircuit{new vector< vector<char>* >}, simulationPasParPas{new vector< vector<Gate*>* >} {
-
-	vector<Gate*>* portesLogiquesAvecEntreesQuiSontEntreesDuCircuit = ajoutInputs();
-	simulationPasParPas->push_back(portesLogiquesAvecEntreesQuiSontEntreesDuCircuit);
-
-	ajoutCheminsApresInputs();
-	ajoutNomsOperationsLogiques(portesLogiquesAvecEntreesQuiSontEntreesDuCircuit);// Afficher les noms des opérations logiques
-	ajoutCheminsApresOperationsLogiques();
-
-	vector<Gate*>* portesLogiquesSuivantes = trouverLesPortesLogiquesSuivantes(portesLogiquesAvecEntreesQuiSontEntreesDuCircuit);
-	vector<Gate*>* portesLogiquesPrecedentes = portesLogiquesAvecEntreesQuiSontEntreesDuCircuit;
-	int level = 1;
-	int index = 1;
-	while(portesLogiquesSuivantes->size() != 0) {
-		simulationPasParPas->push_back(portesLogiquesSuivantes);
-
-		if(portesLogiquesSuivantes->at(0)->getName().size() > 1)
-			ajoutAsterisquesApresChemins(level);
-
-		ajoutNomsOperationsLogiques(portesLogiquesSuivantes);// Afficher les noms des opérations logiques
-		ajoutCheminsApresOperationsLogiques();
-
-		level = level + (2 * index);
-		index++;
-
-		portesLogiquesPrecedentes = portesLogiquesSuivantes;
-		portesLogiquesSuivantes = trouverLesPortesLogiquesSuivantes(portesLogiquesPrecedentes);
-	}
-
-}
-
-
-Circuit::~Circuit()
-{
-}
-
-void Circuit::afficheCircuit() const {
-	for(unsigned int i = 0 ; i < affichageCircuit->size() ; i++){
-		for(unsigned int j = 0 ; j < affichageCircuit->at(i)->size() ; j++){
-			cout << affichageCircuit->at(i)->at(j);
-		}
-		cout << endl;
-	}
-	cout << endl;
-
-}
 
 /**
  * Simulation en mode pas à pas
@@ -306,22 +370,6 @@ void Circuit::simulation() {
 	}
 
 }
-
-void Circuit::changerValeursDesPortesEntree() {
-	for(unsigned int i = 0 ; i < inputs->size() ; i++){
-		cout << "Nom de l'entrée : " << inputs->at(i)->getName() << " ; Valeur : " << inputs->at(i)->getValeurBooleenne() << endl;
-		cout << "Nouvelle valeur [1 / 0] : ";
-		int tmp = inputs->at(i)->getValeurBooleenne();
-		cin >> tmp;
-		inputs->at(i)->setValeurBooleenne(tmp);
-		cout << endl;
-	}
-	cout << endl;
-
-	for(unsigned int i = 0 ; i < inputs->size() ; i++)
-		affichageCircuit->at(i)->at(2) = to_string( inputs->at(i)->getValeurBooleenne() ).at(0); // to_string(int __val) ; char& string.at(size_type __n)
-}
-
 
 Circuit* Circuit::expressionTextuelleToCircuit(const string& expressionTextuelle) {
 	const size_t NOT_FOUND = -1;

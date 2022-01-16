@@ -1,21 +1,25 @@
 #ifndef CIRCUIT
 #define CIRCUIT
+
 #include "Gate.hpp"
 #include <vector>
 #include <iostream>
 #include "InputGate.hpp"
 #include "OutputGate.hpp"
+
 using namespace std;
+
 class Circuit
 {
 private:
-    /* data */
+	/* **** DATA **** */
 	vector<InputGate*>* inputs;
 	vector<OutputGate*>* ouputs;
 	vector<Gate*>* gates;
 	vector< vector<char>* >* affichageCircuit;
 	vector< vector<Gate*>* >* simulationPasParPas;
 
+	/* **** LA CONSTRUCTION DE L'AFFICHAGE DU CIRCUIT **** */
 	vector<Gate*>* ajoutInputs();
 	void ajoutCheminsApresInputs();
 	void ajoutNomsOperationsLogiques(const vector<Gate*>* portesLogiquesAjouterAffichage);
@@ -25,12 +29,12 @@ private:
 public:
     Circuit(vector<InputGate*>* inputsCircuit, vector<Gate*>* gates, vector<OutputGate*>* ouputs);
     virtual ~Circuit();
-    void afficheCircuit()  const;
     void simulation(); // Simulation en mode pas à pas
-    void changerValeursDesPortesEntree();// Changer les valeurs des portes d’entrée
     Circuit* expressionTextuelleToCircuit(const string& expressionTextuelle);
-    string afficherSousFormeTextuelle();
 
+    void changerValeursDesPortesEntree();// Permet de changer les valeurs booléennes des entrées du circuit (false par défaut)
+    void afficheCircuit()  const;
+    string afficherSousFormeTextuelle() const; // Renvoie une chaîne de caractères qui représente le circuit.
 };
 
 

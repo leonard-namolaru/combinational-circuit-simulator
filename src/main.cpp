@@ -8,6 +8,7 @@
 #include "Circuit.hpp"
 
 int main(){
+
 	/* Les entrées */
 
 	InputGate *a = new InputGate('a');
