@@ -28,15 +28,15 @@ private:
 	vector<Gate*>* trouverLesPortesLogiquesSuivantes(const vector<Gate*>* portesLogiquesPrecedentes);
 public:
     Circuit(vector<InputGate*>* inputsCircuit, vector<Gate*>* gates, vector<OutputGate*>* ouputs);
+    static Circuit* relireCircuitQuiEstDansUnFichier(const string& nomFichier);
+    static Circuit* expressionTextuelleToCircuit(const string& expressionTextuelle);
     virtual ~Circuit();
-    void simulation(); // Simulation en mode pas à pas
-    Circuit* expressionTextuelleToCircuit(const string& expressionTextuelle);
-    Circuit* relireCircuitQuiEstDansUnFichier(const string& nomFichier);
 
     void changerValeursDesPortesEntree();// Permet de changer les valeurs booléennes des entrées du circuit (false par défaut)
+    void simulation(); // Simulation en mode pas à pas
+
     void afficheCircuit()  const;
     string afficherSousFormeTextuelle() const; // Renvoie une chaîne de caractères qui représente le circuit.
-
     void sauverCircuitDansFichier(const string& nomFichier) const;
 };
 

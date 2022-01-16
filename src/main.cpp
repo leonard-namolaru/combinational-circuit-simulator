@@ -126,11 +126,11 @@ int main(){
 			case 5 :  cout << "Synthétiser un circuit à partir d'une expression textuelle" << endl;
 					  cout << "Expression textuelle : ";
 					  cin >> expressionTextuelle;
-					  circuit = circuit->expressionTextuelleToCircuit(expressionTextuelle);
+					  circuit = Circuit::expressionTextuelleToCircuit(expressionTextuelle);
 					   break;
 			case 6 : circuit->sauverCircuitDansFichier("circuit.txt"); // Sauver un circuit dans un fichier
 				     break;
-			case 7 : circuit = circuit->relireCircuitQuiEstDansUnFichier("circuit.txt"); // Relire un circuit qui est dans un fichier
+			case 7 : circuit = Circuit::relireCircuitQuiEstDansUnFichier("circuit.txt"); // Relire un circuit qui est dans un fichier
 				     break;
 			case 8 : // Quitter
 				     break;
