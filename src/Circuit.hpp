@@ -1,3 +1,9 @@
+/*
+ * Circuit.hpp
+ * Projet : Simulateur de circuit combinatoire - UE Langages à objets avancés 2021 - 2022
+ * M1 : Master Informatique fondamentale et appliquée - Université de Paris.
+ * @author AIT BENALI faycal, NAMOLARU leonard
+ */
 #ifndef CIRCUIT
 #define CIRCUIT
 
@@ -37,7 +43,7 @@ public:
 
     void afficheCircuit()  const;
     string afficherSousFormeTextuelle() const; // Renvoie une chaîne de caractères qui représente le circuit.
-    void sauverCircuitDansFichier(const string& nomFichier) const;
+    void sauvegarderCircuitDansFichier(const string& nomFichier) const;
 };
 
 #endif

@@ -1,3 +1,9 @@
+/*
+ * Circuit.cpp
+ * Projet : Simulateur de circuit combinatoire - UE Langages à objets avancés 2021 - 2022
+ * M1 : Master Informatique fondamentale et appliquée - Université de Paris.
+ * @author AIT BENALI faycal, NAMOLARU leonard
+ */
 #include "Circuit.hpp"
 #include "OrGate.hpp"
 #include "XorGate.hpp"
@@ -62,7 +68,7 @@ string Circuit::afficherSousFormeTextuelle() const {
 
 
 
-void Circuit::sauverCircuitDansFichier(const string& nomFichier) const {
+void Circuit::sauvegarderCircuitDansFichier(const string& nomFichier) const {
 	  string circuit = afficherSousFormeTextuelle();
 	  ofstream fichier ( nomFichier.c_str() );
 	  if (fichier.is_open()) {

@@ -103,9 +103,9 @@ int main(){
 		cout << "1- Afficher le circuit" << endl;
 		cout << "2- Simulation en mode pas à pas" << endl;
 		cout << "3- Changer les valeurs des portes d’entrée" << endl;
-		cout << "4- Afficher sous forme textuelle les fonctions de sortie à l’aide des variables d’entrée" << endl;
+		cout << "4- Afficher sous forme textuelle" << endl;
 		cout << "5- Synthétiser un circuit à partir d'une expression textuelle" << endl;
-		cout << "6- Sauver un circuit dans un fichier" << endl;
+		cout << "6- Sauvegarder un circuit dans un fichier" << endl;
 		cout << "7- Relire un circuit qui est dans un fichier" << endl;
 		cout << "8- Quitter" << endl;
 
@@ -134,7 +134,7 @@ int main(){
 					  delete circuit;
 					  circuit = Circuit::expressionTextuelleToCircuit(expressionTextuelle);
 					  break;
-			case 6 : circuit->sauverCircuitDansFichier("circuit.txt"); // Sauver un circuit dans un fichier
+			case 6 : circuit->sauvegarderCircuitDansFichier("circuit.txt"); // Sauvegarder un circuit dans un fichier
 				     break;
 			case 7 : delete circuit;
 				     circuit = Circuit::relireCircuitQuiEstDansUnFichier("circuit.txt"); // Relire un circuit qui est dans un fichier
