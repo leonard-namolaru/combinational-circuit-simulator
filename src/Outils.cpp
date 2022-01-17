@@ -15,7 +15,7 @@ vector<string>* Outils::StringTokenizer(string str, string delim) {
 	const size_t NOT_FOUND = -1;
 	vector<string>* tokens = new vector<string>;
 
-	unsigned int indexDelim = str.find(delim);
+	size_t indexDelim = str.find(delim);
 	while (indexDelim != NOT_FOUND) {
 		string nextToken = str.substr(0, indexDelim);
 		str = str.substr(indexDelim + 1);
@@ -37,7 +37,7 @@ vector<string>* Outils::StringTokenizer(string str, string delim) {
 vector<string>* Outils::StringVectorTokenizer(vector<string>* strVecteur, string delim) {
 	const size_t NOT_FOUND = -1;
 	vector<string>* tokens = new vector<string>;
-	unsigned int indexDelim;
+	size_t indexDelim;
 
 	for(unsigned int i = 0 ; i < strVecteur->size() ; i++) {
 		indexDelim = strVecteur->at(i).find(delim);

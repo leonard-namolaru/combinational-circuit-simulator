@@ -4,16 +4,16 @@ CFLAGS= -Wall
 
 all : mr
 
-mr : main.o Gate.o AndGate.o InputGate.o OutputGate.o OrGate.o XorGate.o Circuit.o CircuitException.o NandGate.o XnorGate.o NorGate.o Outils.o
+mr : Gate.o Circuit.o CircuitException.o main.o Outils.o AndGate.o InputGate.o OrGate.o OutputGate.o XorGate.o NandGate.o NorGate.o XnorGate.o
 	$(CPP) $(CFLAGS) -o $@ $^
 
 Gate.o : Gate.cpp Gate.hpp
 	$(CPP) $(CFLAGS) -c $<
 
-Circuit.o : Circuit.cpp Circuit.hpp Gate.hpp
+Circuit.o : Circuit.cpp Circuit.hpp
 	$(CPP) $(CFLAGS) -c $<
 
-CircuitException.o : CircuitException.cpp CircuitException.hpp Gate.hpp
+CircuitException.o : CircuitException.cpp CircuitException.hpp
 	$(CPP) $(CFLAGS) -c $<
 
 main.o : main.cpp 
@@ -22,28 +22,28 @@ main.o : main.cpp
 Outils.o : Outils.cpp Outils.hpp
 	$(CPP) $(CFLAGS) -c $<
 
-AndGate.o : AndGate.cpp AndGate.hpp Gate.hpp
+AndGate.o : AndGate.cpp AndGate.hpp
 	$(CPP) $(CFLAGS) -c $<
 
-InputGate.o : InputGate.cpp InputGate.hpp Gate.hpp
+InputGate.o : InputGate.cpp InputGate.hpp
 	$(CPP) $(CFLAGS) -c $<
 
-OrGate.o : OrGate.cpp OrGate.hpp Gate.hpp
+OrGate.o : OrGate.cpp OrGate.hpp
 	$(CPP) $(CFLAGS) -c $<
 
-OutputGate.o : OutputGate.cpp OutputGate.hpp Gate.hpp
+OutputGate.o : OutputGate.cpp OutputGate.hpp
 	$(CPP) $(CFLAGS) -c $<
 
-XorGate.o : XorGate.cpp XorGate.hpp Gate.hpp
+XorGate.o : XorGate.cpp XorGate.hpp
 	$(CPP) $(CFLAGS) -c $<
 
-NandGate.o : NandGate.cpp NandGate.hpp Gate.hpp
+NandGate.o : NandGate.cpp NandGate.hpp
 	$(CPP) $(CFLAGS) -c $<
 
-NorGate.o : NorGate.cpp NorGate.hpp Gate.hpp
+NorGate.o : NorGate.cpp NorGate.hpp
 	$(CPP) $(CFLAGS) -c $<
 
-XnorGate.o : XnorGate.cpp XnorGate.hpp Gate.hpp
+XnorGate.o : XnorGate.cpp XnorGate.hpp
 	$(CPP) $(CFLAGS) -c $<	
 
 clean :
