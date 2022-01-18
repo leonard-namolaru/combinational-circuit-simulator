@@ -1,7 +1,7 @@
 /*
  * main.cpp
- * Projet : Simulateur de circuit combinatoire - UE Langages à objets avancés 2021 - 2022
- * M1 : Master Informatique fondamentale et appliquée - Université de Paris.
+ * Projet : Simulateur de circuit combinatoire - UE Langages ï¿½ objets avancï¿½s 2021 - 2022
+ * M1 : Master Informatique fondamentale et appliquï¿½e - Universitï¿½ de Paris.
  * @author AIT BENALI faycal, NAMOLARU leonard
  */
 #include <iostream>
@@ -15,9 +15,9 @@
 #include "CircuitException.hpp"
 int main(){
 
-	/* **** EXEMPLE DE CONSTRUCTION D'UN CIRCUIT À L'AIDE DES OBJETS APPROPRIÉS **** */
+	/* **** EXEMPLE DE CONSTRUCTION D'UN CIRCUIT ï¿½ L'AIDE DES OBJETS APPROPRIï¿½S **** */
 
-	/* Les entrées */
+	/* Les entrï¿½es */
 	InputGate *a = new InputGate('a');
 	InputGate *b = new InputGate('b');
 	InputGate *c = new InputGate('c');
@@ -58,7 +58,7 @@ int main(){
 
 	/*
 	 * IMPORTANT !
-	 * Une sortie du circuit doit être ajoutée à la fois
+	 * Une sortie du circuit doit ï¿½tre ajoutï¿½e ï¿½ la fois
 	 * au vecteur des portes logiques (gates) et au vecteur des sorties (ouputs).
 	 */
 
@@ -86,12 +86,12 @@ int main(){
 	vector<OutputGate*>* ouputs = new vector<OutputGate*>;
 	ouputs->push_back(A);
 
-	// Création du circuit.
+	// Crï¿½ation du circuit.
 	Circuit* circuit = new Circuit(inputsCircuit, gates, ouputs);
 
 	/*
-	 * Vous pouvez afficher le résultat en exécutant le programme
-	 * et en sélectionnant l'option numéro 1 dans le menu.
+	 * Vous pouvez afficher le rï¿½sultat en exï¿½cutant le programme
+	 * et en sï¿½lectionnant l'option numï¿½ro 1 dans le menu.
 	 */
 
 	/* **** MENU **** */
@@ -101,10 +101,10 @@ int main(){
 	do{
 		cout << "**** MENU : SIMULATEUR DE CIRCUIT COMBINATOIRE ***" << endl;
 		cout << "1- Afficher le circuit" << endl;
-		cout << "2- Simulation en mode pas à pas" << endl;
-		cout << "3- Changer les valeurs des portes d’entrée" << endl;
+		cout << "2- Simulation en mode pas ï¿½ pas" << endl;
+		cout << "3- Changer les valeurs des portes dï¿½entrï¿½e" << endl;
 		cout << "4- Afficher sous forme textuelle" << endl;
-		cout << "5- Synthétiser un circuit à partir d'une expression textuelle" << endl;
+		cout << "5- Synthï¿½tiser un circuit ï¿½ partir d'une expression textuelle" << endl;
 		cout << "6- Sauvegarder un circuit dans un fichier" << endl;
 		cout << "7- Relire un circuit qui est dans un fichier" << endl;
 		cout << "8- Quitter" << endl;
@@ -123,12 +123,14 @@ int main(){
 					 cout << circuit->afficherSousFormeTextuelle() << endl;
 			         cout << endl;
 					 break;
-			case 5 :  cout << "Synthétiser un circuit à partir d'une expression textuelle" << endl;
-			          cout << "Veuillez ne pas utiliser d'espaces svp. Un exemple du plus petit circuit qui peut être créé : A=and(a,b)" << endl;
-			          cout << "Une porte logique peut avoir comme entrées deux entrées du circuit ou deux entrées qui sont des portes logiques. Mais il n'est pas possible de transférer une entrée du premier type et une seconde entrée du second type.."<< endl;
-			          cout << "Noms des portes logiques utilisables : xor (ainsi que XOR), or (ainsi que OR,OR_ et or_), and (ainsi que AND), nor (ainsi que NOR),"<< endl;
-			          cout << "xnor (ainsi que XNOR,xno et XNO), nand (ainsi que NAND,nan et NAN) "<< endl;
-			          cout << "Bien qu'un circuit puisse être créé avec de nombreuses entrées, la limitation est que le circuit ne peut contenir qu'une seule sortie."<< endl;
+			case 5 :  cout << "Synthetiser un circuit a partir d'une expression textuelle" << endl;
+			          cout << " " << endl;
+					  cout << "Veuillez respecter les regles suivantes : " << endl;
+					  cout << " 1 - Veuillez ne pas mettre des espaces dans l'expression textuelle." << endl;
+			          cout << " 2 - Une porte logique peut avoir comme entrï¿½es deux entrÃ©es du circuit ou deux entrï¿½es qui sont des portes logiques. Mais il n'est pas possible de transferer une entree du premier type et une seconde entree du second type.."<< endl;
+			          cout << " 3 - Noms des portes logiques utilisables : xor (ou XOR), or (ou OR,OR_ ,or_), and (ou AND), nor (ou NOR),"<< endl;
+			          cout << " 4 - xnor (ou XNOR,xno, XNO), nand (ou NAND,nan et NAN) "<< endl;
+			          cout << " 5 - Bien qu'un circuit puisse avoir plusieurs entrÃ©e , il n'a qu'une sortie."<< endl;
 					  cout << "Expression textuelle : ";
 					  cin >> expressionTextuelle;
 					  delete circuit;
@@ -142,7 +144,7 @@ int main(){
 			case 8 : // Quitter
 				     break;
 			default :cout << endl;
-				     cout << "L'option que vous avez sélectionnée n'est pas disponible. Veuillez réessayer." << endl;
+				     cout << "L'option que vous avez sï¿½lectionnï¿½e n'est pas disponible. Veuillez rï¿½essayer." << endl;
 				     cout << endl;
 		} // switch
 	} while(choix != 8);
