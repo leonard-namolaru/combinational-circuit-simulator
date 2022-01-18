@@ -13,6 +13,13 @@
 #include "XorGate.hpp"
 #include "Circuit.hpp"
 #include "CircuitException.hpp"
+bool isNumeric(string str) {
+   int k=str.length();
+   for (int i = 0; i < k; i++)
+      if (isdigit(str[i]) == false)
+      return false; //when one non numeric value is found, return false
+   return true;
+}
 int main(){
 
 	/* **** EXEMPLE DE CONSTRUCTION D'UN CIRCUIT � L'AIDE DES OBJETS APPROPRI�S **** */
@@ -96,7 +103,8 @@ int main(){
 
 	/* **** MENU **** */
 
-	int choix = 1;
+	string choix = "";
+    
 	string expressionTextuelle;
 	do{
 		cout << "**** MENU : SIMULATEUR DE CIRCUIT COMBINATOIRE ***" << endl;
@@ -109,21 +117,24 @@ int main(){
 		cout << "7- Relire un circuit qui est dans un fichier" << endl;
 		cout << "8- Quitter" << endl;
 
-		cout << "Votre choix : ";
+		repeat: cout << "Votre choix : ";
 		cin >> choix;
+		if(! isNumeric(choix)){
+			goto repeat;
+		}
+		if(choix=="1"){
+			circuit->afficheCircuit();
+		}else if (choix=="2"){
+			circuit->simulation();
 
-		switch(choix) {
-			case 1 : circuit->afficheCircuit();
-					 break;
-			case 2 : circuit->simulation();
-					 break;
-			case 3 : circuit->changerValeursDesPortesEntree();
-					 break;
-			case 4 : cout << endl;
-					 cout << circuit->afficherSousFormeTextuelle() << endl;
-			         cout << endl;
-					 break;
-			case 5 :  cout << "Synthetiser un circuit a partir d'une expression textuelle" << endl;
+		}else if (choix=="3"){
+			circuit->changerValeursDesPortesEntree();
+
+		}else if (choix=="4"){
+			cout << circuit->afficherSousFormeTextuelle() << endl;
+
+		}else if (choix=="5"){
+			          cout << "Synthetiser un circuit a partir d'une expression textuelle" << endl;
 			          cout << " " << endl;
 					  cout << "Veuillez respecter les regles suivantes : " << endl;
 					  cout << " 1 - Veuillez ne pas mettre des espaces dans l'expression textuelle." << endl;
@@ -135,18 +146,27 @@ int main(){
 					  cin >> expressionTextuelle;
 					  delete circuit;
 					  circuit = Circuit::expressionTextuelleToCircuit(expressionTextuelle);
-					  break;
-			case 6 : circuit->sauvegarderCircuitDansFichier("circuit.txt"); // Sauvegarder un circuit dans un fichier
-				     break;
-			case 7 : delete circuit;
-				     circuit = Circuit::relireCircuitQuiEstDansUnFichier("circuit.txt"); // Relire un circuit qui est dans un fichier
-				     break;
-			case 8 : // Quitter
-				     break;
-			default :cout << endl;
-				     cout << "L'option que vous avez s�lectionn�e n'est pas disponible. Veuillez r�essayer." << endl;
-				     cout << endl;
-		} // switch
-	} while(choix != 8);
+
+		}else if (choix=="6"){
+			          circuit->sauvegarderCircuitDansFichier("circuit.txt"); // Sauvegarder un circuit dans un fichier
+
+		}else if (choix=="7"){
+                     circuit = Circuit::relireCircuitQuiEstDansUnFichier("circuit.txt"); // Relire un circuit qui est dans un fichier
+		}else if (choix=="8"){
+			return 0;
+		}
+		
+		else{
+
+			cout << "L'option que vous avez selectionnee n'est pas disponible. Veuillez reessayer." << endl;
+
+		}
+       
+
+	} while(choix != "8");
+	
+
+
+	
 	return 0;
 } // main
