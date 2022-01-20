@@ -7,7 +7,7 @@ Debug  Diagramme_de_classes.png  README.md  Raport_Projet.pdf  src
 lenny@DESKTOP-DMJ749K:/mnt/c/Users/lenny/git/projet-cpp$ cd src
 lenny@DESKTOP-DMJ749K:/mnt/c/Users/lenny/git/projet-cpp/src$ make all
 
-RÃ©sultat attendu :
+Résultat attendu :
 
 g++ --std=c++11 -Wall -c Gate.cpp
 g++ --std=c++11 -Wall -c Circuit.cpp
@@ -25,10 +25,10 @@ g++ --std=c++11 -Wall -c XnorGate.cpp
 g++ --std=c++11 -Wall -o mr Gate.o Circuit.o CircuitException.o main.o Outils.o AndGate.o InputGate.o OrGate.o OutputGate.o XorGate.o NandGate.o NorGate.o XnorGate.o
 
 
-############################## ExÃ©cution ##############################
+############################## Exécution ##############################
 lenny@DESKTOP-DMJ749K:/mnt/c/Users/lenny/git/projet-cpp/src$ make test
 
-RÃ©sultat attendu :
+Résultat attendu :
 
 **** MENU : SIMULATEUR DE CIRCUIT COMBINATOIRE ***
 1- Afficher le circuit
@@ -43,30 +43,30 @@ Votre choix :
 
 ############################## Le menu ##############################
 
-Si vous tapez 1 directement aprÃ¨s la premiÃ¨re exÃ©cution du programme, 
-cela affichera le cicruit correspondant au code existant dans le main.ccp servant juste d'affichage standard Ã  l'utilisateur au dÃ©marage de l'application.
-L'utilisateur pourra ainsi voir les fonctionnaltÃ©s du programme meme sans creation de circuit au prÃ©alable.
+Si vous tapez 1 directement après la première exécution du programme, 
+cela affichera le cicruit correspondant au code existant dans le main.ccp servant juste d'affichage standard à l'utilisateur au démarage de l'application.
+L'utilisateur pourra ainsi voir les fonctionnaltés du programme meme sans creation de circuit au préalable.
 
-Pour dÃ©marer la simulation en mode pas Ã  pas , tapez 2.
-Cela affichera l'evolution de l'information au fur et Ã  mesur de son passage par les portes logiques.
-En tapant 2 directement aprÃ¨s l'Ã©xÃ©cution du programme , le logiciel lance la simulation du circuit existant. 
+Pour démarer la simulation en mode pas à pas , tapez 2.
+Cela affichera l'evolution de l'information au fur et à mesur de son passage par les portes logiques.
+En tapant 2 directement après l'éxécution du programme , le logiciel lance la simulation du circuit existant. 
 
-Pour changer les valeurs des portes d'entrÃ©e tapez 3.
-Ensuite, pour chaque entrÃ©e , le programme affiche l'ancienne valeur sous la forme suivante :
-Nom de l'entrÃ©e : " NOM D'ENTRÃ‰E"  ; Valeur : "VALEUR DE L'ENTRÃ‰E" 
-Le programme demande ensuite Ã  l'utilisateur de rentrer une nouvelle valeur ( soit 0 , soit 1 ).
+Pour changer les valeurs des portes d'entrée tapez 3.
+Ensuite, pour chaque entrée , le programme affiche l'ancienne valeur sous la forme suivante :
+Nom de l'entrée : " NOM D'ENTRÉE"  ; Valeur : "VALEUR DE L'ENTRÉE" 
+Le programme demande ensuite à l'utilisateur de rentrer une nouvelle valeur ( soit 0 , soit 1 ).
 
 Pour Afficher le circruit sous forme textuelle tapez 4.
-En tapant 4 directement aprÃ¨s l'Ã©xÃ©cution du programme cette option renvoie le chaine suivante, qui correspond au circuit  existant:
+En tapant 4 directement après l'éxécution du programme cette option renvoie le chaine suivante, qui correspond au circuit  existant:
 
 A=AND(OR_(XOR(OR_(a,b),AND(a,b)),AND(OR_(c,d),AND(c,d))),XOR(OR_(AND(e,f),AND(a,b)),XOR(OR_(a,f),OR_(d,f))))  
 
-Pour synthÃ©tiser un circuit Ã  partir d'une expression textuelle, tapez 5.
-On aura alors Ã  donner l'expression textuelle du circuit qu'on voudrait crÃ©er (cf. Exemples)
+Pour synthétiser un circuit à partir d'une expression textuelle, tapez 5.
+On aura alors à donner l'expression textuelle du circuit qu'on voudrait créer (cf. Exemples)
 
 Pour sauvegarder un circuit dans un fichier, tapez 6.
-La chaÃ®ne sera enregistrÃ©e dans un fichier nommÃ© circuit.txt dans le meme dossier.
-Si le fichier n'existe pas, le systÃ¨me le crÃ©era. S'il existe, le contenu prÃ©cÃ©dent sera Ã©crasÃ©.
+La chaîne sera enregistrée dans un fichier nommé circuit.txt dans le meme dossier.
+Si le fichier n'existe pas, le système le créera. S'il existe, le contenu précédent sera écrasé.
 
 Pour relire un circuit qui est dans un fichier tapez 7 
 
@@ -155,4 +155,3 @@ a:0 --+-+-+-+-+-+-+-+-+-+-+-+-+-+-*-+-
                     AND
                      |
                      A
-                     
