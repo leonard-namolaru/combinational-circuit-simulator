@@ -71,7 +71,7 @@ Si le fichier n'existe pas, le système le créera. S'il existe, le contenu pré
 Pour relire un circuit qui est dans un fichier tapez 7 
 
 ## Exemples : synthetiser un circuit a partir d'une expression textuelle
-Votre choix : 5
+Expression textuelle : option 5 du menu -> ENSUITE, Affichage : option 1 du menu
 
 Expression textuelle : A=and(a,b)
 Affichage :
@@ -81,3 +81,77 @@ a:0 --*-+-
       AND
        |
        A
+       
+Expression textuelle : A=or(and(a,b),and(c,d))
+Affichage :
+d:0 ----*-----
+c:0 --*-+-----
+b:0 --+-+---*-
+a:0 --+-+-*-+-
+      | | | |
+      AND AND
+       |   |
+       ** **
+        | |
+        OR_
+         |
+         A
+         
+         
+Expression textuelle : A=xor(or(and(a,b),and(c,d)),nor(or(e,f),nand(g,k)))
+Affichage :
+k:0 ----*-------------
+g:0 --*-+-------------
+f:0 --+-+---*---------
+e:0 --+-+-*-+---------
+d:0 --+-+-+-+---*-----
+c:0 --+-+-+-+-*-+-----
+b:0 --+-+-+-+-+-+---*-
+a:0 --+-+-+-+-+-+-*-+-
+      | | | | | | | |
+      NAN OR_ AND AND
+       |   |   |   |
+       ** **   ** **
+        | |     | |
+        NOR     OR_
+         |       |
+         **** ****
+            | |
+            XOR
+             |
+             A
+                          
+Expression textuelle :  A=and(xor(or(and(a,b),and(c,d)),nor(or(e,f),nand(g,k))),xor(or(and(z,y),and(x,w)),nor(or(u,v),nand(p,q))))
+Affichage :
+q:0 ----*-----------------------------
+p:0 --*-+-----------------------------
+v:0 --+-+---*-------------------------
+u:0 --+-+-*-+-------------------------
+w:0 --+-+-+-+---*---------------------
+x:0 --+-+-+-+-*-+---------------------
+y:0 --+-+-+-+-+-+---*-----------------
+z:0 --+-+-+-+-+-+-*-+-----------------
+k:0 --+-+-+-+-+-+-+-+---*-------------
+g:0 --+-+-+-+-+-+-+-+-*-+-------------
+f:0 --+-+-+-+-+-+-+-+-+-+---*---------
+e:0 --+-+-+-+-+-+-+-+-+-+-*-+---------
+d:0 --+-+-+-+-+-+-+-+-+-+-+-+---*-----
+c:0 --+-+-+-+-+-+-+-+-+-+-+-+-*-+-----
+b:0 --+-+-+-+-+-+-+-+-+-+-+-+-+-+---*-
+a:0 --+-+-+-+-+-+-+-+-+-+-+-+-+-+-*-+-
+      | | | | | | | | | | | | | | | |
+      NAN OR_ AND AND NAN OR_ AND AND
+       |   |   |   |   |   |   |   |
+       ** **   ** **   ** **   ** **
+        | |     | |     | |     | |
+        NOR     OR_     NOR     OR_
+         |       |       |       |
+         **** ****       **** ****
+            | |             | |
+            XOR             XOR
+             |               |
+             ******** ********
+                    | |
+                    AND
+                     |
+                     A
