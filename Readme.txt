@@ -1,3 +1,8 @@
+/*
+ * Projet : Simulateur de circuit combinatoire - UE Langages a objets avanccs 2021 - 2022
+ * M1 : Master Informatique fondamentale et appliquee - Universite de Paris.
+ * @author AIT BENALI faycal, NAMOLARU leonard
+ */
 ### Simulateur de circuit combinatoire ###
 
 ############################## Compilation ##############################

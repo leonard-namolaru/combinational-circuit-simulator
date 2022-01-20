@@ -1,7 +1,7 @@
 /*
  * NorGate.cpp
- * Projet : Simulateur de circuit combinatoire - UE Langages à objets avancés 2021 - 2022
- * M1 : Master Informatique fondamentale et appliquée - Université de Paris.
+ * Projet : Simulateur de circuit combinatoire - UE Langages a objets avances 2021 - 2022
+ * M1 : Master Informatique fondamentale et appliquee - Universite de Paris.
  * @author AIT BENALI faycal, NAMOLARU leonard
  */
 #include "NorGate.hpp"
