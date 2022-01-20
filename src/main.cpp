@@ -65,8 +65,8 @@ int main(){
 
 	/*
 	 * IMPORTANT !
-	 * Une sortie du circuit doit tre ajoute la fois
-	 * au vecteur des portes logiques (gates) et au vecteur des sorties (ouputs).
+	 * Une sortie du circuit doit etre ajoute la fois
+	 * au vecteur des portes logiques (gates) et au vecteur des sorties (outputs).
 	 */
 
 	vector<Gate*>* gates = new vector<Gate*>;
