@@ -43,22 +43,30 @@ Votre choix :
 
 ## Le menu
 
-Si vous tapez 1 directement après la première exécution du programme , cela affichera le cicruit correspondant au code existant dans le main.ccp servant juste d'affichage standard à l'utilisateur au démarage de l'application. l'utilisateur pourra ainsi voir les fonctionnaltés du programme meme sans creation de circuit au préalable.
+Si vous tapez 1 directement après la première exécution du programme, 
+cela affichera le cicruit correspondant au code existant dans le main.ccp servant juste d'affichage standard à l'utilisateur au démarage de l'application.
+L'utilisateur pourra ainsi voir les fonctionnaltés du programme meme sans creation de circuit au préalable.
 
-Pour démarer la simulation en mode pas à pas , tapez 2. Cela affichera l'evolution de l'information au fur et à mesur de son passage par les portes logiques. En tapant 2 directement après l'éxécution du programme , le logiciel lance la simulation du circuit existant. 
+Pour démarer la simulation en mode pas à pas , tapez 2.
+Cela affichera l'evolution de l'information au fur et à mesur de son passage par les portes logiques.
+En tapant 2 directement après l'éxécution du programme , le logiciel lance la simulation du circuit existant. 
 
 Pour changer les valeurs des portes d'entrée tapez 3.
 Ensuite, pour chaque entrée , le programme affiche l'ancienne valeur sous la forme suivante :
 Nom de l'entrée : " NOM D'ENTRÉE"  ; Valeur : "VALEUR DE L'ENTRÉE" 
 Le programme demande ensuite à l'utilisateur de rentrer une nouvelle valeur ( soit 0 , soit 1 ).
 
-Pour Afficher le circruit sous forme textuelle tapez 4. En tapant 2 directement après l'éxécution du programme cette option renvoie le chaine suivante, qui correspond au circuit  existant:
+Pour Afficher le circruit sous forme textuelle tapez 4.
+En tapant 4 directement après l'éxécution du programme cette option renvoie le chaine suivante, qui correspond au circuit  existant:
 
 A=AND(OR_(XOR(OR_(a,b),AND(a,b)),AND(OR_(c,d),AND(c,d))),XOR(OR_(AND(e,f),AND(a,b)),XOR(OR_(a,f),OR_(d,f))))  
 
-Pour synthétiser un circuit à partir d'une expression textuelle, tapez 5. On aura alors à donner l'expression textuelle du circuit qu'on voudrait créer.
+Pour synthétiser un circuit à partir d'une expression textuelle, tapez 5.
+On aura alors à donner l'expression textuelle du circuit qu'on voudrait créer (cf. Exemples)
 
-Pour sauvegarder un circuit dans un fichier, tapez 6. La chaîne sera enregistrée dans un fichier nommé circuit.txt dans le meme dossier. Si le fichier n'existe pas, le système le créera. S'il existe, le contenu précédent sera écrasé.
+Pour sauvegarder un circuit dans un fichier, tapez 6.
+La chaîne sera enregistrée dans un fichier nommé circuit.txt dans le meme dossier.
+Si le fichier n'existe pas, le système le créera. S'il existe, le contenu précédent sera écrasé.
 
 Pour relire un circuit qui est dans un fichier tapez 7 
 
