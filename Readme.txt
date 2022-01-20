@@ -1,6 +1,6 @@
-# Simulateur de circuit combinatoire
+### Simulateur de circuit combinatoire ###
 
-## Compilation
+############################## Compilation ##############################
 lenny@DESKTOP-DMJ749K:/mnt/c/Users/lenny/git/projet-cpp$ ls
 Debug  Diagramme_de_classes.png  README.md  Raport_Projet.pdf  src
 
@@ -25,7 +25,7 @@ g++ --std=c++11 -Wall -c XnorGate.cpp
 g++ --std=c++11 -Wall -o mr Gate.o Circuit.o CircuitException.o main.o Outils.o AndGate.o InputGate.o OrGate.o OutputGate.o XorGate.o NandGate.o NorGate.o XnorGate.o
 
 
-## Exécution
+############################## Exécution ##############################
 lenny@DESKTOP-DMJ749K:/mnt/c/Users/lenny/git/projet-cpp/src$ make test
 
 Résultat attendu :
@@ -41,7 +41,7 @@ Résultat attendu :
 8- Quitter
 Votre choix :
 
-## Le menu
+############################## Le menu ##############################
 
 Si vous tapez 1 directement après la première exécution du programme, 
 cela affichera le cicruit correspondant au code existant dans le main.ccp servant juste d'affichage standard à l'utilisateur au démarage de l'application.
@@ -70,7 +70,7 @@ Si le fichier n'existe pas, le système le créera. S'il existe, le contenu pré
 
 Pour relire un circuit qui est dans un fichier tapez 7 
 
-## Exemples : synthetiser un circuit a partir d'une expression textuelle
+############################## Exemples : synthetiser un circuit a partir d'une expression textuelle ##############################
 Expression textuelle : option 5 du menu -> ENSUITE, Affichage : option 1 du menu
 
 Expression textuelle : A=and(a,b)
